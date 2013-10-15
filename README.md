@@ -7,7 +7,7 @@ Requirements:
 * Eclipse IDE with RAP 2.1 tools installed
 * RAP 2.1.1
 * org.eclipse.rap.demo.controls bundle, patched with ControlsDemo.patch (see ./patches)
-* Selenium-WebDriver for Java (http://docs.seleniumhq.org/docs/03_webdriver.jsp(
+* Selenium-WebDriver for Java ( http://docs.seleniumhq.org/docs/03_webdriver.jsp )
 * com.eclipsesource.rap.aria bundle (commercial add-on)
 * Mozilla Firefox (path of binary may have to be adjusted in Controls_Demo_Test.java)
 
