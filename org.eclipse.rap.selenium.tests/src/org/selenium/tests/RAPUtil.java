@@ -65,17 +65,24 @@ public class RAPUtil {
   private void patchRAP() {
     // seleniums mouse*** methods sometimes do not set pageX/Y which can crash the server
     // due to reported mouse coordinates [ null, null ]
-    String script =   "  rwt.event.MouseEvent.storeEventState = function(e)\n"
-                    + "  {\n"
-                    + "    this._screenX = e.getScreenX() || 0;\n"
-                    + "    this._screenY = e.getScreenY() || 0;\n"
-                    + "    this._clientX = e.getClientX() || 0;\n"
-                    + "    this._clientY = e.getClientY() || 0;\n"
-                    + "    this._pageX = e.getPageX() || 0;\n"
-                    + "    this._pageY = e.getPageY() || 0;\n"
-                    + "    this._button = e.getButton() || 0;\n"
+    String script =   "(function(){\n"
+                    + "rwt.qx.Class.__initializeClass( rwt.event.MouseEvent );\n"
+                    + "var proto = rwt.event.MouseEvent.prototype;\n"
+                    + "var wrap = function( name ) {\n"
+                    + "  var org = proto[ name ];\n"
+                    + "  proto[ name ] = function() {\n"
+                    + "    var result = org.apply( this, arguments ) || 0;\n"
+                    + "    return result;\n"
                     + "  };\n"
-                    + "";
+                    + "};\n"
+                    + "wrap( 'getScreenX' );\n"
+                    + "wrap( 'getScreenY' );\n"
+                    + "wrap( 'getClientX' );\n"
+                    + "wrap( 'getClientY' );\n"
+                    + "wrap( 'getPageX' );\n"
+                    + "wrap( 'getPageY' );\n"
+                    + "console.log( ' RAP patched ' )"
+                    + "}());";
     selenium.runScript( script );
     // Required for emulating mouse events on internal RAP event handler level
     selenium.runScript( TEST_UTIL_JS_CONTENT );
