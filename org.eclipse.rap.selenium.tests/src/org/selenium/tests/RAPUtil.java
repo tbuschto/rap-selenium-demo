@@ -20,6 +20,9 @@ public class RAPUtil {
   private final WebDriver driver;
   private final Selenium selenium;
   private final String TEST_UTIL_JS_CONTENT;
+  private final String NAMESPACE_JS =   "var namespace = function( value ) {"
+                                      + "rwt.qx.Class.createNamespace( value, {} );"
+                                      + "};\n";
   private static final String CHARSET = "UTF-8";
 
 
@@ -65,8 +68,7 @@ public class RAPUtil {
   private void patchRAP() {
     // seleniums mouse*** methods sometimes do not set pageX/Y which can crash the server
     // due to reported mouse coordinates [ null, null ]
-    String script =   "(function(){\n"
-                    + "rwt.qx.Class.__initializeClass( rwt.event.MouseEvent );\n"
+    String script =   "rwt.qx.Class.__initializeClass( rwt.event.MouseEvent );\n"
                     + "var proto = rwt.event.MouseEvent.prototype;\n"
                     + "var wrap = function( name ) {\n"
                     + "  var org = proto[ name ];\n"
@@ -80,17 +82,16 @@ public class RAPUtil {
                     + "wrap( 'getClientX' );\n"
                     + "wrap( 'getClientY' );\n"
                     + "wrap( 'getPageX' );\n"
-                    + "wrap( 'getPageY' );\n"
-                    + "console.log( ' RAP patched ' )"
-                    + "}());";
-    selenium.runScript( script );
-    // Required for emulating mouse events on internal RAP event handler level
-    selenium.runScript( TEST_UTIL_JS_CONTENT );
+                    + "wrap( 'getPageY' );\n";
+    selenium.runScript( wrapJS( script ) );
+    // Required for emulating key events on internal RAP event handler level
+    selenium.runScript( wrapJS( NAMESPACE_JS + TEST_UTIL_JS_CONTENT ) );
   }
 
   // NOTE: even if the element is rendered a click may not be registered if it is not in view
   public void click( String xpath ) {
     checkElementCount( xpath );
+    // TODO [tb] : use TestUtil.js also for mouse events?
     selenium.mouseOver( xpath );
     selenium.mouseDown( xpath );
     // The element may disappear on mouse down, e.g. if it is in a pop-up
@@ -125,7 +126,7 @@ public class RAPUtil {
                      + "org.eclipse.rwt.test.fixture.TestUtil.press( widget,\""
                      + key
                      + "\" );";
-    selenium.runScript( script );
+    selenium.runScript( wrapJS( script ) );
   }
 
 
@@ -189,6 +190,10 @@ public class RAPUtil {
 
   private String getSelectedGridItemId( String gridPath ) {
     return selenium.getAttribute( gridPath +  byAria( "row", "selected", true ) + "@id" );
+  }
+
+  private static String wrapJS( String js ) {
+    return "(function(){\n " + js + "\n }());";
   }
 
   private static String readTestUtil() {
