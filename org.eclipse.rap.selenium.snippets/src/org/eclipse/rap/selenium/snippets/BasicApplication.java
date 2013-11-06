@@ -14,6 +14,7 @@ public class BasicApplication implements ApplicationConfiguration {
         Map<String, String> properties = new HashMap<String, String>();
         application.addEntryPoint("/snippet1", Snippet1.class, properties );
         application.addEntryPoint("/snippet2", Snippet2.class, properties );
+        application.addEntryPoint("/passwortFeld", PasswortFeld.class, properties );
     }
 
 }
