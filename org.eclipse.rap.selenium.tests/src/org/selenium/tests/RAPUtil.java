@@ -6,7 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.eclipse.rap.rwt.jstest.TestContribution;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -127,6 +129,13 @@ public class RAPUtil {
                      + key
                      + "\" );";
     selenium.runScript( wrapJS( script ) );
+  }
+
+  public void input( String xpath, String text ) {
+    checkElementCount( xpath );
+    WebElement inputElement = driver.findElement( By.xpath( xpath ) );
+    inputElement.click();
+    inputElement.sendKeys( text );
   }
 
 

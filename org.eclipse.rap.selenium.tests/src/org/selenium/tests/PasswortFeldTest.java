@@ -26,14 +26,14 @@ public class PasswortFeldTest {
 		RAPUtil rap = new RAPUtil(driver, selenium);
 		rap.loadApplication("http://localhost:9999/passwortFeld");
 
-		rap.press("//div[2]/div[2]/input", "abc");
-		rap.press("//div[2]/div[3]/input", "def");
-		rap.press("//div[2]/div[4]/input", "ghi");
+		rap.input("//div[2]/div[2]/input", "abc");
+		rap.input("//div[2]/div[3]/input", "def");
+		rap.input("//div[2]/div[4]/input", "ghi");
 
 		rap.click("//*[contains(text(),'Show Textfield Content')]");
 
-		// 2. Button ist aus irgendwelchen Gründen invisible, vorerst per Hand
-		// betätigen
+		// 2. Button ist aus irgendwelchen Grï¿½nden invisible, vorerst per Hand
+		// betï¿½tigen
 
 		// selenium.click("//*[contains(text(),'Show Textbinding Content')]");
 
