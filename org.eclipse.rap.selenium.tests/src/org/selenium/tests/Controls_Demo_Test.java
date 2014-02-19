@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.selenium.tests.RAPUtil.byAria;
 import static org.selenium.tests.RAPUtil.byContent;
 import static org.selenium.tests.RAPUtil.byTestId;
+import static org.selenium.tests.RAPUtil.first;
 
 import org.junit.After;
 import org.junit.Before;
@@ -89,7 +90,7 @@ public class Controls_Demo_Test {
     rap.click( rap.findGridItem( byTestId( "navtree" ), "Text"  ) );
     rap.waitForAppear( byContent( "Text:" ) );
     rap.click( byAria( "checkbox" ) + byContent( "VerifyListener (numbers only)" ) );
-    selenium.typeKeys( byAria( "textbox" ) + "[1]", "hello123world" );
+    rap.input( first( byAria( "textbox" ) ), "hello123world" );
     rap.click( byAria( "button" ) + byContent( "getText" ) );
     rap.waitForAppear( byContent( "123" ) );
     assertEquals( 1, selenium.getXpathCount( byContent( "123" ) ).intValue() );

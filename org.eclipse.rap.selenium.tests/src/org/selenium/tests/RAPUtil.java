@@ -48,6 +48,12 @@ public class RAPUtil {
     return "//*[@role='" + role + "' and @aria-label='" + label + "']";
   }
 
+  public static String first( String xpath ) {
+    // regarding syntax see
+    // http://blog.neustar.biz/web-performance/effectively-using-seleniums-getxpathcount-function/
+    return "(" + xpath + ")[1]";
+  }
+
   public static String byAria( String role, String state, boolean value ) {
     return "//*[@role='" + role + "' and @aria-" + state + "='" + value + "']";
   }
@@ -88,6 +94,9 @@ public class RAPUtil {
     selenium.runScript( wrapJS( script ) );
     // Required for emulating key events on internal RAP event handler level
     selenium.runScript( wrapJS( NAMESPACE_JS + TEST_UTIL_JS_CONTENT ) );
+    // Force empty grid cells to be renderd in DOM (hack)
+    selenium.runScript(   "rwt.qx.Class.__initializeClass( rwt.widgets.GridItem );"
+                        + "rwt.widgets.GridItem.prototype.hasText = function(){ return true };" );
   }
 
   // NOTE: even if the element is rendered a click may not be registered if it is not in view
