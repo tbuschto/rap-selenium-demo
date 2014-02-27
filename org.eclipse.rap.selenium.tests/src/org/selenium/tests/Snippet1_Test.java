@@ -2,7 +2,7 @@ package org.selenium.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.selenium.tests.RAPUtil.byAria;
-import static org.selenium.tests.RAPUtil.byContent;
+import static org.selenium.tests.RAPUtil.byText;
 
 import org.junit.After;
 import org.junit.Before;
@@ -40,8 +40,8 @@ public class Snippet1_Test {
 
   @Test
   public void testClickButtons_byContent() throws Exception {
-    rap.click( byAria( "button" ) + byContent( "World1" ) );
-    assertEquals( 1, selenium.getXpathCount( byAria( "checkbox" ) + byContent( "Hello" ) ) );
+    rap.click( byAria( "button" ) + byText( "World1" ) );
+    assertEquals( 1, selenium.getXpathCount( byAria( "checkbox" ) + byText( "Hello" ) ) );
   }
 
 
