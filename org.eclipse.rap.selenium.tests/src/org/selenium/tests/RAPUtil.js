@@ -53,7 +53,26 @@ RAPUtil = {
                              0, // buttonArg
                              null ); // relatedTargetArg
      }
-     xpathToElement( element ).dispatchEvent( event );
+     this.xpathToElement( element ).dispatchEvent( event );
+  },
+
+  xpathToElement : function( xpath ) {
+    if( typeof xpath === "string" ) {
+      return document.evaluate( xpath, document, null, XPathResult.ANY_TYPE, null ).iterateNext();
+    } else {
+      return xpath;
+    }
+  },
+
+  getElementsByXPath : function( xpath ) {
+    var set = document.evaluate( xpath, document, null, XPathResult.ANY_TYPE, null );
+    var result = [];
+    var element = set.iterateNext();
+    while( element ) {
+      result.push( element );
+      element = set.iterateNext();
+    }
+    return result;
   }
 
 };
@@ -66,12 +85,5 @@ rap.on( "render", function() {
   RAPUtil.busy = false;
 } );
 
-function xpathToElement( xpath ) {
-  if( typeof xpath === "string" ) {
-    return document.evaluate( xpath, document, null, XPathResult.ANY_TYPE, null ).iterateNext();
-  } else {
-    return xpath;
-  }
-}
 
 }());

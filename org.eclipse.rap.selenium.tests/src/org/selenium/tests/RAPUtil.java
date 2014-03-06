@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import org.eclipse.rap.rwt.jstest.TestContribution;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -17,7 +18,6 @@ import com.thoughtworks.selenium.Selenium;
 
 
 public class RAPUtil {
-
 
   private static final String TEST_UTIL_JS = "/org/eclipse/rwt/test/fixture/TestUtil.js";
   private static final String RAP_UTIL_JS = "/org/selenium/tests/RAPUtil.js";
@@ -38,15 +38,35 @@ public class RAPUtil {
     RAP_UTIL_JS_CONTENT = readRAPUtil();
   }
 
-  public static String first( String xpath ) {
+  public static String firstResult( String xpath ) {
     // regarding syntax see
     // http://blog.neustar.biz/web-performance/effectively-using-seleniums-getxpathcount-function/
     // There may be a bug where this fails in some combinations with FF, eg (...)[1]//*[...]
     return "(" + xpath + ")[1]";
   }
 
+  public static String atPosition( int index ) {
+    return "[" + index + "]";
+  }
+
+  public static String atFirstPosition() {
+    return atPosition( 0 );
+  }
+
+  public static String atLastPosition( ) {
+    return "[last()]";
+  }
+
+  public static String atLastPosition( int i ) {
+    return "[last()" + i + "]";
+  }
+
   public static String containing( String xpath ) {
-    return "[count(" + xpath + ")>0]"; // TODO : exclude self (//* is "descendant-or-self )
+    String relativePath = xpath;
+    if( relativePath.startsWith( "//*" ) ) {
+      relativePath = relativePath.substring( 3 ); // find a (much) better solution
+    }
+    return "[count(descendant::*" + relativePath + ")>0]";
   }
 
   public static String byTestId( String testId ) {
@@ -62,19 +82,31 @@ public class RAPUtil {
   }
 
   public static String byAria( String role ) {
-    return "//*[@role='" + role + "']";
+    return "//*[not(@aria-hidden='true') and @role='" + role + "']";
   }
 
   public static String byAria( String role, String label ) {
-    return "//*[@role='" + role + "' and @aria-label='" + label + "']";
+    return "//*[@not(@aria-hidden='true') and role='" + role + "' and @aria-label='" + label + "']";
   }
 
   public static String byAria( String role, String state, boolean value ) {
-    return "//*[@role='" + role + "' and @aria-" + state + "='" + value + "']";
+    return "//*[not(@aria-hidden='true') and @role='" + role + "' and @aria-" + state + "='" + value + "']";
   }
 
   public static String byAria( String role, String property, String value ) {
-    return "//*[@role='" + role + "' and @aria-" + property + "='" + value + "']";
+    return "//*[not(@aria-hidden='true') and @role='" + role + "' and @aria-" + property + "='" + value + "']";
+  }
+
+  public static String row() {
+    return byAria( "row" ) + containing( byAria( "gridcell" ) ); // excludes header
+  }
+
+  public static String row( String cellContent ) {
+    return byAria( "row" ) + containing( cell( cellContent ) );
+  }
+
+  public static String cell( String content ) {
+    return byAria( "gridcell" ) + "[text()='" + content + "']";
   }
 
   public void loadApplication( String url ) {
@@ -93,6 +125,152 @@ public class RAPUtil {
     return driver.findElement( By.xpath( xpath ) ).getAttribute( attribute );
   }
 
+  public int getGridLineOffset( String grid ) {
+    checkElementCount( grid );
+    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+      return 0;
+    } else {
+      // this mirrors the grid implementation (Grid._updateTopItemIndex)
+      int offset = Integer.parseInt( getAttribute( scrollbar, "aria-valuenow" ) ) - 1;
+      return offset < 0 ? 0 : ( offset / getGridLineHeight( grid ) ) + 1;
+    }
+  }
+
+  public int getMaxGridLineOffset( String grid ) {
+    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+      return 0;
+    } else {
+      int max = Integer.parseInt( getAttribute( scrollbar, "aria-valuemax" ) );
+      return max / getGridLineHeight( grid );
+    }
+  }
+
+  public int getGridLineCount( String grid ) {
+    checkElementCount( grid );
+    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+      return getVisibleGridLines( grid );
+    } else {
+      int scrollHeight =   Integer.parseInt( getAttribute( scrollbar, "aria-valuemax" ) )
+                         + selenium.getElementHeight( scrollbar ).intValue();
+      // NOTE: for nebula grid footer would have to be subtracted
+      return ( scrollHeight / getGridLineHeight( grid ) );
+    }
+
+  }
+
+  public int getVisibleGridLines( String grid ) {
+    return selenium.getXpathCount( grid + row() ).intValue();
+  }
+
+  /**
+   * The first line has index zero.
+   * Returns path to row rendering the given line or null if it doesn't exist
+   */
+  public String scrollGridLineIntoView( String grid, int lineIndex ) {
+    checkElementCount( grid );
+    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+      return getGridRowAtPosition( grid, lineIndex );
+    } else {
+      int offset = getGridLineOffset( grid );
+      int rowCount = getVisibleGridLines( grid );
+      int maxOffset = getMaxGridLineOffset( grid );
+      if( lineIndex >= offset && lineIndex < offset + rowCount ) {
+        return getGridRowAtLine( grid, lineIndex );
+      }
+      // we target the previous line because scrollWheel is not precise (scrolling 2 lines for a
+      // grid) AND because the pixel offset has to be exactly 0 for line 0 to show
+      int desiredOffset = Math.min( lineIndex - 1, maxOffset );
+      int lineDelta = desiredOffset - offset;
+      String clientarea = byId( getAttribute( scrollbar, "aria-controls" ) );
+      int delta = ( int )Math.floor( -1 * lineDelta / 2F );
+      scrollWheel( clientarea, delta );
+      return getGridRowAtLine( grid, lineIndex );
+    }
+  }
+
+  /**
+   * Returns the path to the row with the given lineIndex. The line has to be visible
+   * on screen.
+   * @param grid
+   * @param rowIndex
+   * @return
+   */
+  public String getGridRowAtLine( String grid, int lineIndex ) {
+    return getGridRowAtPosition( grid, lineIndex - getGridLineOffset( grid ) );
+  }
+
+  /**
+   * Returns the path to the row with the given position relative to the first visible row,
+   * or null if the index is out of bounds.
+   *
+   * @param grid
+   * @param position
+   * @return
+   */
+  public String getGridRowAtPosition( String grid, int position ) {
+    checkElementCount( grid );
+    waitForItems( grid );
+    String rowId = getAttribute( grid, "aria-flowto" );
+    for( int i = 0; i < position && rowId != null; i++ ) {
+      rowId = getAttribute( byId( rowId ), "aria-flowto" );
+    }
+    return rowId != null ? byId( rowId ) : null;
+  }
+
+  public void scrollGridItemIntoView( String grid, String relativePath ) {
+    String needle = grid + relativePath;
+    if( isElementAvailable( needle ) ) {
+      return;
+    }
+    int startOffset = getGridLineOffset( grid );
+    int max = getMaxGridLineOffset( grid );
+    while( !isElementAvailable( needle ) && getGridLineOffset( grid ) < max ) {
+      scrollGridPageDown( grid );
+      waitForItems( grid );
+    }
+    if( isElementAvailable( needle ) ) {
+      return;
+    }
+    scrollGridLineIntoView( grid, 0 );
+    waitForItems( grid );
+    while( !isElementAvailable( needle ) && getGridLineOffset( grid ) < startOffset ) {
+      scrollGridPageDown( grid );
+      waitForItems( grid );
+    }
+    if( !isElementAvailable( needle ) ) {
+      throw new IllegalStateException( relativePath + " not found in grid " + grid );
+    }
+  }
+
+  public void scrollGridPageDown( String grid ) {
+    scrollGridByPage( grid, -1 );
+  }
+
+  public void scrollGridPageUp( String grid ) {
+    scrollGridByPage( grid, 1 );
+  }
+
+  private void scrollGridByPage( String grid, int direction ) {
+    checkElementCount( grid );
+    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+      return;
+    } else {
+      String clientarea = byId( getAttribute( scrollbar, "aria-controls" ) );
+      int rows = getVisibleGridLines( grid );
+      int delta = ( int )Math.floor( rows / 2F ) * direction; // one wheel "click" scrolls by 2 items
+      scrollWheel( clientarea, delta );
+    }
+  }
+
+  public int getGridLineHeight( String grid ) {
+    return selenium.getElementHeight( grid + row() ).intValue();
+  }
+
   // NOTE: even if the element is rendered a click may not be registered if it is not in view
   public void click( String xpath ) {
     checkElementCount( xpath );
@@ -109,6 +287,24 @@ public class RAPUtil {
     }
   }
 
+  public void scrollGridToTop( String gridPath, int itemNr ) {
+    String scrollbar = gridPath + byAria( "scrollbar", "orientation", "vertical" );
+    String clientarea = byId( getAttribute( scrollbar, "aria-controls" ) );
+    int currentOffset = Integer.parseInt( getAttribute( scrollbar, "aria-valuenow" ) );
+    int max = Integer.parseInt( getAttribute( scrollbar, "aria-valuemax" ) );
+//    for (int i = 1; i <= 60; i++) {
+//      rap.scrollWheel( clientarea, -1 );
+//    }
+  }
+
+  /**
+   * Fires mousewheel events that may be processed by javascript. It does not cause
+   * natively scrollable elements to scroll, but effects Tree, Table, Nebula Grid, Scale, Spinner,
+   * Slider, DateTime and Combo.
+   *
+   * @param xpath
+   * @param delta
+   */
   public void scrollWheel( String xpath, int delta ) {
     checkElementCount( xpath );
     selenium.runScript( "RAPUtil.scrollWheel( \"" + xpath + "\", " + delta + " );" );
@@ -148,26 +344,54 @@ public class RAPUtil {
     inputElement.sendKeys( text );
   }
 
+  /**
+   * Waits for all visible items of a VIRTUAL Tree, Table or NebulaGrid to cache.
+   * @param gridPath
+   */
+  public void waitForItems( String gridPath ) {
+    checkElementCount( gridPath );
+    waitForDisappear( gridPath + byAria( "row", "busy", true ) );
+    checkElementCount( gridPath );
+  }
+
   public void waitForAppear( final String locator ) {
-    new WebDriverWait( driver, 10 ).until( new ExpectedCondition<Boolean>() {
-      public Boolean apply( WebDriver driverObject ) {
-        return isElementAvailable( locator );
+    try {
+      if( !isElementAvailable( locator ) ) {
+        new WebDriverWait( driver, 10 ).until( new ExpectedCondition<Boolean>() {
+          public Boolean apply( WebDriver driverObject ) {
+            return isElementAvailable( locator );
+          }
+        } );
       }
-    } );
+    } catch( TimeoutException e ) {
+      throw new IllegalStateException( "Element \"" + locator + "\" still not present after 10s" );
+    }
   }
 
   public void waitForDisappear( final String locator ) {
-    new WebDriverWait( driver, 10 ).until( new ExpectedCondition<Boolean>() {
-      public Boolean apply( WebDriver driverObject ) {
-        return !isElementAvailable( locator );
+    try {
+      if( isElementAvailable( locator ) ) {
+        new WebDriverWait( driver, 10 ).until( new ExpectedCondition<Boolean>() {
+          public Boolean apply( WebDriver driverObject ) {
+            return !isElementAvailable( locator );
+          }
+        } );
       }
-    } );
+    } catch( TimeoutException e ) {
+      throw new IllegalStateException( "Element \"" + locator + "\" still present after 10s" );
+    }
   }
 
+  /**
+   * Waits until a pending request has returned and processed.
+   * Will not work reliably for ScrollBar Selection (scroll) events, Modify/Verify events
+   * of Text, and Selection events of Spinner. For these an additional ~1000ms should must
+   * waited before calling this.
+   */
   public void waitForServer() {
     // There may be a short delay between the user input and the widget sending the request.
     // In most cases the request is hardcoded to 60ms, though the JS timer isn't very precise.
-    // In a few cases like Modify event the delay is much longer and this method won't suffice
+    // In a few cases like Modify event the delay is much longer and this method won't suffice.
     try {
       Thread.sleep( 120 );
     } catch( InterruptedException e ) {
@@ -303,5 +527,6 @@ public class RAPUtil {
     }
     return builder.toString();
   }
+
 
 }

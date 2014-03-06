@@ -3,9 +3,10 @@ package org.selenium.tests;
 import static org.junit.Assert.assertEquals;
 import static org.selenium.tests.RAPUtil.byAria;
 import static org.selenium.tests.RAPUtil.byId;
+import static org.selenium.tests.RAPUtil.byTestId;
 import static org.selenium.tests.RAPUtil.byText;
 import static org.selenium.tests.RAPUtil.containing;
-import static org.selenium.tests.RAPUtil.first;
+import static org.selenium.tests.RAPUtil.firstResult;
 
 import org.junit.After;
 import org.junit.Before;
@@ -51,15 +52,15 @@ public class Controls_Demo_Test {
     selenium.stop();
   }
 
-//  @Test
-//  public void testClickButtons_byTestId() throws Exception {
-//    rap.click( byTestId( "pushButton" ) );
-//    rap.click( byTestId( "toggleButton" ) );
-//    rap.click( byTestId( "checkButton1" ) );
-//    rap.click( byTestId( "checkButton2" ) );
-//    rap.click( byTestId( "checkButton1" ) );
-//    rap.click( byTestId( "toggleButton" ) );
-//  }
+  @Test
+  public void testClickButtons_byTestId() throws Exception {
+    rap.click( byTestId( "pushButton" ) );
+    rap.click( byTestId( "toggleButton" ) );
+    rap.click( byTestId( "checkButton1" ) );
+    rap.click( byTestId( "checkButton2" ) );
+    rap.click( byTestId( "checkButton1" ) );
+    rap.click( byTestId( "toggleButton" ) );
+  }
 
   @Test
   public void testClickButtons_byContent() throws Exception {
@@ -71,38 +72,23 @@ public class Controls_Demo_Test {
     rap.click( byAria( "button" ) + byText( "Toggle" ) );
   }
 
-//  @Test
-//  public void testOpenCloseDialog() throws Exception {
-//    rap.click( byTestId( "defaultButton" ) );
-//    String okButtonPath = byAria( "dialog", "Information" ) + byText( "OK" );
-//    rap.waitForAppear( okButtonPath );
-//    rap.click( okButtonPath );
-//    rap.waitForDisappear( okButtonPath );
-//    rap.click( byTestId( "pushButton" ) );
-//  }
-
   @Test
-  public void testNavigateTree() throws Exception {
-    String navId = rap.getId( first( byAria( "treegrid" ) ) );
-    rap.click( rap.findGridItem( byId( navId ), "Combo"  ) );
-    rap.click( rap.findGridItem( byId( navId ), "NLS" ) );
-    rap.click( byAria( "radio" ) + byText( "English" ) );
-    rap.click( byAria( "radio" ) + byText( "German" ) );
-    rap.click( byAria( "radio" ) + byText( "Spanish" ) );
-    rap.click( rap.findGridItem( byId( navId ), "Table" ) );
-    rap.click( byAria( "button" ) + byText( "Foreground" ) );
-    rap.click( byAria( "button" ) + byText( "Foreground" ) );
-    rap.click( byAria( "button" ) + byText( "Foreground" ) );
-    rap.click( rap.findGridItem( byId( navId ), "Button"  ) );
+  public void testOpenCloseDialog() throws Exception {
+    rap.click( byTestId( "defaultButton" ) );
+    String okButtonPath = byAria( "dialog", "Information" ) + byText( "OK" );
+    rap.waitForAppear( okButtonPath );
+    rap.click( okButtonPath );
+    rap.waitForDisappear( okButtonPath );
+    rap.click( byTestId( "pushButton" ) );
   }
 
   @Test
   public void testInsertText() throws Exception {
-    String navId = rap.getId( first( byAria( "treegrid" ) ) );
+    String navId = rap.getId( firstResult( byAria( "treegrid" ) ) );
     rap.click( rap.findGridItem( byId( navId ), "Text"  ) );
     rap.waitForAppear( byText( "Text:" ) );
     rap.click( byAria( "checkbox" ) + byText( "VerifyListener (numbers only)" ) );
-    rap.input( first( byAria( "textbox" ) ), "hello123world" );
+    rap.input( firstResult( byAria( "textbox" ) ), "hello123world" );
     rap.click( byAria( "button" ) + byText( "getText" ) );
     rap.waitForAppear( byText( "123" ) );
     assertEquals( 1, selenium.getXpathCount( byText( "123" ) ).intValue() );
@@ -110,7 +96,7 @@ public class Controls_Demo_Test {
 
   @Test
   public void testTableWithFlowTo() throws Exception {
-    String navId = rap.getId( first( byAria( "treegrid" ) ) );
+    String navId = rap.getId( firstResult( byAria( "treegrid" ) ) );
     rap.click( rap.findGridItem( byId( navId ), "TableViewer" ) );
     rap.waitForAppear( byAria( "checkbox" ) + byText( "VIRTUAL" ) );
     rap.click( byAria( "checkbox" ) + byText( "VIRTUAL" ) );
