@@ -8,10 +8,11 @@ import static org.selenium.tests.RAPUtil.atLastPosition;
 import static org.selenium.tests.RAPUtil.byAria;
 import static org.selenium.tests.RAPUtil.byId;
 import static org.selenium.tests.RAPUtil.byText;
-import static org.selenium.tests.RAPUtil.cell;
+import static org.selenium.tests.RAPUtil.cellWithText;
 import static org.selenium.tests.RAPUtil.containing;
 import static org.selenium.tests.RAPUtil.firstResult;
 import static org.selenium.tests.RAPUtil.row;
+import static org.selenium.tests.RAPUtil.rowWithCellText;
 
 import org.junit.After;
 import org.junit.Before;
@@ -116,24 +117,20 @@ public class Grid_Test {
     String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "First Name" ) ) ) );
     rap.waitForAppear( grid );
     assertEquals( 0, rap.getGridLineOffset( grid ) );
-    assertEquals( rowById( grid, "von Neumann" ), rap.scrollGridLineIntoView( grid, 1 ) );
+    assertEquals( rowId( grid, "von Neumann" ), rap.scrollGridLineIntoView( grid, 1 ) );
     assertEquals( 0, rap.getGridLineOffset( grid ) ); // did nothing
     selenium.click( byText( "Add 100 Items" ) );
     rap.waitForServer();
     assertNull( rap.scrollGridLineIntoView( grid, 9000 ) );
-    assertTrue( rap.isElementAvailable( grid + RAPUtil.cell( "person 110" ) ) );
+    assertTrue( rap.isElementAvailable( grid + RAPUtil.cellWithText( "person 110" ) ) );
     rap.scrollGridPageDown( grid ); // one more (empty) line that can be scrolled, can be trouble
     String ada = rap.scrollGridLineIntoView( grid, 0 );
-    assertEquals( rowById( grid, "Ada" ), ada );
+    assertEquals( rowId( grid, "Ada" ), ada );
     assertEquals( 0, rap.getGridLineOffset( grid ) );
     String person76 = rap.scrollGridLineIntoView( grid, 77 );
-    assertEquals( rowById( grid, "person 76" ), person76 );
+    assertEquals( rowId( grid, "person 76" ), person76 );
     String person50 = rap.scrollGridLineIntoView( grid, 50 );
-    assertEquals( rowById( grid, "person 49" ), person50 );
-  }
-
-  private String rowById( String grid, String text ) {
-    return byId( rap.getId( grid + RAPUtil.row( text ) ) );
+    assertEquals( rowId( grid, "person 49" ), person50 );
   }
 
   @Test
@@ -144,18 +141,67 @@ public class Grid_Test {
     selenium.click( byText( "Add 100 Items" ) );
     rap.waitForServer();
     assertEquals( 0, rap.getGridLineOffset( grid ) );
-    rap.scrollGridItemIntoView( grid, cell( "Ada" ) );
+    rap.scrollGridItemIntoView( grid, cellWithText( "Ada" ) );
     assertEquals( 0, rap.getGridLineOffset( grid ) ); // did nothing
-    rap.scrollGridItemIntoView( grid, cell( "person 110" ) );
-    rap.click( grid + cell( "person 110" ) );
-    rap.scrollGridItemIntoView( grid, cell( "Ada" ) );
-    rap.click( grid + cell( "Ada" ) );
-    rap.scrollGridItemIntoView( grid, cell( "person 76" ) );
-    rap.click( grid + cell( "person 76" ) );
-    rap.scrollGridItemIntoView( grid, cell( "person 49" ) );
-    rap.click( grid + cell( "person 49" ) );
+    rap.scrollGridItemIntoView( grid, cellWithText( "person 110" ) );
+    rap.click( grid + cellWithText( "person 110" ) );
+    rap.scrollGridItemIntoView( grid, cellWithText( "Ada" ) );
+    rap.click( grid + cellWithText( "Ada" ) );
+    rap.scrollGridItemIntoView( grid, cellWithText( "person 76" ) );
+    rap.click( grid + cellWithText( "person 76" ) );
+    rap.scrollGridItemIntoView( grid, cellWithText( "person 49" ) );
+    rap.click( grid + cellWithText( "person 49" ) );
     try {
-      rap.scrollGridItemIntoView( grid, cell( "person foo" ) );
+      rap.scrollGridItemIntoView( grid, cellWithText( "person foo" ) );
+      fail();
+    } catch( IllegalStateException e ) {
+      // expected
+    }
+  }
+
+  @Test
+  public void testGetRowByCell() throws Exception {
+    goToVirtualTable();
+    String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "First Name" ) ) ) );
+    rap.waitForAppear( grid );
+    assertEquals( rowId( grid, "Ada" ), rap.getGridRowByCell( grid, "Last Name", "Lovelace" ) );
+    assertEquals( rowId( grid, "Turing" ), rap.getGridRowByCell( grid, "Married", "no" ) );
+    assertNull( rap.getGridRowByCell( grid, "First Name", "Lovelace" ) ); // does not exist
+    try {
+      rap.getGridRowByCell( grid, "First", "Lovelace" ); // invalid column
+      fail();
+    } catch( IllegalStateException e ) {
+      // expected
+    }
+    try {
+      rap.getGridRowByCell( grid, "First Name", "John" ); // multiple results
+      fail();
+    } catch( IllegalStateException e ) {
+      // expected
+    }
+  }
+
+  @Test
+  public void testGetCellContent() throws Exception {
+    goToVirtualTable();
+    String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "First Name" ) ) ) );
+    rap.waitForAppear( grid );
+    assertEquals( "Ada", rap.getGridCellContent( grid, rowWithCellText( "Lovelace" ), "First Name" ) );
+    assertEquals( "1903", rap.getGridCellContent( grid, rap.getGridRowAtLine( grid, 1 ), "Born" ) );
+    try {
+      rap.getGridCellContent( grid, rap.getGridRowAtLine( grid, 1 ), "Bornx" );
+      fail();
+    } catch( IllegalStateException e ) {
+      // expected
+    }
+    try {
+      rap.getGridCellContent( grid, rowWithCellText( "foo" ), "Born" );
+      fail();
+    } catch( IllegalStateException e ) {
+      // expected
+    }
+    try {
+      rap.getGridCellContent( grid, rowWithCellText( "John" ), "Born" );
       fail();
     } catch( IllegalStateException e ) {
       // expected
@@ -188,6 +234,8 @@ public class Grid_Test {
 
   }
 
-
+  private String rowId( String grid, String text ) {
+    return byId( rap.getId( grid + RAPUtil.rowWithCellText( text ) ) );
+  }
 
 }

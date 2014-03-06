@@ -85,8 +85,8 @@ public class RAPUtil {
     return "//*[not(@aria-hidden='true') and @role='" + role + "']";
   }
 
-  public static String byAria( String role, String label ) {
-    return "//*[@not(@aria-hidden='true') and role='" + role + "' and @aria-label='" + label + "']";
+  public static String byAria( String role, String text ) {
+    return byAria( role ) + containing( byText( text ) );
   }
 
   public static String byAria( String role, String state, boolean value ) {
@@ -101,12 +101,24 @@ public class RAPUtil {
     return byAria( "row" ) + containing( byAria( "gridcell" ) ); // excludes header
   }
 
-  public static String row( String cellContent ) {
-    return byAria( "row" ) + containing( cell( cellContent ) );
+  public static String rowWithCellText( String cellContent ) {
+    return byAria( "row" ) + containing( cellWithText( cellContent ) );
   }
 
-  public static String cell( String content ) {
+  public static String rowWithCellText( String columnId, String cellContent ) {
+    return byAria( "row" ) + containing( cellWithText( columnId, cellContent ) );
+  }
+
+  public static String cellWithText( String content ) {
     return byAria( "gridcell" ) + "[text()='" + content + "']";
+  }
+
+  public static String cellWithText( String columnId, String content ) {
+    return byAria( "gridcell" ) + "[text()='" + content + "' and @aria-describedby='" + columnId + "']";
+  }
+
+  public static String cellDescribedBy( String columnId ) {
+    return byAria( "gridcell" ) + "[@aria-describedby='" + columnId + "']";
   }
 
   public void loadApplication( String url ) {
@@ -117,6 +129,7 @@ public class RAPUtil {
   }
 
   public String getId( String xpath ) {
+    checkElementCount( xpath );
     return getAttribute( xpath, "id" );
   }
 
@@ -221,6 +234,42 @@ public class RAPUtil {
     return rowId != null ? byId( rowId ) : null;
   }
 
+  /**
+   * Returns the path to the row with the described cell. Returns null if no such cell is visible on
+   * screen. Throws {@link IllegalStateException} if the column does not exist or there
+   * are multiple rows with that cell.
+   */
+  public String getGridRowByCell( String grid, String columnName, String cellContent ) {
+    String columnId = getColumnId( grid, columnName );
+    String row = grid + rowWithCellText( columnId, cellContent );
+    int count = selenium.getXpathCount( row ).intValue();
+    if( count == 1 ) {
+      return byId( getId( row ) );
+    } else if( count == 0 ) {
+      return null;
+    } else {
+      throw new IllegalStateException( "There are multiple rows matching " + row );
+    }
+  }
+
+  public String getGridCellContent( String grid, String rowPath, String columnName ) {
+    checkElementCount( grid + rowPath );
+    String columnId = getColumnId( grid, columnName );
+    String cell = grid + rowPath + cellDescribedBy( columnId );
+    checkElementCount( cell );
+    return selenium.getText( cell );
+  }
+
+  public String getColumnId( String grid, String columnName ) {
+    return getId( grid + byAria( "columnheader", columnName ) );
+  }
+
+
+  public void scrollGridItemIntoView( String grid, String columnName, String cellContent ) {
+    String columnId = getColumnId( grid, columnName );
+    scrollGridItemIntoView( grid, rowWithCellText( columnId, cellContent ) );
+  }
+
   public void scrollGridItemIntoView( String grid, String relativePath ) {
     String needle = grid + relativePath;
     if( isElementAvailable( needle ) ) {
@@ -285,16 +334,6 @@ public class RAPUtil {
     } catch( Exception exception ) {
       // ignored
     }
-  }
-
-  public void scrollGridToTop( String gridPath, int itemNr ) {
-    String scrollbar = gridPath + byAria( "scrollbar", "orientation", "vertical" );
-    String clientarea = byId( getAttribute( scrollbar, "aria-controls" ) );
-    int currentOffset = Integer.parseInt( getAttribute( scrollbar, "aria-valuenow" ) );
-    int max = Integer.parseInt( getAttribute( scrollbar, "aria-valuemax" ) );
-//    for (int i = 1; i <= 60; i++) {
-//      rap.scrollWheel( clientarea, -1 );
-//    }
   }
 
   /**
@@ -527,6 +566,5 @@ public class RAPUtil {
     }
     return builder.toString();
   }
-
 
 }

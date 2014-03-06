@@ -75,7 +75,7 @@ public class Controls_Demo_Test {
   @Test
   public void testOpenCloseDialog() throws Exception {
     rap.click( byTestId( "defaultButton" ) );
-    String okButtonPath = byAria( "dialog", "Information" ) + byText( "OK" );
+    String okButtonPath = byAria( "dialog", "label", "Information" ) + byText( "OK" );
     rap.waitForAppear( okButtonPath );
     rap.click( okButtonPath );
     rap.waitForDisappear( okButtonPath );
