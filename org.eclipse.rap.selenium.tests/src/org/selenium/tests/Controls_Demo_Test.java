@@ -3,7 +3,6 @@ package org.selenium.tests;
 import static org.junit.Assert.assertEquals;
 import static org.selenium.tests.RAPUtil.byAria;
 import static org.selenium.tests.RAPUtil.byId;
-import static org.selenium.tests.RAPUtil.byTestId;
 import static org.selenium.tests.RAPUtil.byText;
 import static org.selenium.tests.RAPUtil.containing;
 import static org.selenium.tests.RAPUtil.firstResult;
@@ -52,15 +51,15 @@ public class Controls_Demo_Test {
     selenium.stop();
   }
 
-  @Test
-  public void testClickButtons_byTestId() throws Exception {
-    rap.click( byTestId( "pushButton" ) );
-    rap.click( byTestId( "toggleButton" ) );
-    rap.click( byTestId( "checkButton1" ) );
-    rap.click( byTestId( "checkButton2" ) );
-    rap.click( byTestId( "checkButton1" ) );
-    rap.click( byTestId( "toggleButton" ) );
-  }
+//  @Test
+//  public void testClickButtons_byTestId() throws Exception {
+//    rap.click( byTestId( "pushButton" ) );
+//    rap.click( byTestId( "toggleButton" ) );
+//    rap.click( byTestId( "checkButton1" ) );
+//    rap.click( byTestId( "checkButton2" ) );
+//    rap.click( byTestId( "checkButton1" ) );
+//    rap.click( byTestId( "toggleButton" ) );
+//  }
 
   @Test
   public void testClickButtons_byContent() throws Exception {
@@ -72,15 +71,15 @@ public class Controls_Demo_Test {
     rap.click( byAria( "button" ) + byText( "Toggle" ) );
   }
 
-  @Test
-  public void testOpenCloseDialog() throws Exception {
-    rap.click( byTestId( "defaultButton" ) );
-    String okButtonPath = byAria( "dialog", "label", "Information" ) + byText( "OK" );
-    rap.waitForAppear( okButtonPath );
-    rap.click( okButtonPath );
-    rap.waitForDisappear( okButtonPath );
-    rap.click( byTestId( "pushButton" ) );
-  }
+//  @Test
+//  public void testOpenCloseDialog() throws Exception {
+//    rap.click( byTestId( "defaultButton" ) );
+//    String okButtonPath = byAria( "dialog", "label", "Information" ) + byText( "OK" );
+//    rap.waitForAppear( okButtonPath );
+//    rap.click( okButtonPath );
+//    rap.waitForDisappear( okButtonPath );
+//    rap.click( byTestId( "pushButton" ) );
+//  }
 
   @Test
   public void testInsertText() throws Exception {

@@ -69,6 +69,10 @@ public class RAPUtil {
     return "[count(descendant::*" + relativePath + ")>0]";
   }
 
+  public static String nextSibling() {
+    return "/following-sibling::*" ;
+  }
+
   public static String byTestId( String testId ) {
     return "//*[@testId='" + testId + "']";
   }
@@ -79,6 +83,14 @@ public class RAPUtil {
 
   public static String byText( String content ) {
     return "//*[not(@aria-hidden='true') and text()='" + content + "']";
+  }
+
+  public static String label( String content ) {
+    return byText( content ) + "/parent::*[not(@role)]"; // labels have no role
+  }
+
+  public static String button( String content ) {
+    return byText( content ) + "/parent::*[not(@aria-hidden='true') and @role='button']";
   }
 
   public static String byAria( String role ) {
@@ -175,7 +187,9 @@ public class RAPUtil {
   }
 
   public int getVisibleGridLines( String grid ) {
-    return selenium.getXpathCount( grid + row() ).intValue();
+    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    String clientarea = getAriaControls( scrollbar );
+    return selenium.getXpathCount( clientarea + row() ).intValue();
   }
 
   /**
@@ -198,7 +212,7 @@ public class RAPUtil {
       // grid) AND because the pixel offset has to be exactly 0 for line 0 to show
       int desiredOffset = Math.min( lineIndex - 1, maxOffset );
       int lineDelta = desiredOffset - offset;
-      String clientarea = byId( getAttribute( scrollbar, "aria-controls" ) );
+      String clientarea = getAriaControls( scrollbar );
       int delta = ( int )Math.floor( -1 * lineDelta / 2F );
       scrollWheel( clientarea, delta );
       return getGridRowAtLine( grid, lineIndex );
@@ -218,7 +232,7 @@ public class RAPUtil {
 
   /**
    * Returns the path to the row with the given position relative to the first visible row,
-   * or null if the index is out of bounds.
+   * or null if the index is out of bounds. If fixed columns are used, the leftside row is returned.
    *
    * @param grid
    * @param position
@@ -230,6 +244,9 @@ public class RAPUtil {
     String rowId = getAttribute( grid, "aria-flowto" );
     for( int i = 0; i < position && rowId != null; i++ ) {
       rowId = getAttribute( byId( rowId ), "aria-flowto" );
+      if( rowId.endsWith( "_1" ) ) {
+        rowId = getAttribute( byId( rowId ), "aria-flowto" );
+      }
     }
     return rowId != null ? byId( rowId ) : null;
   }
@@ -309,11 +326,16 @@ public class RAPUtil {
     if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
       return;
     } else {
-      String clientarea = byId( getAttribute( scrollbar, "aria-controls" ) );
+      String clientarea = getAriaControls( scrollbar );
       int rows = getVisibleGridLines( grid );
       int delta = ( int )Math.floor( rows / 2F ) * direction; // one wheel "click" scrolls by 2 items
       scrollWheel( clientarea, delta );
     }
+  }
+
+  private String getAriaControls( String xpath ) {
+    String controls = getAttribute( xpath, "aria-controls" );
+    return byId( controls.split( "\\s" )[ 0 ] );
   }
 
   public int getGridLineHeight( String grid ) {
@@ -372,6 +394,12 @@ public class RAPUtil {
                      + key
                      + "\" );";
     selenium.runScript( wrapJS( script ) );
+  }
+
+  public void clear( String xpath ) {
+    checkElementCount( xpath );
+    WebElement inputElement = driver.findElement( By.xpath( xpath ) );
+    inputElement.clear();
   }
 
   public void input( String xpath, String text ) {

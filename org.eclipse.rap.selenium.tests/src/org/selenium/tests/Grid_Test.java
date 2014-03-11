@@ -5,12 +5,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.selenium.tests.RAPUtil.atLastPosition;
+import static org.selenium.tests.RAPUtil.button;
 import static org.selenium.tests.RAPUtil.byAria;
 import static org.selenium.tests.RAPUtil.byId;
 import static org.selenium.tests.RAPUtil.byText;
 import static org.selenium.tests.RAPUtil.cellWithText;
 import static org.selenium.tests.RAPUtil.containing;
 import static org.selenium.tests.RAPUtil.firstResult;
+import static org.selenium.tests.RAPUtil.label;
+import static org.selenium.tests.RAPUtil.nextSibling;
 import static org.selenium.tests.RAPUtil.row;
 import static org.selenium.tests.RAPUtil.rowWithCellText;
 
@@ -56,7 +59,7 @@ public class Grid_Test {
 
   @After
   public void tearDown() throws Exception {
-    selenium.stop();
+    //selenium.stop();
   }
 
   private void goToVirtualTable() {
@@ -67,6 +70,18 @@ public class Grid_Test {
     rap.waitForServer(); // best method since there is obvious UI change
   }
 
+  private void goToSplitTable() {
+    String navId = rap.getId( firstResult( byAria( "treegrid" ) ) );
+    rap.click( rap.findGridItem( byId( navId ), "Table" ) );
+    rap.waitForAppear( byAria( "checkbox" ) + byText( "VIRTUAL" ) );
+    String input = label( "Add" ) + nextSibling() + byAria( "textbox" );
+    String button = label( "Add" ) + nextSibling() + nextSibling() + button( "Item(s)" );
+    rap.clear( input );
+    rap.input( input, "100" );
+    rap.click( button );
+    rap.waitForServer(); // best method since there is obvious UI change
+  }
+
   @Test
   public void testGetLineOffset() throws Exception {
     goToVirtualTable();
@@ -74,6 +89,18 @@ public class Grid_Test {
     rap.waitForAppear( grid );
     selenium.click( byText( "Add 100 Items" ) );
     rap.waitForServer();
+    assertEquals( 0, rap.getGridLineOffset( grid ) );
+    selenium.click( grid + row() + atLastPosition( -1 ) ); // clicking the very last can be bad
+    rap.press( grid, "Down" );
+    rap.press( grid, "Down" );
+    rap.press( grid, "Down" );
+    assertEquals( 3, rap.getGridLineOffset( grid ) );
+  }
+
+  @Test
+  public void testGetLineOffset_FixedColumns() throws Exception {
+    goToSplitTable();
+    String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "Item0-0" ) ) ) );
     assertEquals( 0, rap.getGridLineOffset( grid ) );
     selenium.click( grid + row() + atLastPosition( -1 ) ); // clicking the very last can be bad
     rap.press( grid, "Down" );
@@ -94,6 +121,13 @@ public class Grid_Test {
   }
 
   @Test
+  public void testGetLineCount_FixedColumns() throws Exception {
+    goToSplitTable();
+    String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "Item0-0" ) ) ) );
+    assertEquals( 115, rap.getGridLineCount( grid ) );
+  }
+
+  @Test
   public void testScrollGridByPage() throws Exception {
     goToVirtualTable();
     String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "First Name" ) ) ) );
@@ -108,7 +142,22 @@ public class Grid_Test {
     rap.scrollGridPageDown( grid );
     rap.scrollGridPageUp( grid );
     offset = rap.getGridLineOffset( grid );
-    assertTrue( offset <= rowcount * 2 && offset > ( rowcount - 1 ) * 2 );
+    assertTrue( offset <= rowcount * 2 && offset >= ( rowcount - 1 ) * 2 );
+  }
+
+  @Test
+  public void testScrollGridByPage_FixedColumns() throws Exception {
+    goToSplitTable();
+    String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "Item0-0" ) ) ) );
+    int rowcount = rap.getVisibleGridLines( grid );
+    rap.scrollGridPageDown( grid );
+    int offset = rap.getGridLineOffset( grid );
+    assertTrue( offset == rowcount || offset == rowcount -1  );
+    rap.scrollGridPageDown( grid );
+    rap.scrollGridPageDown( grid );
+    rap.scrollGridPageUp( grid );
+    offset = rap.getGridLineOffset( grid );
+    assertTrue( offset <= rowcount * 2 && offset >= ( rowcount - 1 ) * 2 );
   }
 
   @Test
@@ -134,6 +183,25 @@ public class Grid_Test {
   }
 
   @Test
+  public void testScrollLineIntoView_FixedColumns() throws Exception {
+    goToSplitTable();
+    String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "Item0-0" ) ) ) );
+    assertEquals( 0, rap.getGridLineOffset( grid ) );
+    assertEquals( rowId( grid, "Item1-0" ), rap.scrollGridLineIntoView( grid, 1 ) );
+    assertEquals( 0, rap.getGridLineOffset( grid ) ); // did nothing
+    assertNull( rap.scrollGridLineIntoView( grid, 9000 ) );
+    assertTrue( rap.isElementAvailable( grid + cellWithText( "Item114-0" ) ) );
+    rap.scrollGridPageDown( grid ); // one more (empty) line that can be scrolled, can be trouble
+    String ada = rap.scrollGridLineIntoView( grid, 0 );
+    assertEquals( rowId( grid, "Item0-0" ), ada );
+    assertEquals( 0, rap.getGridLineOffset( grid ) );
+    String item77 = rap.scrollGridLineIntoView( grid, 77 );
+    assertEquals( rowId( grid, "Item77-0" ), item77 );
+    String item50 = rap.scrollGridLineIntoView( grid, 50 );
+    assertEquals( rowId( grid, "Item50-0" ), item50 );
+  }
+
+  @Test
   public void testScrollItemIntoView() throws Exception {
     goToVirtualTable();
     String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "First Name" ) ) ) );
@@ -153,6 +221,29 @@ public class Grid_Test {
     rap.click( grid + cellWithText( "person 49" ) );
     try {
       rap.scrollGridItemIntoView( grid, cellWithText( "person foo" ) );
+      fail();
+    } catch( IllegalStateException e ) {
+      // expected
+    }
+  }
+
+  @Test
+  public void testScrollItemIntoView_FixedColumns() throws Exception {
+    goToSplitTable();
+    String grid = byId( rap.getId( byAria( "grid" ) + containing( byText( "Item0-0" ) ) ) );
+    assertEquals( 0, rap.getGridLineOffset( grid ) );
+    rap.scrollGridItemIntoView( grid, cellWithText( "Item0-0" ) );
+    assertEquals( 0, rap.getGridLineOffset( grid ) ); // did nothing
+    rap.scrollGridItemIntoView( grid, cellWithText( "Item114-0" ) );
+    rap.click( grid + cellWithText( "Item114-0" ) );
+    rap.scrollGridItemIntoView( grid, cellWithText( "Item0-2" ) );
+    rap.click( grid + cellWithText( "Item0-2" ) );
+    rap.scrollGridItemIntoView( grid, cellWithText( "Item77-3" ) );
+    rap.click( grid + cellWithText( "Item77-0" ) );
+    rap.scrollGridItemIntoView( grid, cellWithText( "Item49-1" ) );
+    rap.click( grid + cellWithText( "Item49-1" ) );
+    try {
+      rap.scrollGridItemIntoView( grid, cellWithText( "Item49-100" ) );
       fail();
     } catch( IllegalStateException e ) {
       // expected
