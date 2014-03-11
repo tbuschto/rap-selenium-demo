@@ -6,6 +6,7 @@ import static org.selenium.tests.RAPUtil.byId;
 import static org.selenium.tests.RAPUtil.byText;
 import static org.selenium.tests.RAPUtil.containing;
 import static org.selenium.tests.RAPUtil.firstResult;
+import static org.selenium.tests.RAPUtil.rowWithCellText;
 
 import org.junit.After;
 import org.junit.Before;
@@ -84,7 +85,7 @@ public class Controls_Demo_Test {
   @Test
   public void testInsertText() throws Exception {
     String navId = rap.getId( firstResult( byAria( "treegrid" ) ) );
-    rap.click( rap.findGridItem( byId( navId ), "Text"  ) );
+    rap.click( rap.scrollGridItemIntoView( byId( navId ), rowWithCellText( "Text" ) ) );
     rap.waitForAppear( byText( "Text:" ) );
     rap.click( byAria( "checkbox" ) + byText( "VerifyListener (numbers only)" ) );
     rap.input( firstResult( byAria( "textbox" ) ), "hello123world" );
@@ -96,7 +97,7 @@ public class Controls_Demo_Test {
   @Test
   public void testTableWithFlowTo() throws Exception {
     String navId = rap.getId( firstResult( byAria( "treegrid" ) ) );
-    rap.click( rap.findGridItem( byId( navId ), "TableViewer" ) );
+    rap.click( rap.scrollGridItemIntoView( byId( navId ), rowWithCellText( "TableViewer" ) ) );
     rap.waitForAppear( byAria( "checkbox" ) + byText( "VIRTUAL" ) );
     rap.click( byAria( "checkbox" ) + byText( "VIRTUAL" ) );
     rap.waitForServer();

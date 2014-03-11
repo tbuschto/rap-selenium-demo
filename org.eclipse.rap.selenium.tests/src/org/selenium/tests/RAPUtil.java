@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.thoughtworks.selenium.Selenium;
+import com.thoughtworks.selenium.SeleniumException;
 
 
 public class RAPUtil {
@@ -73,6 +74,14 @@ public class RAPUtil {
     return "/following-sibling::*" ;
   }
 
+  public static String nextSibling( String xpath ) {
+    String relativePath = xpath;
+    if( relativePath.startsWith( "//*" ) ) {
+      relativePath = relativePath.substring( 3 ); // find a (much) better solution
+    }
+    return "/following-sibling::*" + relativePath;
+  }
+
   public static String byTestId( String testId ) {
     return "//*[@testId='" + testId + "']";
   }
@@ -90,7 +99,11 @@ public class RAPUtil {
   }
 
   public static String button( String content ) {
-    return byText( content ) + "/parent::*[not(@aria-hidden='true') and @role='button']";
+    return byAria( "button" ) + containing( byText( content ) );
+  }
+
+  public static String checkbox( String content ) {
+    return byAria( "checkbox" ) + containing( byText( content ) );
   }
 
   public static String byAria( String role ) {
@@ -111,6 +124,10 @@ public class RAPUtil {
 
   public static String row() {
     return byAria( "row" ) + containing( byAria( "gridcell" ) ); // excludes header
+  }
+
+  public static String vScrollBar() {
+    return byAria( "scrollbar", "orientation", "vertical" );
   }
 
   public static String rowWithCellText( String cellContent ) {
@@ -152,7 +169,7 @@ public class RAPUtil {
 
   public int getGridLineOffset( String grid ) {
     checkElementCount( grid );
-    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    String scrollbar = grid + vScrollBar();
     if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
       return 0;
     } else {
@@ -163,7 +180,7 @@ public class RAPUtil {
   }
 
   public int getMaxGridLineOffset( String grid ) {
-    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    String scrollbar = grid + vScrollBar();
     if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
       return 0;
     } else {
@@ -174,7 +191,7 @@ public class RAPUtil {
 
   public int getGridLineCount( String grid ) {
     checkElementCount( grid );
-    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    String scrollbar = grid + vScrollBar();
     if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
       return getVisibleGridLines( grid );
     } else {
@@ -183,13 +200,23 @@ public class RAPUtil {
       // NOTE: for nebula grid footer would have to be subtracted
       return ( scrollHeight / getGridLineHeight( grid ) );
     }
-
   }
 
   public int getVisibleGridLines( String grid ) {
-    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
-    String clientarea = getAriaControls( scrollbar );
-    return selenium.getXpathCount( clientarea + row() ).intValue();
+    return selenium.getXpathCount( getClientArea( grid ) + row() ).intValue();
+  }
+
+  /**
+   * Returns the absolute path to the client area element of the given widget.
+   * If there are multiple (fixed columns), the first is returned;
+   *
+   * @param grid
+   * @return
+   */
+  public String getClientArea( String grid ) {
+    // include invisible scrollbar (as opposed to vScrollBar())
+    String scrollbar = grid + "//*[@role='scrollbar' and @aria-orientation='vertical']";
+    return getAriaControls( scrollbar );
   }
 
   /**
@@ -198,7 +225,7 @@ public class RAPUtil {
    */
   public String scrollGridLineIntoView( String grid, int lineIndex ) {
     checkElementCount( grid );
-    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    String scrollbar = grid + vScrollBar();
     if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
       return getGridRowAtPosition( grid, lineIndex );
     } else {
@@ -221,7 +248,7 @@ public class RAPUtil {
 
   /**
    * Returns the path to the row with the given lineIndex. The line has to be visible
-   * on screen.
+   * on screen. If the grid has fixed columns, the leftside row is returned.
    * @param grid
    * @param rowIndex
    * @return
@@ -241,10 +268,10 @@ public class RAPUtil {
   public String getGridRowAtPosition( String grid, int position ) {
     checkElementCount( grid );
     waitForItems( grid );
-    String rowId = getAttribute( grid, "aria-flowto" );
+    String rowId = getFlowTo( grid );
     for( int i = 0; i < position && rowId != null; i++ ) {
       rowId = getAttribute( byId( rowId ), "aria-flowto" );
-      if( rowId.endsWith( "_1" ) ) {
+      if( rowId != null && rowId.endsWith( "_1" ) ) {
         rowId = getAttribute( byId( rowId ), "aria-flowto" );
       }
     }
@@ -269,12 +296,26 @@ public class RAPUtil {
     }
   }
 
+  /**
+   * @param grid
+   * @param rowPath path to row relative to grid. Expects leftside row for fixed column grids
+   * @param columnName
+   * @return
+   */
   public String getGridCellContent( String grid, String rowPath, String columnName ) {
     checkElementCount( grid + rowPath );
     String columnId = getColumnId( grid, columnName );
     String cell = grid + rowPath + cellDescribedBy( columnId );
+    if(    selenium.getXpathCount( cell ).intValue() == 0
+        && getFlowTo( rowPath ).endsWith( "_1" ) ) {
+      cell = byId( getFlowTo( rowPath ) ) + cellDescribedBy( columnId );
+    }
     checkElementCount( cell );
     return selenium.getText( cell );
+  }
+
+  public String getFlowTo( String xpath ) {
+    return getAttribute( xpath, "aria-flowto" );
   }
 
   public String getColumnId( String grid, String columnName ) {
@@ -287,10 +328,10 @@ public class RAPUtil {
     scrollGridItemIntoView( grid, rowWithCellText( columnId, cellContent ) );
   }
 
-  public void scrollGridItemIntoView( String grid, String relativePath ) {
+  public String scrollGridItemIntoView( String grid, String relativePath ) {
     String needle = grid + relativePath;
     if( isElementAvailable( needle ) ) {
-      return;
+      return needle;
     }
     int startOffset = getGridLineOffset( grid );
     int max = getMaxGridLineOffset( grid );
@@ -299,7 +340,7 @@ public class RAPUtil {
       waitForItems( grid );
     }
     if( isElementAvailable( needle ) ) {
-      return;
+      return needle;
     }
     scrollGridLineIntoView( grid, 0 );
     waitForItems( grid );
@@ -310,6 +351,7 @@ public class RAPUtil {
     if( !isElementAvailable( needle ) ) {
       throw new IllegalStateException( relativePath + " not found in grid " + grid );
     }
+    return needle;
   }
 
   public void scrollGridPageDown( String grid ) {
@@ -322,7 +364,7 @@ public class RAPUtil {
 
   private void scrollGridByPage( String grid, int direction ) {
     checkElementCount( grid );
-    String scrollbar = grid + byAria( "scrollbar", "orientation", "vertical" );
+    String scrollbar = grid + vScrollBar();
     if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
       return;
     } else {
@@ -483,26 +525,15 @@ public class RAPUtil {
 
   public boolean isElementAvailable( String xpath ) {
     int count = selenium.getXpathCount( xpath ).intValue();
-    // NOTE [tb] : I do not know why, but an element can be "not present" and have an count == 1
-    return count > 0 && selenium.isElementPresent( xpath ) && selenium.isVisible( xpath );
+    // NOTE [tb] : I do not know why, but an element can be "not present" and have an count == 1,
+    //             or be "present" but not found by isVisible...
+    try {
+      return count > 0 && selenium.isElementPresent( xpath ) && selenium.isVisible( xpath );
+    } catch( SeleniumException e ) {
+      return false;
+    }
   }
 
-  // Not optimal: using pageDown also selects items while scrolling
-  // Alternatives: Control grid directly or use scrollbar when aria support has been enabled
-   public String findGridItem( String gridPath, String cellText ) {
-    String itemPath = gridPath + byAria( "row" ) + byText( cellText );
-    if( isElementAvailable( itemPath ) ) {
-      return itemPath;
-    }
-    click( gridPath + byAria( "row", "busy", false ) + "[1]" ); // make sure there is a selection
-    press( gridPath, "Home" );
-    while(    !isElementAvailable( itemPath )
-           && !isLastGridItem( byId( getSelectedGridItemId( gridPath ) ) )
-    ) {
-      press( gridPath, "PageDown" ); // page down
-    }
-    return isElementAvailable( itemPath ) ? itemPath : null;
-  }
 
   private String xpathToJs( String xpath ) {
     return   "document.evaluate( \""
@@ -515,14 +546,6 @@ public class RAPUtil {
     if( elementCount != 1 ) {
       throw new IllegalStateException( elementCount + " Elements for " + xpath );
     }
-  }
-
-  private boolean isLastGridItem( String xpath ) {
-    return "".equals( selenium.getAttribute( xpath + "@aria-flowto" ) );
-  }
-
-  private String getSelectedGridItemId( String gridPath ) {
-    return selenium.getAttribute( gridPath +  byAria( "row", "selected", true ) + "@id" );
   }
 
   private void patchRAP() {
