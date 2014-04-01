@@ -1,9 +1,10 @@
 package org.selenium.tests;
 
+import static org.eclipse.rap.selenium.RAPUtil.byAria;
+import static org.eclipse.rap.selenium.RAPUtil.byText;
 import static org.junit.Assert.assertEquals;
-import static org.selenium.tests.RAPUtil.byAria;
-import static org.selenium.tests.RAPUtil.byText;
 
+import org.eclipse.rap.selenium.RAPUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

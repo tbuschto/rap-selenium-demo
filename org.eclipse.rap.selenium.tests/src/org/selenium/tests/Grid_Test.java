@@ -1,23 +1,24 @@
 package org.selenium.tests;
 
+import static org.eclipse.rap.selenium.RAPUtil.atLastPosition;
+import static org.eclipse.rap.selenium.RAPUtil.button;
+import static org.eclipse.rap.selenium.RAPUtil.byAria;
+import static org.eclipse.rap.selenium.RAPUtil.byId;
+import static org.eclipse.rap.selenium.RAPUtil.byText;
+import static org.eclipse.rap.selenium.RAPUtil.cellWithText;
+import static org.eclipse.rap.selenium.RAPUtil.checkbox;
+import static org.eclipse.rap.selenium.RAPUtil.containing;
+import static org.eclipse.rap.selenium.RAPUtil.firstResult;
+import static org.eclipse.rap.selenium.RAPUtil.label;
+import static org.eclipse.rap.selenium.RAPUtil.nextSibling;
+import static org.eclipse.rap.selenium.RAPUtil.row;
+import static org.eclipse.rap.selenium.RAPUtil.rowWithCellText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.selenium.tests.RAPUtil.atLastPosition;
-import static org.selenium.tests.RAPUtil.button;
-import static org.selenium.tests.RAPUtil.byAria;
-import static org.selenium.tests.RAPUtil.byId;
-import static org.selenium.tests.RAPUtil.byText;
-import static org.selenium.tests.RAPUtil.cellWithText;
-import static org.selenium.tests.RAPUtil.checkbox;
-import static org.selenium.tests.RAPUtil.containing;
-import static org.selenium.tests.RAPUtil.firstResult;
-import static org.selenium.tests.RAPUtil.label;
-import static org.selenium.tests.RAPUtil.nextSibling;
-import static org.selenium.tests.RAPUtil.row;
-import static org.selenium.tests.RAPUtil.rowWithCellText;
 
+import org.eclipse.rap.selenium.RAPUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

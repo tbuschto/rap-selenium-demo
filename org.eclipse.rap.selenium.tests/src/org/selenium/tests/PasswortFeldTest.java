@@ -2,6 +2,7 @@ package org.selenium.tests;
 
 import java.io.File;
 
+import org.eclipse.rap.selenium.RAPUtil;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;

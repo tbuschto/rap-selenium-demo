@@ -1,4 +1,4 @@
-package org.selenium.tests;
+package org.eclipse.rap.selenium;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import com.thoughtworks.selenium.SeleniumException;
 public class RAPUtil {
 
   private static final String TEST_UTIL_JS = "/org/eclipse/rwt/test/fixture/TestUtil.js";
-  private static final String RAP_UTIL_JS = "/org/selenium/tests/RAPUtil.js";
+  private static final String RAP_UTIL_JS = "/org/eclipse/rap/selenium/RAPUtil.js";
   private final WebDriver driver;
   private final Selenium selenium;
   private final String TEST_UTIL_JS_CONTENT;
@@ -30,6 +30,7 @@ public class RAPUtil {
                                       + "rwt.qx.Class.createNamespace( value, {} );"
                                       + "};\n";
   private static final String CHARSET = "UTF-8";
+  private boolean ariaEnabled;
 
 
   public RAPUtil( WebDriver driver, Selenium selenium ) {
@@ -151,10 +152,19 @@ public class RAPUtil {
   }
 
   public void loadApplication( String url ) {
+    loadApplication( url, true );
+  }
+
+  public void loadApplication( String url, boolean ariaEnabled ) {
+    this.ariaEnabled = ariaEnabled;
     selenium.open( url );
     selenium.waitForPageToLoad( "10000" );
-    waitForAppear( byAria( "application" ) );
     patchRAP();
+    if( ariaEnabled ) {
+      waitForAppear( byAria( "application" ) );
+    } else {
+      waitForServer();
+    }
   }
 
   public String getId( String xpath ) {

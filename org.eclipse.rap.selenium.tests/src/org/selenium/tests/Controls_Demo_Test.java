@@ -1,13 +1,14 @@
 package org.selenium.tests;
 
+import static org.eclipse.rap.selenium.RAPUtil.byAria;
+import static org.eclipse.rap.selenium.RAPUtil.byId;
+import static org.eclipse.rap.selenium.RAPUtil.byText;
+import static org.eclipse.rap.selenium.RAPUtil.containing;
+import static org.eclipse.rap.selenium.RAPUtil.firstResult;
+import static org.eclipse.rap.selenium.RAPUtil.rowWithCellText;
 import static org.junit.Assert.assertEquals;
-import static org.selenium.tests.RAPUtil.byAria;
-import static org.selenium.tests.RAPUtil.byId;
-import static org.selenium.tests.RAPUtil.byText;
-import static org.selenium.tests.RAPUtil.containing;
-import static org.selenium.tests.RAPUtil.firstResult;
-import static org.selenium.tests.RAPUtil.rowWithCellText;
 
+import org.eclipse.rap.selenium.RAPUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +45,7 @@ public class Controls_Demo_Test {
     //driver.manage().window().setSize( new Dimension( 1000, 1000 ) );
     driver.manage().window().maximize();
     rap = new RAPUtil( driver, selenium );
-    rap.loadApplication( baseUrl + "/controls" );
+    rap.loadApplication( baseUrl + "/", false );
   }
 
   @After
@@ -61,6 +62,16 @@ public class Controls_Demo_Test {
 //    rap.click( byTestId( "checkButton1" ) );
 //    rap.click( byTestId( "toggleButton" ) );
 //  }
+
+  @Test
+  public void testClickElements_byContent() throws Exception {
+    rap.click( byText( "Push\n Button" ) );
+    rap.click( byText( "Toggle" ) );
+    rap.click( byText( "Check" ) );
+    rap.click( byText( "Check with image" ) );
+    rap.click( byText( "Check" ) );
+    rap.click( byText( "Toggle" ) );
+  }
 
   @Test
   public void testClickButtons_byContent() throws Exception {
