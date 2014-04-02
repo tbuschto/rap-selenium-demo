@@ -1,0 +1,709 @@
+!SESSION 2014-04-02 18:27:26.549 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_01
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=de_DE
+Framework arguments:  -version 3 -port 50489 -testLoaderClass org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader -loaderpluginname org.eclipse.rap.junit.runtime -testNameFile C:\Users\Tim\AppData\Local\Temp\testNames2783049445429425040.txt -testpluginname org.eclipse.rap.selenium.test
+Command-line arguments:  -dev file:C:/dev/Workspaces/WS_MAIN/.metadata/.plugins/org.eclipse.pde.core/pde-junit/dev.properties -os win32 -ws win32 -arch x86_64 -consoleLog -console -version 3 -port 50489 -testLoaderClass org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader -loaderpluginname org.eclipse.rap.junit.runtime -testNameFile C:\Users\Tim\AppData\Local\Temp\testNames2783049445429425040.txt -testpluginname org.eclipse.rap.selenium.test
+
+!ENTRY org.eclipse.rap.addons.dropdown.test 4 0 2014-04-02 18:27:29.950
+!MESSAGE [SCR] Component definition XMLs not found in bundle org.eclipse.rap.addons.dropdown.test. The component header value is OSGI-INF/*.xml
+
+!ENTRY org.eclipse.rap.addons.dropdown.test 4 0 2014-04-02 18:27:29.953
+!MESSAGE [SCR] Component definition XMLs not found in bundle org.eclipse.rap.addons.dropdown.test. The component header value is OSGI-INF/*.xml
+
+!ENTRY org.eclipse.rap.demo.samples 2 0 2014-04-02 18:27:30.449
+!MESSAGE [SCR] Found components with duplicated names! Details: 
+Component1 : Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = org.eclipse.rap.demo.samples.ApplicationConfig
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = org.eclipse.rap.demo.samples_1.0.0.qualifier [93]
+]
+Component2: Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = browserfunctiontest.BasicApplication
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = browserFunctionTest_1.0.0.qualifier [25]
+]  
+
+!ENTRY RAP-BugDemo 2 0 2014-04-02 18:27:30.462
+!MESSAGE [SCR] Found components with duplicated names! Details: 
+Component1 : Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = rapbugdemo.BasicApplication
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = RAP-BugDemo_1.0.0.qualifier [95]
+]
+Component2: Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = browserfunctiontest.BasicApplication
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = browserFunctionTest_1.0.0.qualifier [25]
+]  
+
+!ENTRY RAP-BugDemo 2 0 2014-04-02 18:27:30.463
+!MESSAGE [SCR] Found components with duplicated names! Details: 
+Component1 : Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = rapbugdemo.BasicApplication
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = RAP-BugDemo_1.0.0.qualifier [95]
+]
+Component2: Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = org.eclipse.rap.demo.samples.ApplicationConfig
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = org.eclipse.rap.demo.samples_1.0.0.qualifier [93]
+]  
+
+!ENTRY helloworld 2 0 2014-04-02 18:27:30.688
+!MESSAGE [SCR] Found components with duplicated names! Details: 
+Component1 : Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = helloworld.MyBasicApplication
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = helloworld_1.0.0.qualifier [104]
+]
+Component2: Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = browserfunctiontest.BasicApplication
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = browserFunctionTest_1.0.0.qualifier [25]
+]  
+
+!ENTRY helloworld 2 0 2014-04-02 18:27:30.690
+!MESSAGE [SCR] Found components with duplicated names! Details: 
+Component1 : Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = helloworld.MyBasicApplication
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = helloworld_1.0.0.qualifier [104]
+]
+Component2: Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = org.eclipse.rap.demo.samples.ApplicationConfig
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = org.eclipse.rap.demo.samples_1.0.0.qualifier [93]
+]  
+
+!ENTRY helloworld 2 0 2014-04-02 18:27:30.691
+!MESSAGE [SCR] Found components with duplicated names! Details: 
+Component1 : Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = helloworld.MyBasicApplication
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = helloworld_1.0.0.qualifier [104]
+]
+Component2: Component[
+	name = BasicApplication
+	activate = activate
+	deactivate = deactivate
+	modified = 
+	configuration-policy = optional
+	factory = null
+	autoenable = true
+	immediate = false
+	implementation = rapbugdemo.BasicApplication
+	state = Unsatisfied
+	properties = 
+	serviceFactory = false
+	serviceInterface = [org.eclipse.rap.rwt.application.ApplicationConfiguration]
+	references = null
+	located in bundle = RAP-BugDemo_1.0.0.qualifier [95]
+]  
+
+!ENTRY org.eclipse.osgi 4 0 2014-04-02 18:27:34.343
+!MESSAGE An unexpected runtime error has occurred.
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:185)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlets(ApplicationReferenceImpl.java:89)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker.startApplication(HttpServiceTracker.java:75)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker.addingService(HttpServiceTracker.java:46)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker.addingService(HttpServiceTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker.access$6(HttpServiceTracker.java:1)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker$ApplicationLauncherTracker.addingService(HttpServiceTracker.java:125)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker$ApplicationLauncherTracker.addingService(HttpServiceTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.track(AbstractTracked.java:229)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.serviceChanged(ServiceTracker.java:894)
+	at org.eclipse.osgi.internal.serviceregistry.FilteredServiceListener.serviceChanged(FilteredServiceListener.java:107)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.dispatchEvent(BundleContextImpl.java:861)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:148)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEventPrivileged(ServiceRegistry.java:819)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEvent(ServiceRegistry.java:771)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.register(ServiceRegistrationImpl.java:130)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.registerService(ServiceRegistry.java:214)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.registerService(BundleContextImpl.java:433)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.registerService(BundleContextImpl.java:451)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.registerService(Activator.java:50)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.registerApplicationLauncher(Activator.java:45)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:26)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerServlet(HttpServiceImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:181)
+	... 50 more
+
+!ENTRY org.eclipse.rap.ui.workbench 4 0 2014-04-02 18:27:34.347
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:185)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlets(ApplicationReferenceImpl.java:89)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker.startApplication(HttpServiceTracker.java:75)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker.addingService(HttpServiceTracker.java:46)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker.addingService(HttpServiceTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker.access$6(HttpServiceTracker.java:1)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker$ApplicationLauncherTracker.addingService(HttpServiceTracker.java:125)
+	at org.eclipse.rap.ui.internal.servlet.HttpServiceTracker$ApplicationLauncherTracker.addingService(HttpServiceTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.track(AbstractTracked.java:229)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.serviceChanged(ServiceTracker.java:894)
+	at org.eclipse.osgi.internal.serviceregistry.FilteredServiceListener.serviceChanged(FilteredServiceListener.java:107)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.dispatchEvent(BundleContextImpl.java:861)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:148)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEventPrivileged(ServiceRegistry.java:819)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEvent(ServiceRegistry.java:771)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.register(ServiceRegistrationImpl.java:130)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.registerService(ServiceRegistry.java:214)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.registerService(BundleContextImpl.java:433)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.registerService(BundleContextImpl.java:451)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.registerService(Activator.java:50)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.registerApplicationLauncher(Activator.java:45)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:26)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerServlet(HttpServiceImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:181)
+	... 50 more
+
+!ENTRY org.eclipse.rap.rwt.osgi 4 0 2014-04-02 18:27:37.481
+!MESSAGE Unable to start RWT application.
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:197)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:79)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:164)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launchWithConfiguration(ApplicationLauncherImpl.java:151)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.addConfiguration(ApplicationLauncherImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:35)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.openConfiguratorTracker(Activator.java:55)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:28)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerResources(ProxyServlet.java:199)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerResources(HttpServiceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:193)
+	... 32 more
+
+!ENTRY org.eclipse.rap.rwt.osgi 4 0 2014-04-02 18:27:38.925
+!MESSAGE Unable to start RWT application.
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:197)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:79)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:164)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launchWithConfiguration(ApplicationLauncherImpl.java:151)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.addConfiguration(ApplicationLauncherImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:35)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.openConfiguratorTracker(Activator.java:55)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:28)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerResources(ProxyServlet.java:199)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerResources(HttpServiceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:193)
+	... 32 more
+
+!ENTRY org.eclipse.rap.rwt.osgi 4 0 2014-04-02 18:27:40.860
+!MESSAGE Unable to start RWT application.
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:185)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlets(ApplicationReferenceImpl.java:89)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:164)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launchWithConfiguration(ApplicationLauncherImpl.java:151)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.addConfiguration(ApplicationLauncherImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:35)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.openConfiguratorTracker(Activator.java:55)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:28)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerServlet(HttpServiceImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:181)
+	... 33 more
+
+!ENTRY org.eclipse.rap.rwt.osgi 4 0 2014-04-02 18:27:42.055
+!MESSAGE Unable to start RWT application.
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:197)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:79)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:164)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launchWithConfiguration(ApplicationLauncherImpl.java:151)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.addConfiguration(ApplicationLauncherImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:35)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.openConfiguratorTracker(Activator.java:55)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:28)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerResources(ProxyServlet.java:199)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerResources(HttpServiceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:193)
+	... 32 more
+
+!ENTRY org.eclipse.rap.rwt.osgi 4 0 2014-04-02 18:27:43.738
+!MESSAGE Unable to start RWT application.
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:197)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:79)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:164)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launchWithConfiguration(ApplicationLauncherImpl.java:151)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.addConfiguration(ApplicationLauncherImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:35)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.openConfiguratorTracker(Activator.java:55)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:28)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerResources(ProxyServlet.java:199)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerResources(HttpServiceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:193)
+	... 32 more
+
+!ENTRY org.eclipse.rap.rwt.osgi 4 0 2014-04-02 18:27:44.827
+!MESSAGE Unable to start RWT application.
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:197)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:79)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:164)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launchWithConfiguration(ApplicationLauncherImpl.java:151)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.addConfiguration(ApplicationLauncherImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:35)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.openConfiguratorTracker(Activator.java:55)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:28)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/rwt-resources' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerResources(ProxyServlet.java:199)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerResources(HttpServiceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerResourceDirectory(ApplicationReferenceImpl.java:193)
+	... 32 more
+
+!ENTRY org.eclipse.rap.rwt.osgi 4 0 2014-04-02 18:27:45.843
+!MESSAGE Unable to start RWT application.
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/hello' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:185)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlets(ApplicationReferenceImpl.java:89)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:164)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launchWithConfiguration(ApplicationLauncherImpl.java:151)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.addConfiguration(ApplicationLauncherImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:35)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.openConfiguratorTracker(Activator.java:55)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:28)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/hello' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerServlet(HttpServiceImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:181)
+	... 33 more
+
+!ENTRY org.eclipse.rap.rwt.osgi 4 0 2014-04-02 18:27:46.909
+!MESSAGE Unable to start RWT application.
+!STACK 0
+java.lang.RuntimeException: org.osgi.service.http.NamespaceException: The alias '/hello' is already in use.
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:185)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlets(ApplicationReferenceImpl.java:89)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.startRWTApplication(ApplicationReferenceImpl.java:78)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.start(ApplicationReferenceImpl.java:63)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.doLaunch(ApplicationLauncherImpl.java:105)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:87)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launch(ApplicationLauncherImpl.java:164)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.launchWithConfiguration(ApplicationLauncherImpl.java:151)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationLauncherImpl.addConfiguration(ApplicationLauncherImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:35)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationConfigurationTracker.addingService(ApplicationConfigurationTracker.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:932)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:256)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:183)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:317)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:261)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.openConfiguratorTracker(Activator.java:55)
+	at org.eclipse.rap.rwt.osgi.internal.Activator.start(Activator.java:28)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl$1.run(BundleContextImpl.java:711)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.startActivator(BundleContextImpl.java:702)
+	at org.eclipse.osgi.framework.internal.core.BundleContextImpl.start(BundleContextImpl.java:683)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:381)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Caused by: org.osgi.service.http.NamespaceException: The alias '/hello' is already in use.
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:169)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerServlet(HttpServiceImpl.java:66)
+	at org.eclipse.rap.rwt.osgi.internal.ApplicationReferenceImpl.registerServlet(ApplicationReferenceImpl.java:181)
+	... 33 more

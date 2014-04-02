@@ -1,39 +1,37 @@
 package org.eclipse.rap.selenium.xpath;
 
 
-public class XPathElementSelector {
 
+public class XPathElementSelector extends AbstractElementSelector {
 
-  XPath xpath;
-
-  XPathElementSelector( XPath xpath ) {
-    this.xpath = xpath;
+  XPathElementSelector( XPath<?> xpath ) {
+    super( xpath );
   }
 
-  public XPath element() {
+  public XPath<XPathElementSelector> textElement( String string ) {
+    return element( Predicate.with().text( string ) );
+  }
+
+  public XPath<XPathElementSelector> element() {
     return element( null, null );
   }
 
-  public XPath element( String name ) {
+  public XPath<XPathElementSelector> element( String name ) {
     return element( name, null );
   }
 
-  public XPath element( Predicate predicate ) {
+  public XPath<XPathElementSelector> element( Predicate predicate ) {
     return element( null, predicate );
   }
 
-  public XPath element( String name, Predicate predicate ) {
-    xpath.stringBuilder.append( name != null ? name : "*" );
-    if( predicate != null ) {
-      String predicateString = predicate.toString();
-      if( predicateString.isEmpty() ) {
-        throw new IllegalArgumentException( "Predicate is empty" );
-      }
-      xpath.stringBuilder.append( "[" );
-      xpath.stringBuilder.append( predicate.toString() );
-      xpath.stringBuilder.append( "]" );
-    }
-    return xpath;
+  public XPath<XPathElementSelector> element( String name, Predicate predicate ) {
+    appendElement( name, predicate );
+    return getXPath();
+  }
+
+  @SuppressWarnings("unchecked")
+  private XPath<XPathElementSelector> getXPath() {
+    return ( XPath<XPathElementSelector> )xpath;
   }
 
 }

@@ -30,7 +30,7 @@ public class Predicate {
   }
 
   public Predicate and( Predicate predicate ) {
-    return and( predicate.toString() );
+    return predicate != null ? and( predicate.toString() ) : this;
   }
 
   public Predicate and( String condition ) {
@@ -41,8 +41,16 @@ public class Predicate {
     return orAdd( "(", condition, ")" );
   }
 
-  public Predicate andNot( Predicate predicate ) {
-    return andAdd( "not(", predicate.toString(), ")" );
+  public Predicate text( String string ) {
+    return andAdd( "text()='", string, "'" );
+  }
+
+  public Predicate content( XPath<?> content ) {
+    return andAdd( "count(.", content.toString(), ")>0" );
+  }
+
+  public Predicate textContent( String elementText ) { // TODO : stringContent
+    return andAdd( "count(descendant-or-self::*[text()='", elementText, "'])>0" );
   }
 
   @Override
@@ -54,11 +62,10 @@ public class Predicate {
     return andAdd( "@", attribute, "='", value, "'" );
   }
 
-//public XPath text( String text) {
-//  path.append( "text()='" ).append( text ).append( "'" );
-//  return this;
-//}
-//
+  public Predicate notAttr( String attribute, String value ) {
+    return andAdd( "@", attribute, "!='", value, "'" );
+  }
+
 //public XPath position( int i ) {
 //  path.append( "position()=" ).append( i ); // the same as "[i]" would be
 //  return this;
@@ -66,6 +73,10 @@ public class Predicate {
 
   ////////////
   // Internals
+
+  private Predicate andNot( Predicate predicate ) {
+    return andAdd( "not(", predicate.toString(), ")" );
+  }
 
   private Predicate andAdd( String... str ) {
     if( stringBuilder.length() > 0 ) {
