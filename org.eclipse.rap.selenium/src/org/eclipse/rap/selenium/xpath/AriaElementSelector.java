@@ -8,6 +8,26 @@ public class AriaElementSelector extends AbstractElementSelector {
     super( xpath );
   }
 
+  public static XPath<AriaElementSelector> root() {
+    return new XPath<AriaElementSelector>( "/*" );
+  }
+
+  public static XPath<AriaElementSelector> byId( String id ) {
+    return any().element( Predicate.with().id( "foo" ) );
+  }
+
+  public static XPath<AriaElementSelector> asXPath( String string ) {
+    return new XPath<AriaElementSelector>( string );
+  }
+
+  public static AriaElementSelector any() {
+    return new AriaElementSelector( new XPath<AriaElementSelector>( "//" ) );
+  }
+
+  private static Predicate widgetWith( String role ) {
+    return with().notAttr( "aria-hidden", "true" ).attr( "role", role );
+  }
+
   public XPath<AriaElementSelector> widget( String role ) {
     return element( widgetWith( role ) );
   }
@@ -36,10 +56,6 @@ public class AriaElementSelector extends AbstractElementSelector {
   @SuppressWarnings("unchecked")
   private XPath<AriaElementSelector> getXPath() {
     return ( XPath<AriaElementSelector> )xpath;
-  }
-
-  private static Predicate widgetWith( String role ) {
-    return with().notAttr( "aria-hidden", "true" ).attr( "role", role );
   }
 
 }

@@ -1,24 +1,24 @@
 package org.selenium.tests;
 
-import static org.eclipse.rap.selenium.RAPUtil.atLastPosition;
-import static org.eclipse.rap.selenium.RAPUtil.button;
-import static org.eclipse.rap.selenium.RAPUtil.byAria;
-import static org.eclipse.rap.selenium.RAPUtil.byId;
-import static org.eclipse.rap.selenium.RAPUtil.byText;
-import static org.eclipse.rap.selenium.RAPUtil.cellWithText;
-import static org.eclipse.rap.selenium.RAPUtil.checkbox;
-import static org.eclipse.rap.selenium.RAPUtil.containing;
-import static org.eclipse.rap.selenium.RAPUtil.firstResult;
-import static org.eclipse.rap.selenium.RAPUtil.label;
-import static org.eclipse.rap.selenium.RAPUtil.nextSibling;
-import static org.eclipse.rap.selenium.RAPUtil.row;
-import static org.eclipse.rap.selenium.RAPUtil.rowWithCellText;
+import static org.eclipse.rap.selenium.RapBot.atLastPosition;
+import static org.eclipse.rap.selenium.RapBot.button;
+import static org.eclipse.rap.selenium.RapBot.byAria;
+import static org.eclipse.rap.selenium.RapBot.byId;
+import static org.eclipse.rap.selenium.RapBot.byText;
+import static org.eclipse.rap.selenium.RapBot.cellWithText;
+import static org.eclipse.rap.selenium.RapBot.checkbox;
+import static org.eclipse.rap.selenium.RapBot.containing;
+import static org.eclipse.rap.selenium.RapBot.firstResult;
+import static org.eclipse.rap.selenium.RapBot.label;
+import static org.eclipse.rap.selenium.RapBot.nextSibling;
+import static org.eclipse.rap.selenium.RapBot.row;
+import static org.eclipse.rap.selenium.RapBot.rowWithCellText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.eclipse.rap.selenium.RAPUtil;
+import org.eclipse.rap.selenium.RapBot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class Grid_Test {
 
   private WebDriver driver;
   private Selenium selenium;
-  private RAPUtil rap;
+  private RapBot rap;
 
   static {
     System.setProperty( "webdriver.firefox.bin", "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" );
@@ -53,7 +53,7 @@ public class Grid_Test {
     selenium = new WebDriverBackedSelenium( driver, baseUrl );
     driver.manage().window().setSize( new Dimension( 1000, 1000 ) );
     //driver.manage().window().maximize();
-    rap = new RAPUtil( driver, selenium );
+    rap = new RapBot( driver, selenium );
     rap.loadApplication( baseUrl + "/controls" );
   }
 
@@ -171,7 +171,7 @@ public class Grid_Test {
     rap.click( button( "Add 100 Items" ) );
     rap.waitForServer();
     assertNull( rap.scrollGridLineIntoView( grid, 9000 ) );
-    assertTrue( rap.isElementAvailable( grid + RAPUtil.cellWithText( "person 110" ) ) );
+    assertTrue( rap.isElementAvailable( grid + RapBot.cellWithText( "person 110" ) ) );
     rap.scrollGridPageDown( grid ); // one more (empty) line that can be scrolled, can be trouble
     String ada = rap.scrollGridLineIntoView( grid, 0 );
     assertEquals( rowId( grid, "Ada" ), ada );
@@ -319,7 +319,7 @@ public class Grid_Test {
   }
 
   private String rowId( String grid, String text ) {
-    return byId( rap.getId( grid + RAPUtil.rowWithCellText( text ) ) );
+    return byId( rap.getId( grid + RapBot.rowWithCellText( text ) ) );
   }
 
 }

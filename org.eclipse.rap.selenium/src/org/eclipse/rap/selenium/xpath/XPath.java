@@ -7,18 +7,6 @@ public class XPath<T extends AbstractElementSelector> {
 
   final StringBuilder stringBuilder;
 
-  public static XPath<XPathElementSelector> root() {
-    return new XPath<XPathElementSelector>( "/*" );
-  }
-
-  public static XPathElementSelector any() {
-    return new XPathElementSelector( new XPath<XPathElementSelector>( "//" ) );
-  }
-
-  public static AriaElementSelector aria() {
-    return new AriaElementSelector( new XPath<AriaElementSelector>( "//" ) );
-  }
-
   public XPath( String initial ) {
     stringBuilder = new StringBuilder( initial );
   }
@@ -28,9 +16,29 @@ public class XPath<T extends AbstractElementSelector> {
     return createSelector();
   }
 
-  public T parent() {
-    stringBuilder.append( "/../" );
-    return createSelector();
+  public XPath<T> parent() {
+    stringBuilder.append( "/.." );
+    return this;
+  }
+
+  public XPath<T> child( int position ) {
+    if( position <= 0 ) {
+      throw new IllegalArgumentException( "position must be > 0" );
+    }
+    stringBuilder.append( "/*[" )
+                 .append( position )
+                 .append( "]" );
+    return this;
+  }
+
+  public XPath<T> firstChild() {
+    stringBuilder.append( "/*[1]" );
+    return this;
+  }
+
+  public XPath<T> lastChild() {
+    stringBuilder.append( "/*[last()]" );
+    return this;
   }
 
   public T descendantOrSelf() {
@@ -41,6 +49,28 @@ public class XPath<T extends AbstractElementSelector> {
   public T descendant() {
     stringBuilder.append( "/descendant::*/" );
     return createSelector();
+  }
+
+  public XPath<T> firstMatch() {
+    return match( 1 );
+  }
+
+  public XPath<T> lastMatch() {
+    stringBuilder.insert( 0, "(" ).append( ")[last()]" );
+    return this;
+  }
+
+  public XPath<T> match( int offset ) {
+    if( offset <= 0 ) {
+      throw new IllegalArgumentException( "Offset has to be > 0" );
+    }
+    stringBuilder.insert( 0, "(" ) .append( ")[" ) .append( offset ) .append( "]" );
+    return this;
+  }
+
+  @Override
+  public XPath<T> clone() {
+    return new XPath<T>( toString() );
   }
 
   @Override

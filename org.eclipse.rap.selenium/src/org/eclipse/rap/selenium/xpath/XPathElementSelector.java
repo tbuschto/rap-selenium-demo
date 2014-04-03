@@ -4,12 +4,37 @@ package org.eclipse.rap.selenium.xpath;
 
 public class XPathElementSelector extends AbstractElementSelector {
 
+
+  public static XPath<XPathElementSelector> root() {
+    return new XPath<XPathElementSelector>( "/*" );
+  }
+
+  public static XPathElementSelector any() {
+    return new XPathElementSelector( new XPath<XPathElementSelector>( "//" ) );
+  }
+
+  public static XPath<XPathElementSelector> byId( String id ) {
+    return any().element( Predicate.with().id( id ) );
+  }
+
+  public static XPath<XPathElementSelector> byText( String text ) {
+    return any().element( Predicate.with().text( text ) );
+  }
+
+  public static XPath<XPathElementSelector> asXPath( String string ) {
+    return new XPath<XPathElementSelector>( string );
+  }
+
   XPathElementSelector( XPath<?> xpath ) {
     super( xpath );
   }
 
   public XPath<XPathElementSelector> textElement( String string ) {
     return element( Predicate.with().text( string ) );
+  }
+
+  public XPath<XPathElementSelector> textElementContaining( String string ) {
+    return element( Predicate.with().string( string ) );
   }
 
   public XPath<XPathElementSelector> element() {

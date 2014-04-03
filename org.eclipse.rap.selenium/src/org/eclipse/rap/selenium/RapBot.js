@@ -1,8 +1,8 @@
 (function(){
 
-RAPUtil = {
+RapBot = {
 
-  busy : false,
+  busy : false, // will be true during requests
 
   /*global WheelEvent:false, MouseWheelEvent:false */
   scrollWheel : function( element, delta ) {
@@ -78,12 +78,37 @@ RAPUtil = {
 };
 
 rap.on( "send", function() {
-  RAPUtil.busy = true;
+  RapBot.busy = true;
 } );
 
 rap.on( "render", function() {
-  RAPUtil.busy = false;
+  RapBot.busy = false;
 } );
+
+// NOTE: The following patches modify RAP internals and may break in future
+// versions.
+
+// Selenium mouseXYZ methods may not set pageX/Y which can crash the server
+// due to reported mouse coordinates [ null, null ]
+rwt.qx.Class.__initializeClass( rwt.event.MouseEvent );
+var proto = rwt.event.MouseEvent.prototype;
+var wrap = function( name ) {
+  var org = proto[ name ];
+  proto[ name ] = function() {
+    var result = org.apply( this, arguments ) || 0;
+    return result;
+  };
+};
+wrap( 'getScreenX' );
+wrap( 'getScreenY' );
+wrap( 'getClientX' );
+wrap( 'getClientY' );
+wrap( 'getPageX' );
+wrap( 'getPageY' );
+
+// Force empty grid cells to always be rendered in DOM
+//rwt.qx.Class.__initializeClass( rwt.widgets.GridItem );
+//rwt.widgets.GridItem.prototype.hasText = function(){ return true };
 
 
 }());

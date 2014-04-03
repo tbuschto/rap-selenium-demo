@@ -1,10 +1,10 @@
 package org.selenium.tests;
 
-import static org.eclipse.rap.selenium.RAPUtil.byAria;
-import static org.eclipse.rap.selenium.RAPUtil.byText;
+import static org.eclipse.rap.selenium.RapBot.byAria;
+import static org.eclipse.rap.selenium.RapBot.byText;
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.rap.selenium.RAPUtil;
+import org.eclipse.rap.selenium.RapBot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class Snippet1_Test {
 
   private WebDriver driver;
   private Selenium selenium;
-  private RAPUtil rap;
+  private RapBot rap;
 
   static {
     System.setProperty( "webdriver.firefox.bin", "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" );
@@ -30,7 +30,7 @@ public class Snippet1_Test {
   public void setUp() throws Exception {
     driver = new FirefoxDriver();
     selenium = new WebDriverBackedSelenium( driver, baseUrl );
-    rap = new RAPUtil( driver, selenium );
+    rap = new RapBot( driver, selenium );
     rap.loadApplication( baseUrl + "/snippet1" );
   }
 

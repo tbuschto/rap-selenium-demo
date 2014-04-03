@@ -2,7 +2,7 @@ package org.selenium.tests;
 
 import java.io.File;
 
-import org.eclipse.rap.selenium.RAPUtil;
+import org.eclipse.rap.selenium.RapBot;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
@@ -24,7 +24,7 @@ public class PasswortFeldTest {
 
 		Selenium selenium = new WebDriverBackedSelenium(driver,
 				"http://localhost:9999/passwortFeld");
-		RAPUtil rap = new RAPUtil(driver, selenium);
+		RapBot rap = new RapBot(driver, selenium);
 		rap.loadApplication("http://localhost:9999/passwortFeld");
 
 		rap.input("//div[2]/div[2]/input", "abc");

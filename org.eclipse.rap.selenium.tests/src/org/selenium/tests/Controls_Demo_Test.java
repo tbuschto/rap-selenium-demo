@@ -1,14 +1,14 @@
 package org.selenium.tests;
 
-import static org.eclipse.rap.selenium.RAPUtil.byAria;
-import static org.eclipse.rap.selenium.RAPUtil.byId;
-import static org.eclipse.rap.selenium.RAPUtil.byText;
-import static org.eclipse.rap.selenium.RAPUtil.containing;
-import static org.eclipse.rap.selenium.RAPUtil.firstResult;
-import static org.eclipse.rap.selenium.RAPUtil.rowWithCellText;
+import static org.eclipse.rap.selenium.RapBot.byAria;
+import static org.eclipse.rap.selenium.RapBot.byId;
+import static org.eclipse.rap.selenium.RapBot.byText;
+import static org.eclipse.rap.selenium.RapBot.containing;
+import static org.eclipse.rap.selenium.RapBot.firstResult;
+import static org.eclipse.rap.selenium.RapBot.rowWithCellText;
 import static org.junit.Assert.assertEquals;
 
-import org.eclipse.rap.selenium.RAPUtil;
+import org.eclipse.rap.selenium.RapBot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class Controls_Demo_Test {
 
   private WebDriver driver;
   private Selenium selenium;
-  private RAPUtil rap;
+  private RapBot rap;
 
   static {
     System.setProperty( "webdriver.firefox.bin", "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe" );
@@ -44,7 +44,7 @@ public class Controls_Demo_Test {
     selenium = new WebDriverBackedSelenium( driver, baseUrl );
     //driver.manage().window().setSize( new Dimension( 1000, 1000 ) );
     driver.manage().window().maximize();
-    rap = new RAPUtil( driver, selenium );
+    rap = new RapBot( driver, selenium );
     rap.loadApplication( baseUrl + "/", false );
   }
 

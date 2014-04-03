@@ -53,23 +53,42 @@ public class Predicate {
     return andAdd( "count(descendant-or-self::*[text()='", elementText, "'])>0" );
   }
 
-  @Override
-  public String toString() {
-    return stringBuilder.toString();
+  public Predicate string( String string ) {
+    return andAdd( "contains(text(),'", string, "')" );
+  }
+
+  public Predicate stringContent( String string ) {
+    return andAdd( "count(descendant-or-self::*[contains(text(),'", string, "')])>0" );
+  }
+
+  public Predicate id( String id ) {
+    if( "".equals( id ) ) {
+      throw new IllegalArgumentException( "id may not be empty string" );
+    }
+    return attr( "id", id );
   }
 
   public Predicate attr( String attribute, String value ) {
+    checkAttrParameter( attribute, value );
     return andAdd( "@", attribute, "='", value, "'" );
   }
 
   public Predicate notAttr( String attribute, String value ) {
+    checkAttrParameter( attribute, value );
     return andAdd( "@", attribute, "!='", value, "'" );
   }
 
-//public XPath position( int i ) {
-//  path.append( "position()=" ).append( i ); // the same as "[i]" would be
-//  return this;
-//}
+  public Predicate position( int position ) {
+    if( position <= 0 ) {
+      throw new IllegalArgumentException( "position must be > 0" );
+    }
+    return andAdd( "position()=" + position );
+  }
+
+  @Override
+  public String toString() {
+    return stringBuilder.toString();
+  }
 
   ////////////
   // Internals
@@ -97,6 +116,16 @@ public class Predicate {
       stringBuilder.append( part );
     }
     return this;
+  }
+
+
+  private void checkAttrParameter( String attribute, String value ) {
+    if( attribute == null || value == null ) {
+      throw new NullPointerException( "parameter is null" );
+    }
+    if( attribute.equals( "" ) ) {
+      throw new IllegalArgumentException( "Attribute is empty string" );
+    }
   }
 
 }
