@@ -17,6 +17,10 @@ public class XPathElementSelector extends AbstractElementSelector {
     return any().element( Predicate.with().id( id ) );
   }
 
+  public static XPath<XPathElementSelector> byTestId( String id ) {
+    return any().element( Predicate.with().attr( "test-id", id ) );
+  }
+
   public static XPath<XPathElementSelector> byText( String text ) {
     return any().element( Predicate.with().text( text ) );
   }

@@ -1,0 +1,130 @@
+### Eclipse Workspace Patch 1.0
+#P org.eclipse.rap.demo.controls
+diff --git src/org/eclipse/rap/demo/controls/ButtonTab.java src/org/eclipse/rap/demo/controls/ButtonTab.java
+index e64306e..c72f37d 100644
+--- src/org/eclipse/rap/demo/controls/ButtonTab.java
++++ src/org/eclipse/rap/demo/controls/ButtonTab.java
+@@ -11,6 +11,8 @@
+  ******************************************************************************/
+ package org.eclipse.rap.demo.controls;
+ 
++import static org.eclipse.rap.demo.controls.UITestUtil.setTestId;
++
+ import java.util.Iterator;
+ 
+ import org.eclipse.jface.dialogs.MessageDialog;
+@@ -95,13 +97,17 @@
+     int style = getStyle();
+     pushButton = new Button( parent, style | SWT.PUSH );
+     pushButton.setText( "Push\n Button" );
++    setTestId( pushButton, "pushButton" );
+     updateButtonImage( pushButton );
+     toggleButton = new Button( parent, style | SWT.TOGGLE );
+     toggleButton.setText( "Toggle" );
++    setTestId( toggleButton, "toggleButton" );
+     checkButton1 = new Button( parent, style | SWT.CHECK );
+     checkButton1.setText( "Check" );
++    setTestId( checkButton1, "checkButton1" );
+     checkButton2 = new Button( parent, style | SWT.CHECK );
+     checkButton2.setText( "Check with image" );
++    setTestId( checkButton2, "checkButton2" );
+     createButtonImage( parent.getDisplay() );
+     checkButton2.setImage( buttonImage );
+     radioButton1 = new Button( parent, style | SWT.RADIO );
+@@ -146,6 +152,7 @@
+     final Text text = new Text( group, SWT.BORDER | SWT.SINGLE );
+     text.setLayoutData( new RowData( 100, SWT.DEFAULT ) );
+     defaultButton = new Button( group, style | SWT.PUSH );
++    setTestId( defaultButton, "defaultButton" );
+     defaultButton.setText( "Default Button" );
+     defaultButton.getShell().setDefaultButton( defaultButton );
+     defaultButton.addSelectionListener( new SelectionAdapter() {
+diff --git src/org/eclipse/rap/demo/controls/ControlsDemo.java src/org/eclipse/rap/demo/controls/ControlsDemo.java
+index 34cf6bb..0fe08c6 100644
+--- src/org/eclipse/rap/demo/controls/ControlsDemo.java
++++ src/org/eclipse/rap/demo/controls/ControlsDemo.java
+@@ -11,6 +11,8 @@
+  ******************************************************************************/
+ package org.eclipse.rap.demo.controls;
+ 
++import static org.eclipse.rap.demo.controls.UITestUtil.setTestId;
++
+ import java.io.Serializable;
+ import java.util.HashMap;
+ 
+@@ -55,6 +57,7 @@
+     label.setBounds( 40, 30, 250, 30 );
+     tree = new Tree( parent, SWT.FULL_SELECTION );
+     tree.setLayoutData( createLayoutDataForTree() );
++    setTestId( tree, "demoNavigation" );
+     exampleParent = new Composite( parent, SWT.NONE );
+     exampleParent.setLayout( new FillLayout() );
+     exampleParent.setLayoutData( createLayoutDataForExampleParent() );
+diff --git src/org/eclipse/rap/demo/controls/TextTab.java src/org/eclipse/rap/demo/controls/TextTab.java
+index 4e8d699..ce1a57e 100644
+--- src/org/eclipse/rap/demo/controls/TextTab.java
++++ src/org/eclipse/rap/demo/controls/TextTab.java
+@@ -12,6 +12,8 @@
+ 
+ package org.eclipse.rap.demo.controls;
+ 
++import static org.eclipse.rap.demo.controls.UITestUtil.setTestId;
++
+ import org.eclipse.jface.dialogs.MessageDialog;
+ import org.eclipse.swt.SWT;
+ import org.eclipse.swt.events.KeyAdapter;
+@@ -142,6 +144,7 @@
+     textComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+     textComposite.setLayout( new GridLayout( 1, false ) );
+     text = new Text( textComposite, getStyle() );
++    setTestId( text, "textWidget" );
+     text.setText( "Lorem ipsum dolor sit amet" );
+     text.setSelection( 0, 5 );
+     text.setMessage( "Please enter something" );
+@@ -152,6 +155,7 @@
+     buttonBar.setLayout( new RowLayout( SWT.HORIZONTAL ) );
+     final Button btnGetText = new Button( buttonBar, SWT.PUSH );
+     btnGetText.setText( "getText" );
++    setTestId( btnGetText, "btnGetText" );
+     btnGetText.addSelectionListener( new SelectionAdapter() {
+ 
+       @Override
+@@ -185,6 +189,7 @@
+     outputForm.setLayout( new GridLayout( 2, false ) );
+     new Label( outputForm, SWT.NONE ).setText( "Text:" );
+     textLabel = new Label( outputForm, SWT.BORDER );
++    setTestId( textLabel, "textLabel" );
+     textLabel.setText( "\n\n\n\n\n" );
+     textLabel.setLayoutData( new GridData( SWT.FILL, SWT.DEFAULT, true, false ) );
+     new Label( outputForm, SWT.NONE ).setText( "Selection:" );
+@@ -254,6 +259,7 @@
+   private void createNumbersOnlyVerifyListenerButton() {
+     btnNumbersOnlyVerifyListener
+       = createPropertyButton( "VerifyListener (numbers only)" );
++    setTestId( btnNumbersOnlyVerifyListener, "btnNumbersOnlyVerifyListener" );
+     btnNumbersOnlyVerifyListener.addSelectionListener( new SelectionAdapter() {
+ 
+       @Override
+diff --git src/org/eclipse/rap/demo/controls/UITestUtil.java src/org/eclipse/rap/demo/controls/UITestUtil.java
+new file mode 100644
+index 0000000..56a02b9
+--- /dev/null
++++ src/org/eclipse/rap/demo/controls/UITestUtil.java
+@@ -0,0 +1,17 @@
++package org.eclipse.rap.demo.controls;
++
++import org.eclipse.rap.rwt.RWT;
++import org.eclipse.rap.rwt.client.service.ClientHtml;
++import org.eclipse.swt.widgets.Widget;
++
++
++public class UITestUtil {
++
++  public UITestUtil() {
++    // TODO Auto-generated constructor stub
++  }
++
++  static void setTestId( Widget widget, String value ) {
++    RWT.getClient().getService( ClientHtml.class ).setAttribute( widget, "test-id", value );
++  }
++}

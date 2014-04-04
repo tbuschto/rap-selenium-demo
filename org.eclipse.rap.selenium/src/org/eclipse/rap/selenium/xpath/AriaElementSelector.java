@@ -16,6 +16,10 @@ public class AriaElementSelector extends AbstractElementSelector {
     return any().element( Predicate.with().id( "foo" ) );
   }
 
+  public static XPath<AriaElementSelector> byTestId( String id ) {
+    return any().element( Predicate.with().attr( "test-id", id ) );
+  }
+
   public static XPath<AriaElementSelector> asXPath( String string ) {
     return new XPath<AriaElementSelector>( string );
   }
@@ -40,7 +44,7 @@ public class AriaElementSelector extends AbstractElementSelector {
     return element( widgetWith( role ).attr( "aria-" + ariaAttribute, value ) );
   }
 
-  public Object widget( String role, String text ) {
+  public XPath<AriaElementSelector> widget( String role, String text ) {
     return element( widgetWith( role ).textContent( text ) );
   }
 

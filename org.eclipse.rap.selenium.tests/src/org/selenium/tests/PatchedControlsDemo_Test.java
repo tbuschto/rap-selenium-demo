@@ -1,8 +1,9 @@
 package org.selenium.tests;
 
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.any;
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byId;
+import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byTestId;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byText;
+import static org.junit.Assert.assertEquals;
 
 import org.eclipse.rap.selenium.RapBot;
 import org.eclipse.rap.selenium.xpath.XPath;
@@ -16,7 +17,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.thoughtworks.selenium.Selenium;
 
-public class UnmodifiedControlsDemo_Test {
+public class PatchedControlsDemo_Test {
 
   private final static String URL = "http://127.0.0.1:8383/";
 
@@ -50,42 +51,37 @@ public class UnmodifiedControlsDemo_Test {
 
   @Test
   public void testClickButtons() throws Exception {
-    rap.click( byText( "Push\n Button" ) );
-    rap.click( byText( "Toggle" ) );
-    rap.click( byText( "Check" ) );
-    rap.click( byText( "Check with image" ) );
-    rap.click( byText( "Check" ) );
-    rap.click( byText( "Toggle" ) );
+    rap.click( byTestId( "pushButton" ) );
+    rap.click( byTestId( "toggleButton" ) );
+    rap.click( byTestId( "checkButton1" ) );
+    rap.click( byTestId( "checkButton2" ) );
+    rap.click( byTestId( "checkButton1" ) );
+    rap.click( byTestId( "toggleButton" ) );
   }
 
   @Test
   public void testOpenCloseDialog() throws Exception {
-    // This tests sometimes files with Chrome webdriver for no reason?
-    rap.click( byText( "Default Button" ).lastMatch() );
+    rap.click( byTestId( "defaultButton" ) );
     String label = "The text You entered:";
-    rap.waitForAppear( any().textElementContaining( label ) );//label actually may end with &nbsp;
+    rap.waitForAppear( any().textElementContaining( label ) );//label actually ends with &nbsp;
     rap.click( byText( "OK" ).lastMatch() );
     rap.waitForDisappear( any().textElementContaining( label ) );
-    rap.click( byText( "Push\n Button" ) );
+    rap.click( byTestId( "pushButton" ) );
   }
 
   @Test
   public void testInsertText() throws Exception {
-    XPath<?> button = byText( "Button" ).firstMatch();
-    // This requires the widget IDs to be rendered using org.eclipse.rap.rwt.enableUITests=true
-    String navId = rap.getId( button.clone().parent().parent().parent() );
-    XPath<?> textEl = byId( navId ).descendant().textElement( "Text" );
-    //rap.click( button ); // make sure grid is focused to fire key events
+    XPath<?> textEl = byTestId( "demoNavigation" ).descendant().textElement( "Text" );
     while( !rap.isElementAvailable( textEl ) ) {
-      //rap.press( byId( navId ), PAGE_DOWN ); // <- would also work
-      rap.scrollWheel( byId( navId ).firstChild(), -1 ); // firstChild is the container of rows
+      rap.scrollWheel( byTestId( "demoNavigation" ).firstChild(), -1 );
     }
     rap.click( textEl );
-    rap.waitForAppear( byText( "Text:" ) );
-    rap.click( byText( "VerifyListener (numbers only)" ) );
-    rap.input( any().element( "input" ).firstMatch(), "hello123world" );
-    rap.click( byText( "getText" ) );
-    rap.waitForAppear( byText( "123" ) ); // non-numbers have been deleted by the verify listener
+    rap.waitForAppear( byTestId( "textWidget" ) );
+    rap.click( byTestId( "btnNumbersOnlyVerifyListener" ) );
+    rap.input( byTestId( "textWidget" ).child().element( "input" ), "hello123world" );
+    rap.click( byTestId( "btnGetText" ) );
+    rap.waitForServer();
+    assertEquals( "123", rap.getText( byTestId( "textLabel" ) ) );
   }
 
 

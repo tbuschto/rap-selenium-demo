@@ -489,6 +489,15 @@ public class RapBot {
     return driver.findElement( By.xpath( xpath ) ).getAttribute( attribute );
   }
 
+  public String getText( XPath<?> xpath ) {
+    return getText( xpath.toString() );
+  }
+
+  public String getText( String xpath ) {
+    checkElementCount( xpath );
+    return driver.findElement( By.xpath( xpath ) ).getText();
+  }
+
   public int getGridLineOffset( String grid ) {
     checkElementCount( grid );
     String scrollbar = grid + vScrollBar();
@@ -630,6 +639,7 @@ public class RapBot {
 
   // ///////
   // Helper
+
   private void scrollGridByPage( String grid, int direction ) {
     checkElementCount( grid );
     String scrollbar = grid + vScrollBar();
