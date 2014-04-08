@@ -1,6 +1,6 @@
 package org.selenium.tests;
 
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.any;
+import static org.eclipse.rap.selenium.xpath.XPathElementSelector.all;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byId;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byText;
 
@@ -63,9 +63,9 @@ public class UnmodifiedControlsDemo_Test {
     // This tests sometimes files with Chrome webdriver for no reason?
     rap.click( byText( "Default Button" ).lastMatch() );
     String label = "The text You entered:";
-    rap.waitForAppear( any().textElementContaining( label ) );//label actually may end with &nbsp;
+    rap.waitForAppear( all().textElementContaining( label ) );//label actually may end with &nbsp;
     rap.click( byText( "OK" ).lastMatch() );
-    rap.waitForDisappear( any().textElementContaining( label ) );
+    rap.waitForDisappear( all().textElementContaining( label ) );
     rap.click( byText( "Push\n Button" ) );
   }
 
@@ -74,7 +74,7 @@ public class UnmodifiedControlsDemo_Test {
     XPath<?> button = byText( "Button" ).firstMatch();
     // This requires the widget IDs to be rendered using org.eclipse.rap.rwt.enableUITests=true
     String navId = rap.getId( button.clone().parent().parent().parent() );
-    XPath<?> textEl = byId( navId ).descendant().textElement( "Text" );
+    XPath<?> textEl = byId( navId ).descendants().textElement( "Text" );
     //rap.click( button ); // make sure grid is focused to fire key events
     while( !rap.isElementAvailable( textEl ) ) {
       //rap.press( byId( navId ), PAGE_DOWN ); // <- would also work
@@ -83,7 +83,7 @@ public class UnmodifiedControlsDemo_Test {
     rap.click( textEl );
     rap.waitForAppear( byText( "Text:" ) );
     rap.click( byText( "VerifyListener (numbers only)" ) );
-    rap.input( any().element( "input" ).firstMatch(), "hello123world" );
+    rap.input( all().element( "input" ).firstMatch(), "hello123world" );
     rap.click( byText( "getText" ) );
     rap.waitForAppear( byText( "123" ) ); // non-numbers have been deleted by the verify listener
   }

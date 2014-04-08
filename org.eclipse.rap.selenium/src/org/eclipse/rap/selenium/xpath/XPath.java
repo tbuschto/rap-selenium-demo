@@ -3,17 +3,28 @@ package org.eclipse.rap.selenium.xpath;
 
 
 
-public class XPath<T extends AbstractElementSelector> {
+public class XPath<T extends AbstractElementSelector<?>> {
 
   final StringBuilder stringBuilder;
+  T selector;
 
-  public XPath( String initial ) {
+  public XPath( String initial) {
     stringBuilder = new StringBuilder( initial );
   }
 
-  public T child() {
+  public T children() {
     stringBuilder.append( "/" );
-    return createSelector();
+    return selector;
+  }
+
+  public T descendants() {
+    stringBuilder.append( "/descendant::*/" );
+    return selector;
+  }
+
+  public T all() {
+    stringBuilder.append( "//" );
+    return selector;
   }
 
   public XPath<T> parent() {
@@ -41,16 +52,6 @@ public class XPath<T extends AbstractElementSelector> {
     return this;
   }
 
-  public T descendantOrSelf() {
-    stringBuilder.append( "//" );
-    return createSelector();
-  }
-
-  public T descendant() {
-    stringBuilder.append( "/descendant::*/" );
-    return createSelector();
-  }
-
   public XPath<T> firstMatch() {
     return match( 1 );
   }
@@ -69,8 +70,9 @@ public class XPath<T extends AbstractElementSelector> {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public XPath<T> clone() {
-    return new XPath<T>( toString() );
+    return ( XPath<T> )selector.cloneXPath();
   }
 
   @Override
@@ -78,9 +80,5 @@ public class XPath<T extends AbstractElementSelector> {
     return stringBuilder.toString();
   }
 
-  @SuppressWarnings("unchecked")
-  T createSelector() {
-    return ( T )new XPathElementSelector( this );
-  }
 
 }

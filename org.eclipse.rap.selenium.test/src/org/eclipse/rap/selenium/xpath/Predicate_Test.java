@@ -137,7 +137,7 @@ public class Predicate_Test {
 
   @Test
   public void testWithContent() {
-    assertEquals( "count(.//a)>0", with().content( XPathElementSelector.any().element( "a" ) ).toString() );
+    assertEquals( "count(.//a)>0", with().content( XPathElementSelector.all().element( "a" ) ).toString() );
   }
 
   @Test

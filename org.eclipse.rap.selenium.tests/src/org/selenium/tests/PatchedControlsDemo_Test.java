@@ -1,6 +1,6 @@
 package org.selenium.tests;
 
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.any;
+import static org.eclipse.rap.selenium.xpath.XPathElementSelector.all;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byTestId;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byText;
 import static org.junit.Assert.assertEquals;
@@ -63,22 +63,22 @@ public class PatchedControlsDemo_Test {
   public void testOpenCloseDialog() throws Exception {
     rap.click( byTestId( "defaultButton" ) );
     String label = "The text You entered:";
-    rap.waitForAppear( any().textElementContaining( label ) );//label actually ends with &nbsp;
+    rap.waitForAppear( all().textElementContaining( label ) );//label actually ends with &nbsp;
     rap.click( byText( "OK" ).lastMatch() );
-    rap.waitForDisappear( any().textElementContaining( label ) );
+    rap.waitForDisappear( all().textElementContaining( label ) );
     rap.click( byTestId( "pushButton" ) );
   }
 
   @Test
   public void testInsertText() throws Exception {
-    XPath<?> textEl = byTestId( "demoNavigation" ).descendant().textElement( "Text" );
+    XPath<?> textEl = byTestId( "demoNavigation" ).descendants().textElement( "Text" );
     while( !rap.isElementAvailable( textEl ) ) {
       rap.scrollWheel( byTestId( "demoNavigation" ).firstChild(), -1 );
     }
     rap.click( textEl );
     rap.waitForAppear( byTestId( "textWidget" ) );
     rap.click( byTestId( "btnNumbersOnlyVerifyListener" ) );
-    rap.input( byTestId( "textWidget" ).child().element( "input" ), "hello123world" );
+    rap.input( byTestId( "textWidget" ).children().element( "input" ), "hello123world" );
     rap.click( byTestId( "btnGetText" ) );
     rap.waitForServer();
     assertEquals( "123", rap.getText( byTestId( "textLabel" ) ) );

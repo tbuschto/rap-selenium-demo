@@ -1,8 +1,8 @@
 package org.eclipse.rap.selenium.xpath;
 
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.any;
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.asXPath;
+import static org.eclipse.rap.selenium.xpath.XPathElementSelector.all;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byId;
+import static org.eclipse.rap.selenium.xpath.XPathElementSelector.createXPath;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.root;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -18,12 +18,12 @@ public class XPath_Test {
 
   @Test
   public void testAsXPath() {
-    assertEquals( "foobar", asXPath( "foobar" ).toString() );
+    assertEquals( "foobar", createXPath( "foobar" ).toString() );
   }
 
   @Test
   public void testAllElements() {
-    assertEquals( "//*", any().element().toString() );
+    assertEquals( "//*", all().any().toString() );
   }
 
   @Test
@@ -33,12 +33,12 @@ public class XPath_Test {
 
   @Test
   public void testAllElementsWithName() {
-    assertEquals( "//a", any().element( "a" ).toString() );
+    assertEquals( "//a", all().element( "a" ).toString() );
   }
 
   @Test
   public void testAllRootChildren() {
-    assertEquals( "/*/*", root().child().element().toString() );
+    assertEquals( "/*/*", root().children().any().toString() );
   }
 
   @Test
@@ -68,38 +68,38 @@ public class XPath_Test {
 
   @Test
   public void testAllRootDescendantOrSelf() {
-    assertEquals( "/*//a", root().descendantOrSelf().element( "a" ).toString() );
+    assertEquals( "/*//a", root().all().element( "a" ).toString() );
   }
 
   @Test
   public void testAllRootDescendant() {
-    assertEquals( "/*/descendant::*/a", root().descendant().element( "a" ).toString() );
+    assertEquals( "/*/descendant::*/a", root().descendants().element( "a" ).toString() );
   }
 
   @Test
   public void testElementParent() {
-    assertEquals( "//a/..", any().element( "a" ).parent().toString() );
+    assertEquals( "//a/..", all().element( "a" ).parent().toString() );
   }
 
   @Test
   public void testElementWithPredicate() {
-    assertEquals( "//*[id='foo']", any().element( new Predicate( "id='foo'" ) ).toString() );
+    assertEquals( "//*[id='foo']", all().element( new Predicate( "id='foo'" ) ).toString() );
   }
 
   @Test
   public void testTextElement() {
-    assertEquals( "//*[text()='foo']", any().textElement( "foo" ).toString() );
+    assertEquals( "//*[text()='foo']", all().textElement( "foo" ).toString() );
   }
 
   @Test
   public void testMatchNo() {
-    assertEquals( "(//a)[2]", any().element( "a" ).match( 2 ).toString() );
+    assertEquals( "(//a)[2]", all().element( "a" ).match( 2 ).toString() );
   }
 
   @Test
   public void testInvalidMatchNo() {
     try {
-      any().element( "a" ).match( 0 );
+      all().element( "a" ).match( 0 );
       fail();
     } catch( IllegalArgumentException ex ) {
       // expected
@@ -108,18 +108,18 @@ public class XPath_Test {
 
   @Test
   public void testFirstMatch() {
-    assertEquals( "(//a)[1]", any().element( "a" ).firstMatch().toString() );
+    assertEquals( "(//a)[1]", all().element( "a" ).firstMatch().toString() );
   }
 
   @Test
   public void testLastMatch() {
-    assertEquals( "(//a)[last()]", any().element( "a" ).lastMatch().toString() );
+    assertEquals( "(//a)[last()]", all().element( "a" ).lastMatch().toString() );
   }
 
   @Test
   public void testElementWithEmptyPredicateFails() {
     try {
-      any().element( new Predicate() );
+      all().element( new Predicate() );
       fail();
     } catch( IllegalArgumentException e ) {
       // expected
@@ -128,10 +128,10 @@ public class XPath_Test {
 
   @Test
   public void testClone() {
-    XPath<XPathElementSelector> elementA = any().element( "a" );
+    XPath<XPathElementSelector> elementA = all().element( "a" );
 
     XPath<XPathElementSelector> clone = elementA.clone();
-    clone.child().element( "b" );
+    clone.children().element( "b" );
 
     assertEquals( "//a", elementA.toString() );
     assertEquals( "//a/b", clone.toString() );

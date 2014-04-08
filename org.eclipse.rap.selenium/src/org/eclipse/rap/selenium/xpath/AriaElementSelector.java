@@ -2,34 +2,33 @@ package org.eclipse.rap.selenium.xpath;
 
 import static org.eclipse.rap.selenium.xpath.Predicate.with;
 
-public class AriaElementSelector extends AbstractElementSelector {
+public class AriaElementSelector extends AbstractElementSelector<XPath<AriaElementSelector>> {
 
-  AriaElementSelector( XPath<?> xpath ) {
+  AriaElementSelector( XPath<AriaElementSelector> xpath ) {
     super( xpath );
   }
 
   public static XPath<AriaElementSelector> root() {
-    return new XPath<AriaElementSelector>( "/*" );
+    return createXPath( "/*" );
   }
 
   public static XPath<AriaElementSelector> byId( String id ) {
-    return any().element( Predicate.with().id( "foo" ) );
+    return all().element( with().id( "foo" ) );
   }
 
   public static XPath<AriaElementSelector> byTestId( String id ) {
-    return any().element( Predicate.with().attr( "test-id", id ) );
+    return all().element( with().attr( "test-id", id ) );
   }
 
-  public static XPath<AriaElementSelector> asXPath( String string ) {
-    return new XPath<AriaElementSelector>( string );
+  public static AriaElementSelector all() {
+    XPath<AriaElementSelector> xpath = createXPath( "//" );
+    return xpath.selector;
   }
 
-  public static AriaElementSelector any() {
-    return new AriaElementSelector( new XPath<AriaElementSelector>( "//" ) );
-  }
-
-  private static Predicate widgetWith( String role ) {
-    return with().notAttr( "aria-hidden", "true" ).attr( "role", role );
+  public static XPath<AriaElementSelector> createXPath( String initial ) {
+    XPath<AriaElementSelector> result = new XPath<AriaElementSelector>( initial );
+    result.selector = new AriaElementSelector( result );
+    return result;
   }
 
   public XPath<AriaElementSelector> widget( String role ) {
@@ -48,18 +47,13 @@ public class AriaElementSelector extends AbstractElementSelector {
     return element( widgetWith( role ).textContent( text ) );
   }
 
-  public XPath<AriaElementSelector> element( Predicate predicate ) {
-    return element( null, predicate );
+  private static Predicate widgetWith( String role ) {
+    return with().notAttr( "aria-hidden", "true" ).attr( "role", role );
   }
 
-  public XPath<AriaElementSelector> element( String name, Predicate predicate ) {
-    appendElement( name, predicate );
-    return getXPath();
-  }
-
-  @SuppressWarnings("unchecked")
-  private XPath<AriaElementSelector> getXPath() {
-    return ( XPath<AriaElementSelector> )xpath;
+  @Override
+  XPath<AriaElementSelector> cloneXPath() {
+    return createXPath( xpath.toString() );
   }
 
 }
