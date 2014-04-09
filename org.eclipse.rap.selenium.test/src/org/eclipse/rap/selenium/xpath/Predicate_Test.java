@@ -2,6 +2,7 @@ package org.eclipse.rap.selenium.xpath;
 
 import static org.eclipse.rap.selenium.xpath.Predicate.not;
 import static org.eclipse.rap.selenium.xpath.Predicate.with;
+import static org.eclipse.rap.selenium.xpath.XPath.any;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -142,7 +143,7 @@ public class Predicate_Test {
 
   @Test
   public void testWithContent() {
-    assertEquals( "count(.//a)>0", with().content( XPathElementSelector.all().element( "a" ) ).toString() );
+    assertEquals( "count(.//a)>0", with().content( any().element( "a" ) ).toString() );
   }
 
   @Test

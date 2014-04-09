@@ -1,8 +1,8 @@
 package org.selenium.tests;
 
 import static org.eclipse.rap.selenium.xpath.Predicate.with;
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.all;
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byTestId;
+import static org.eclipse.rap.selenium.xpath.XPath.any;
+import static org.eclipse.rap.selenium.xpath.XPath.byTestId;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.rap.selenium.RapBot;
@@ -63,15 +63,15 @@ public class PatchedControlsDemo_Test {
   public void testOpenCloseDialog() throws Exception {
     rap.click( byTestId( "defaultButton" ) );
     String label = "The text You entered:";
-    rap.waitForAppear( all().textElementContaining( label ) );//label actually ends with &nbsp;
-    rap.click( all().element( with().text( "OK" ) ).lastMatch() );
-    rap.waitForDisappear( all().textElementContaining( label ) );
+    rap.waitForAppear( any().textElementContaining( label ) );//label actually ends with &nbsp;
+    rap.click( any().element( with().text( "OK" ) ).lastMatch() );
+    rap.waitForDisappear( any().textElementContaining( label ) );
     rap.click( byTestId( "pushButton" ) );
   }
 
   @Test
   public void testInsertText() throws Exception {
-    XPath<?> textEl = byTestId( "demoNavigation" ).descendants().textElement( "Text" );
+    XPath textEl = byTestId( "demoNavigation" ).descendants().textElement( "Text" );
     while( !rap.isElementAvailable( textEl ) ) {
       rap.scrollWheel( byTestId( "demoNavigation" ).firstChild(), -1 );
     }

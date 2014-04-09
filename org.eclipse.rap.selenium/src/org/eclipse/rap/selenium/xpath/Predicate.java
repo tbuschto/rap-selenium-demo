@@ -45,7 +45,7 @@ public class Predicate {
     return andAdd( "text()='", string, "'" );
   }
 
-  public Predicate content( XPath<?> content ) {
+  public Predicate content( XPath content ) {
     return andAdd( "count(.", content.toString(), ")>0" );
   }
 

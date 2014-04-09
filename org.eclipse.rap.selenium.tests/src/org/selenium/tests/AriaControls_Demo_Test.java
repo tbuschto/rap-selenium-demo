@@ -2,15 +2,13 @@ package org.selenium.tests;
 
 
 import static org.eclipse.rap.selenium.AriaRoles.TREE_GRID;
-import static org.eclipse.rap.selenium.xpath.AriaElementSelector.all;
-import static org.eclipse.rap.selenium.xpath.AriaElementSelector.byId;
 import static org.eclipse.rap.selenium.xpath.Predicate.with;
+import static org.eclipse.rap.selenium.xpath.XPath.any;
+import static org.eclipse.rap.selenium.xpath.XPath.byId;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.rap.selenium.RapBot;
-import org.eclipse.rap.selenium.xpath.AriaElementSelector;
 import org.eclipse.rap.selenium.xpath.XPath;
-import org.eclipse.rap.selenium.xpath.XPathElementSelector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,22 +63,22 @@ public class AriaControls_Demo_Test {
 
   @Test
   public void testClickElements_byContent() throws Exception {
-    rap.click( XPathElementSelector.all().element( with().text( "Push\n Button" ) ).toString() );
-    rap.click( XPathElementSelector.all().element( with().text( "Toggle" ) ).toString() );
-    rap.click( XPathElementSelector.all().element( with().text( "Check" ) ).toString() );
-    rap.click( XPathElementSelector.all().element( with().text( "Check with image" ) ).toString() );
-    rap.click( XPathElementSelector.all().element( with().text( "Check" ) ).toString() );
-    rap.click( XPathElementSelector.all().element( with().text( "Toggle" ) ).toString() );
+    rap.click( any().element( with().text( "Push\n Button" ) ).toString() );
+    rap.click( any().element( with().text( "Toggle" ) ).toString() );
+    rap.click( any().element( with().text( "Check" ) ).toString() );
+    rap.click( any().element( with().text( "Check with image" ) ).toString() );
+    rap.click( any().element( with().text( "Check" ) ).toString() );
+    rap.click( any().element( with().text( "Toggle" ) ).toString() );
   }
 
   @Test
   public void testClickButtons_byContent() throws Exception {
-    rap.click( AriaElementSelector.all().widget( "button" ).toString() + XPathElementSelector.all().element( with().text( "Push\n Button" ) ).toString() );
-    rap.click( AriaElementSelector.all().widget( "button" ).toString() + XPathElementSelector.all().element( with().text( "Toggle" ) ).toString() );
-    rap.click( AriaElementSelector.all().widget( "checkbox" ).toString() + XPathElementSelector.all().element( with().text( "Check" ) ).toString() );
-    rap.click( AriaElementSelector.all().widget( "checkbox" ).toString() + XPathElementSelector.all().element( with().text( "Check with image" ) ).toString() );
-    rap.click( AriaElementSelector.all().widget( "checkbox" ).toString() + XPathElementSelector.all().element( with().text( "Check" ) ).toString() );
-    rap.click( AriaElementSelector.all().widget( "button" ).toString() + XPathElementSelector.all().element( with().text( "Toggle" ) ).toString() );
+    rap.click( any().widget( "button" ).toString() + any().element( with().text( "Push\n Button" ) ).toString() );
+    rap.click( any().widget( "button" ).toString() + any().element( with().text( "Toggle" ) ).toString() );
+    rap.click( any().widget( "checkbox" ).toString() + any().element( with().text( "Check" ) ).toString() );
+    rap.click( any().widget( "checkbox" ).toString() + any().element( with().text( "Check with image" ) ).toString() );
+    rap.click( any().widget( "checkbox" ).toString() + any().element( with().text( "Check" ) ).toString() );
+    rap.click( any().widget( "button" ).toString() + any().element( with().text( "Toggle" ) ).toString() );
   }
 
 //  @Test
@@ -95,14 +93,14 @@ public class AriaControls_Demo_Test {
 
   @Test
   public void testInsertText() throws Exception {
-    XPath<AriaElementSelector> navGrid = byId( rap.getId( all().widget( TREE_GRID ).firstMatch() ) );
+    XPath navGrid = byId( rap.getId( any().widget( TREE_GRID ).firstMatch() ) );
     rap.click( rap.scrollGridItemIntoView( navGrid, "Text" ) );
-    rap.waitForAppear( XPathElementSelector.all().element( with().text( "Text:" ) ).toString() );
-    rap.click( all().widget( "checkbox" ).toString() + XPathElementSelector.all().element( with().text( "VerifyListener (numbers only)" ) ).toString() );
-    rap.input( all().widget( "textbox" ).firstMatch().toString(), "hello123world" );
-    rap.click( all().widget( "button" ).toString() + XPathElementSelector.all().element( with().text( "getText" ) ).toString() );
-    rap.waitForAppear( XPathElementSelector.all().element( with().text( "123" ) ).toString() );
-    assertEquals( 1, selenium.getXpathCount( XPathElementSelector.all().element( with().text( "123" ) ).toString() ).intValue() );
+    rap.waitForAppear( any().element( with().text( "Text:" ) ).toString() );
+    rap.click( any().widget( "checkbox" ).toString() + any().element( with().text( "VerifyListener (numbers only)" ) ).toString() );
+    rap.input( any().widget( "textbox" ).firstMatch().toString(), "hello123world" );
+    rap.click( any().widget( "button" ).toString() + any().element( with().text( "getText" ) ).toString() );
+    rap.waitForAppear( any().element( with().text( "123" ) ).toString() );
+    assertEquals( 1, selenium.getXpathCount( any().element( with().text( "123" ) ).toString() ).intValue() );
   }
 
 }

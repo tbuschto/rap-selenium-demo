@@ -1,8 +1,8 @@
 package org.selenium.tests;
 
 import static org.eclipse.rap.selenium.xpath.Predicate.with;
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.all;
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byId;
+import static org.eclipse.rap.selenium.xpath.XPath.any;
+import static org.eclipse.rap.selenium.xpath.XPath.byId;
 
 import org.eclipse.rap.selenium.RapBot;
 import org.eclipse.rap.selenium.xpath.XPath;
@@ -50,42 +50,42 @@ public class UnmodifiedControlsDemo_Test {
 
   @Test
   public void testClickButtons() throws Exception {
-    rap.click( all().element( with().text( "Push\n Button" ) ) );
-    rap.click( all().element( with().text( "Toggle" ) ) );
-    rap.click( all().element( with().text( "Check" ) ) );
-    rap.click( all().element( with().text( "Check with image" ) ) );
-    rap.click( all().element( with().text( "Check" ) ) );
-    rap.click( all().element( with().text( "Toggle" ) ) );
+    rap.click( any().element( with().text( "Push\n Button" ) ) );
+    rap.click( any().element( with().text( "Toggle" ) ) );
+    rap.click( any().element( with().text( "Check" ) ) );
+    rap.click( any().element( with().text( "Check with image" ) ) );
+    rap.click( any().element( with().text( "Check" ) ) );
+    rap.click( any().element( with().text( "Toggle" ) ) );
   }
 
   @Test
   public void testOpenCloseDialog() throws Exception {
     // This tests sometimes files with Chrome webdriver for no reason?
-    rap.click( all().element( with().text( "Default Button" ) ).lastMatch() );
+    rap.click( any().element( with().text( "Default Button" ) ).lastMatch() );
     String label = "The text You entered:";
-    rap.waitForAppear( all().textElementContaining( label ) );//label actually may end with &nbsp;
-    rap.click( all().element( with().text( "OK" ) ).lastMatch() );
-    rap.waitForDisappear( all().textElementContaining( label ) );
-    rap.click( all().element( with().text( "Push\n Button" ) ) );
+    rap.waitForAppear( any().textElementContaining( label ) );//label actually may end with &nbsp;
+    rap.click( any().element( with().text( "OK" ) ).lastMatch() );
+    rap.waitForDisappear( any().textElementContaining( label ) );
+    rap.click( any().element( with().text( "Push\n Button" ) ) );
   }
 
   @Test
   public void testInsertText() throws Exception {
-    XPath<?> button = all().element( with().text( "Button" ) ).firstMatch();
+    XPath button = any().element( with().text( "Button" ) ).firstMatch();
     // This requires the widget IDs to be rendered using org.eclipse.rap.rwt.enableUITests=true
     String navId = rap.getId( button.parent().parent().parent() );
-    XPath<?> textEl = byId( navId ).descendants().textElement( "Text" );
+    XPath textEl = byId( navId ).descendants().textElement( "Text" );
     //rap.click( button ); // make sure grid is focused to fire key events
     while( !rap.isElementAvailable( textEl ) ) {
       //rap.press( byId( navId ), PAGE_DOWN ); // <- would also work
       rap.scrollWheel( byId( navId ).firstChild(), -1 ); // firstChild is the container of rows
     }
     rap.click( textEl );
-    rap.waitForAppear( all().element( with().text( "Text:" ) ) );
-    rap.click( all().element( with().text( "VerifyListener (numbers only)" ) ) );
-    rap.input( all().element( "input" ).firstMatch(), "hello123world" );
-    rap.click( all().element( with().text( "getText" ) ) );
-    rap.waitForAppear( all().element( with().text( "123" ) ) ); // non-numbers have been deleted by the verify listener
+    rap.waitForAppear( any().element( with().text( "Text:" ) ) );
+    rap.click( any().element( with().text( "VerifyListener (numbers only)" ) ) );
+    rap.input( any().element( "input" ).firstMatch(), "hello123world" );
+    rap.click( any().element( with().text( "getText" ) ) );
+    rap.waitForAppear( any().element( with().text( "123" ) ) ); // non-numbers have been deleted by the verify listener
   }
 
 

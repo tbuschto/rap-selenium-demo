@@ -1,14 +1,38 @@
 package org.eclipse.rap.selenium.xpath;
 
 import static java.lang.String.valueOf;
+import static org.eclipse.rap.selenium.xpath.Predicate.with;
 
 
 
 
-public class XPath<T extends AbstractElementSelector<?>> {
+public class XPath {
+
+  public static XPath root() {
+    return createXPath( "/*" );
+  }
+
+  public static XPath byId( String id ) {
+    return any().element( with().id( id ) );
+  }
+
+  public static XPath byTestId( String id ) {
+    return any().element( with().attr( "test-id", id ) );
+  }
+
+  public static ElementSelector any() {
+    XPath xpath = createXPath( "//" );
+    return xpath.selector;
+  }
+
+  public static XPath createXPath( String initial ) {
+    XPath result = new XPath( initial );
+    result.selector = new ElementSelector( result );
+    return result;
+  }
 
   private final StringBuilder stringBuilder;
-  T selector;
+  ElementSelector selector;
 
   public XPath( String initial) {
     stringBuilder = new StringBuilder( initial );
@@ -17,27 +41,27 @@ public class XPath<T extends AbstractElementSelector<?>> {
   /////////////////
   // Axis selection
 
-  public T children() {
+  public ElementSelector children() {
     append( "/" );
     return selector;
   }
 
-  public T descendants() {
+  public ElementSelector descendants() {
     append( "/descendant::" );
     return selector;
   }
 
-  public T followingSiblings() {
+  public ElementSelector followingSiblings() {
     append( "/following-sibling::" );
     return selector;
   }
 
-  public T precedingSiblings() {
+  public ElementSelector precedingSiblings() {
     append( "/preceding-sibling::" );
     return selector;
   }
 
-  public T all() {
+  public ElementSelector selfAndDescendants() {
     append( "//" );
     return selector;
   }
@@ -45,43 +69,43 @@ public class XPath<T extends AbstractElementSelector<?>> {
   /////////////////////
   // relative selection
 
-  public XPath<T> parent() {
+  public XPath parent() {
     return clone().append( "/.." );
   }
 
-  public XPath<T> child( int position ) {
+  public XPath child( int position ) {
     if( position <= 0 ) {
       throw new IllegalArgumentException( "position must be > 0" );
     }
     return clone().append( "/*[", valueOf( position ), "]" );
   }
 
-  public XPath<T> firstChild() {
+  public XPath firstChild() {
     return clone().append( "/*[1]" );
   }
 
-  public XPath<T> lastChild() {
+  public XPath lastChild() {
     return clone().append( "/*[last()]" );
   }
 
   ///////////////////
   // reduce selection
 
-  public XPath<T> self( Predicate predicate ) {
-    XPath<T> clone = clone();
+  public XPath self( Predicate predicate ) {
+    XPath clone = clone();
     clone.selector.appendPredicate( predicate );
     return clone;
   }
 
-  public XPath<T> firstMatch() {
+  public XPath firstMatch() {
     return match( 1 );
   }
 
-  public XPath<T> lastMatch() {
+  public XPath lastMatch() {
     return clone().insert( 0, "(" ).append( ")[last()]" );
   }
 
-  public XPath<T> match( int offset ) {
+  public XPath match( int offset ) {
     if( offset <= 0 ) {
       throw new IllegalArgumentException( "Offset has to be > 0" );
     }
@@ -92,9 +116,8 @@ public class XPath<T extends AbstractElementSelector<?>> {
   // Overwritten
 
   @Override
-  @SuppressWarnings("unchecked")
-  public XPath<T> clone() {
-    return ( XPath<T> )selector.cloneXPath();
+  public XPath clone() {
+    return createXPath( this.toString() );
   }
 
   @Override
@@ -109,8 +132,8 @@ public class XPath<T extends AbstractElementSelector<?>> {
 
   @Override
   public boolean equals( Object obj ) {
-    if( obj instanceof XPath<?> ) {
-      return toString().equals( ( ( XPath<?> )obj ).toString() );
+    if( obj instanceof XPath ) {
+      return toString().equals( ( ( XPath )obj ).toString() );
     }
     return false;
   }
@@ -118,14 +141,14 @@ public class XPath<T extends AbstractElementSelector<?>> {
   ////////////
   // Internals
 
-  XPath<T> append( String... strings ) {
+  XPath append( String... strings ) {
     for( int i = 0; i < strings.length; i++ ) {
       stringBuilder.append( strings[ i ] );
     }
     return this;
   }
 
-  XPath<T> insert( int offset, String string ) {
+  XPath insert( int offset, String string ) {
     stringBuilder.insert( offset, string );
     return this;
   }
