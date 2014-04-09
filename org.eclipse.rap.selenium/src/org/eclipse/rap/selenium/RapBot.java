@@ -1,11 +1,20 @@
 package org.eclipse.rap.selenium;
 
+import static org.eclipse.rap.selenium.AriaRoles.COLUMN_HEADER;
+import static org.eclipse.rap.selenium.AriaRoles.GRID_CELL;
+import static org.eclipse.rap.selenium.AriaRoles.ROW;
+import static org.eclipse.rap.selenium.AriaRoles.SCROLL_BAR;
+import static org.eclipse.rap.selenium.xpath.AriaElementSelector.all;
+import static org.eclipse.rap.selenium.xpath.AriaElementSelector.createXPath;
+import static org.eclipse.rap.selenium.xpath.Predicate.with;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.eclipse.rap.rwt.jstest.TestContribution;
+import org.eclipse.rap.selenium.xpath.AriaElementSelector;
 import org.eclipse.rap.selenium.xpath.XPath;
 import org.eclipse.rap.selenium.xpath.XPathElementSelector;
 import org.openqa.selenium.By;
@@ -39,143 +48,10 @@ public class RapBot {
     RAP_BOT_JS_CONTENT = readRapBotJs();
   }
 
-  // ////////////////////////////
-  // XPath helper, to be removed
 
-  public static String firstResult( String xpath ) {
-    // regarding syntax see
-    // http://blog.neustar.biz/web-performance/effectively-using-seleniums-getxpathcount-function/
-    // There may be a bug where this fails in some combinations with FF, eg
-    // (...)[1]//*[...]
-    return "(" + xpath + ")[1]";
-  }
-
-  public static String atPosition( int index ) {
-    return "[" + index + "]";
-  }
-
-  public static String atFirstPosition() {
-    return atPosition( 0 );
-  }
-
-  public static String atLastPosition() {
-    return "[last()]";
-  }
-
-  public static String atLastPosition( int i ) {
-    return "[last()" + i + "]";
-  }
-
-  public static String containing( String xpath ) {
-    String relativePath = xpath;
-    if( relativePath.startsWith( "//*" ) ) {
-      relativePath = relativePath.substring( 3 ); // find a (much) better
-                                                  // solution
-    }
-    return "[count(descendant::*" + relativePath + ")>0]";
-  }
-
-  public static String nextSibling() {
-    return "/following-sibling::*";
-  }
-
-  public static String nextSibling( String xpath ) {
-    String relativePath = xpath;
-    if( relativePath.startsWith( "//*" ) ) {
-      relativePath = relativePath.substring( 3 ); // find a (much) better
-                                                  // solution
-    }
-    return "/following-sibling::*" + relativePath;
-  }
-
-  public static String byTestId( String testId ) {
-    return "//*[@testId='" + testId + "']";
-  }
-
-  public static String byId( String id ) {
-    return "//*[@id='" + id + "']";
-  }
-
-  public static String byText( String content ) {
-    return XPathElementSelector.byText( content ).toString();
-  }
-
-  public static String label( String content ) {
-    return byText( content ) + "/parent::*[not(@role)]"; // labels have no role
-  }
-
-  public static String button( String content ) {
-    return byAria( "button" ) + containing( byText( content ) );
-  }
-
-  public static String checkbox( String content ) {
-    return byAria( "checkbox" ) + containing( byText( content ) );
-  }
-
-  public static String byAria( String role ) {
-    return "//*[not(@aria-hidden='true') and @role='" + role + "']";
-  }
-
-  public static String byAria( String role, String text ) {
-    return byAria( role ) + containing( byText( text ) );
-  }
-
-  public static String byAria( String role, String state, boolean value ) {
-    return "//*[not(@aria-hidden='true') and @role='"
-           + role
-           + "' and @aria-"
-           + state
-           + "='"
-           + value
-           + "']";
-  }
-
-  public static String byAria( String role, String property, String value ) {
-    return "//*[not(@aria-hidden='true') and @role='"
-           + role
-           + "' and @aria-"
-           + property
-           + "='"
-           + value
-           + "']";
-  }
-
-  public static String row() {
-    return byAria( "row" ) + containing( byAria( "gridcell" ) ); // excludes
-                                                                 // header
-  }
-
-  public static String vScrollBar() {
-    return byAria( "scrollbar", "orientation", "vertical" );
-  }
-
-  public static String rowWithCellText( String cellContent ) {
-    return byAria( "row" ) + containing( cellWithText( cellContent ) );
-  }
-
-  public static String rowWithCellText( String columnId, String cellContent ) {
-    return byAria( "row" ) + containing( cellWithText( columnId, cellContent ) );
-  }
-
-  public static String cellWithText( String content ) {
-    return byAria( "gridcell" ) + "[text()='" + content + "']";
-  }
-
-  public static String cellWithText( String columnId, String content ) {
-    return byAria( "gridcell" )
-           + "[text()='"
-           + content
-           + "' and @aria-describedby='"
-           + columnId
-           + "']";
-  }
-
-  public static String cellDescribedBy( String columnId ) {
-    return byAria( "gridcell" ) + "[@aria-describedby='" + columnId + "']";
-  }
-
-  // ///////////////////
+  /////////////////////
   // Controlling the UI
+
   public void loadApplication( String url ) {
     loadApplication( url, true );
   }
@@ -185,7 +61,7 @@ public class RapBot {
     selenium.waitForPageToLoad( "10000" );
     patchRAP();
     if( ariaEnabled ) {
-      waitForAppear( byAria( "application" ) );
+      waitForAppear( all().widget( "application" ) );
     } else {
       waitForServer();
     }
@@ -199,6 +75,7 @@ public class RapBot {
 
   public void click( String xpath ) {
     checkElementCount( xpath );
+    // selenium.click is unreliable
 //    try {
 //      selenium.mouseOver( xpath );
 //      try {
@@ -271,7 +148,11 @@ public class RapBot {
     selenium.runScript( script );
   }
 
-  public void clear( String xpath ) {
+  public void clearInput( XPath<?> xpath ) {
+    clearInput( xpath.toString() );
+  }
+
+  public void clearInput( String xpath ) {
     checkElementCount( xpath );
     WebElement inputElement = driver.findElement( By.xpath( xpath ) );
     inputElement.clear();
@@ -296,10 +177,14 @@ public class RapBot {
    * The first line has index zero. Returns path to row rendering the given line
    * or null if it doesn't exist
    */
+  public XPath<?> scrollGridLineIntoView( XPath<?> grid, int lineIndex ) {
+    return createXPath( scrollGridLineIntoView( grid.toString(), lineIndex ) );
+  }
+
   public String scrollGridLineIntoView( String grid, int lineIndex ) {
     checkElementCount( grid );
     String scrollbar = grid + vScrollBar();
-    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+    if( getXPathCount( scrollbar ) == 0 ) {
       return getGridRowAtPosition( grid, lineIndex );
     } else {
       int offset = getGridLineOffset( grid );
@@ -321,15 +206,30 @@ public class RapBot {
     }
   }
 
-  public void scrollGridItemIntoView( String grid, String columnName, String cellContent ) {
-    String columnId = getColumnId( grid, columnName );
-    scrollGridItemIntoView( grid, rowWithCellText( columnId, cellContent ) );
+  public String scrollGridItemIntoView( String grid, String cellContent ) {
+    return scrollGridItemIntoView( createXPath( grid ), cellContent ).toString();
   }
 
-  public String scrollGridItemIntoView( String grid, String relativePath ) {
-    String needle = grid + relativePath;
+  public XPath<?> scrollGridItemIntoView( XPath<AriaElementSelector> grid, String cellContent ) {
+    XPath<?> needle = rowWithCellText( grid, cellContent );
+    scrollGridItemIntoView( grid, needle );
+    return needle;
+  }
+
+  public String scrollGridItemIntoView( String grid, String columnName, String cellContent ) {
+    return scrollGridItemIntoView( createXPath( grid ), columnName, cellContent ).toString();
+  }
+
+  public XPath<?> scrollGridItemIntoView( XPath<AriaElementSelector> grid, String columnName, String cellContent ) {
+    String columnId = getColumnId( grid, columnName );
+    XPath<?> needle = rowWithCellText( grid, columnId, cellContent );
+    scrollGridItemIntoView( grid, needle );
+    return needle;
+  }
+
+  private void scrollGridItemIntoView( XPath<?> grid, XPath<?> needle ) {
     if( isElementAvailable( needle ) ) {
-      return needle;
+      return;
     }
     int startOffset = getGridLineOffset( grid );
     int max = getMaxGridLineOffset( grid );
@@ -338,7 +238,7 @@ public class RapBot {
       waitForItems( grid );
     }
     if( isElementAvailable( needle ) ) {
-      return needle;
+      return;
     }
     scrollGridLineIntoView( grid, 0 );
     waitForItems( grid );
@@ -347,13 +247,20 @@ public class RapBot {
       waitForItems( grid );
     }
     if( !isElementAvailable( needle ) ) {
-      throw new IllegalStateException( relativePath + " not found in grid " + grid );
+      throw new IllegalStateException( "Item not found in grid" );
     }
-    return needle;
+  }
+
+  public void scrollGridPageDown( XPath<?> grid ) {
+    scrollGridPageDown( grid.toString() );
   }
 
   public void scrollGridPageDown( String grid ) {
     scrollGridByPage( grid, -1 );
+  }
+
+  public void scrollGridPageUp( XPath<?> grid ) {
+    scrollGridPageUp( grid.toString() );
   }
 
   public void scrollGridPageUp( String grid ) {
@@ -436,14 +343,19 @@ public class RapBot {
    *
    * @param gridPath
    */
+  public void waitForItems( XPath<?> grid ) {
+    waitForItems( grid.toString()  );
+  }
+
   public void waitForItems( String gridPath ) {
     checkElementCount( gridPath );
-    waitForDisappear( gridPath + byAria( "row", "busy", true ) );
+    waitForDisappear( gridPath + all().widget( "row", "busy", "true" ).toString() );
     checkElementCount( gridPath );
   }
 
-  // ////////////////////
-  // Reading form the UI
+  // ///////////////
+  // Reading from UI
+
   public boolean isRequestPending() {
     if( driver instanceof JavascriptExecutor ) {
       String script = "return RapBot.busy;";
@@ -468,11 +380,18 @@ public class RapBot {
 //      return false;
 //    }
     try{
-      driver.findElement( By.xpath( xpath ) );
-      return true;
-    }catch(NoSuchElementException e){
+      return driver.findElements( By.xpath( xpath ) ).size() > 0;
+    } catch( NoSuchElementException e ) {
       return false;
     }
+  }
+
+  public int getXPathCount( String xpath ) {
+    return driver.findElements( By.xpath( xpath ) ).size();
+  }
+
+  public int getXPathCount( XPath<?> xpath ) {
+    return getXPathCount( xpath.toString() );
   }
 
   public String getId( XPath<?> xpath ) {
@@ -482,6 +401,10 @@ public class RapBot {
   public String getId( String xpath ) {
     checkElementCount( xpath );
     return getAttribute( xpath, "id" );
+  }
+
+  public String getAttribute( XPath<?> xpath, String attribute ) {
+    return getAttribute( xpath.toString(), attribute );
   }
 
   public String getAttribute( String xpath, String attribute ) {
@@ -498,10 +421,14 @@ public class RapBot {
     return driver.findElement( By.xpath( xpath ) ).getText();
   }
 
+  public int getGridLineOffset( XPath<?> grid ) {
+    return getGridLineOffset( grid.toString() );
+  }
+
   public int getGridLineOffset( String grid ) {
     checkElementCount( grid );
     String scrollbar = grid + vScrollBar();
-    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+    if( getXPathCount( scrollbar ) == 0 ) {
       return 0;
     } else {
       // this mirrors the grid implementation (Grid._updateTopItemIndex)
@@ -512,9 +439,13 @@ public class RapBot {
     }
   }
 
+  public int getMaxGridLineOffset( XPath<?> grid ) {
+    return getMaxGridLineOffset( grid.toString() );
+  }
+
   public int getMaxGridLineOffset( String grid ) {
     String scrollbar = grid + vScrollBar();
-    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+    if( getXPathCount( scrollbar ) == 0 ) {
       return 0;
     } else {
       int max = Integer.parseInt( getAttribute( scrollbar, "aria-valuemax" ) );
@@ -522,10 +453,14 @@ public class RapBot {
     }
   }
 
+  public int getGridLineCount( XPath<?> grid ) {
+    return getGridLineCount( grid.toString() );
+  }
+
   public int getGridLineCount( String grid ) {
     checkElementCount( grid );
     String scrollbar = grid + vScrollBar();
-    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+    if( getXPathCount( scrollbar ) == 0 ) {
       return getVisibleGridLines( grid );
     } else {
       int scrollHeight = Integer.parseInt( getAttribute( scrollbar, "aria-valuemax" ) )
@@ -535,8 +470,12 @@ public class RapBot {
     }
   }
 
+  public int getVisibleGridLines( XPath<?> grid ) {
+    return getXPathCount( getClientArea( grid ) );
+  }
+
   public int getVisibleGridLines( String grid ) {
-    return selenium.getXpathCount( getClientArea( grid ) + row() ).intValue();
+    return getVisibleGridLines( createXPath( grid ) );
   }
 
   /**
@@ -546,10 +485,16 @@ public class RapBot {
    * @param grid
    * @return
    */
-  public String getClientArea( String grid ) {
+  public XPath<AriaElementSelector> getClientArea( XPath<?> grid ) {
     // include invisible scrollbar (as opposed to vScrollBar())
-    String scrollbar = grid + "//*[@role='scrollbar' and @aria-orientation='vertical']";
+    XPath<?> scrollbar = grid.descendants().element(
+      with().attr( "role", SCROLL_BAR ).attr( "orientation", "vertical" )
+    );
     return getAriaControls( scrollbar );
+  }
+
+  public String getClientArea( String grid ) {
+    return getClientArea( createXPath( grid ) ).toString();
   }
 
   /**
@@ -561,6 +506,10 @@ public class RapBot {
    * @param rowIndex
    * @return
    */
+  public XPath<?> getGridRowAtLine( XPath<?> grid, int lineIndex ) {
+    return getGridRowAtPosition( grid, lineIndex - getGridLineOffset( grid ) );
+  }
+
   public String getGridRowAtLine( String grid, int lineIndex ) {
     return getGridRowAtPosition( grid, lineIndex - getGridLineOffset( grid ) );
   }
@@ -574,32 +523,63 @@ public class RapBot {
    * @param position
    * @return
    */
+  public XPath<?> getGridRowAtPosition( XPath<?> grid, int position ) {
+    return getGridRowAtPosition( grid, position );
+  }
+
   public String getGridRowAtPosition( String grid, int position ) {
     checkElementCount( grid );
     waitForItems( grid );
     String rowId = getFlowTo( grid );
     for( int i = 0; i < position && rowId != null; i++ ) {
-      rowId = getAttribute( byId( rowId ), "aria-flowto" );
+      rowId = getAttribute( XPathElementSelector.byId( rowId ).toString(), "aria-flowto" );
       if( rowId != null && rowId.endsWith( "_1" ) ) {
-        rowId = getAttribute( byId( rowId ), "aria-flowto" );
+        rowId = getAttribute( XPathElementSelector.byId( rowId ).toString(), "aria-flowto" );
       }
     }
     return rowId != null
-                        ? byId( rowId )
+                        ? XPathElementSelector.byId( rowId ).toString()
                         : null;
+  }
+
+  public String getGridRowByCell( String grid, String columnName, String cellContent ) {
+    String result = getGridRowByCell( grid.toString(), columnName, cellContent );
+    return result != null ? result.toString() : null;
   }
 
   /**
    * Returns the path to the row with the described cell. Returns null if no
    * such cell is visible on screen. Throws {@link IllegalStateException} if the
-   * column does not exist or there are multiple rows with that cell.
+   * column does not exist or there are multiple visible rows with that cell.
    */
-  public String getGridRowByCell( String grid, String columnName, String cellContent ) {
+  public XPath<?> getGridRowByCell( XPath<AriaElementSelector> grid, String columnName, String cellContent ) {
     String columnId = getColumnId( grid, columnName );
-    String row = grid + rowWithCellText( columnId, cellContent );
-    int count = selenium.getXpathCount( row ).intValue();
+    XPath<?> row = rowWithCellText( grid, columnId, cellContent );
+    int count = getXPathCount( row );
     if( count == 1 ) {
-      return byId( getId( row ) );
+      return XPathElementSelector.byId( getId( row ) );
+    } else if( count == 0 ) {
+      return null;
+    } else {
+      throw new IllegalStateException( "There are multiple rows matching " + row );
+    }
+  }
+
+  public String getGridRowByCell( String grid, String cellContent ) {
+    String result = getGridRowByCell( grid.toString(), cellContent );
+    return result != null ? result.toString() : null;
+  }
+
+  /**
+   * Returns the path to the row with the described cell. Returns null if no
+   * such cell is visible on screen. Throws {@link IllegalStateException} if the
+   * column does not exist or there are multiple visible rows with that cell.
+   */
+  public XPath<?> getGridRowByCell( XPath<AriaElementSelector> grid, String cellContent ) {
+    XPath<?> row = rowWithCellText( grid, cellContent );
+    int count = getXPathCount( row );
+    if( count == 1 ) {
+      return XPathElementSelector.byId( getId( row ) );
     } else if( count == 0 ) {
       return null;
     } else {
@@ -609,20 +589,27 @@ public class RapBot {
 
   /**
    * @param grid
-   * @param rowPath path to row relative to grid. Expects leftside row for fixed
-   *          column grids
+   * @param rowPath path to row relative to grid. Expects left-side row for fixed column grids
    * @param columnName
    * @return
    */
+  public String getGridCellContent( XPath<?> grid, XPath<?> rowPath, String columnName ) {
+    return getGridCellContent( grid.toString(), rowPath.toString(), columnName );
+  }
+
   public String getGridCellContent( String grid, String rowPath, String columnName ) {
     checkElementCount( grid + rowPath );
     String columnId = getColumnId( grid, columnName );
     String cell = grid + rowPath + cellDescribedBy( columnId );
-    if( selenium.getXpathCount( cell ).intValue() == 0 && getFlowTo( rowPath ).endsWith( "_1" ) ) {
-      cell = byId( getFlowTo( rowPath ) ) + cellDescribedBy( columnId );
+    if( getXPathCount( cell ) == 0 && getFlowTo( rowPath ).endsWith( "_1" ) ) {
+      cell = XPathElementSelector.byId( getFlowTo( rowPath ) ).toString() + cellDescribedBy( columnId );
     }
     checkElementCount( cell );
     return selenium.getText( cell );
+  }
+
+  public String getFlowTo( XPath<?> xpath ) {
+    return getFlowTo( xpath.toString() );
   }
 
   public String getFlowTo( String xpath ) {
@@ -630,20 +617,28 @@ public class RapBot {
   }
 
   public String getColumnId( String grid, String columnName ) {
-    return getId( grid + byAria( "columnheader", columnName ) );
+    return getColumnId( createXPath( grid ), columnName );
+  }
+
+  public String getColumnId( XPath<AriaElementSelector> grid, String columnName ) {
+    return getId( grid.clone().all().widget( COLUMN_HEADER, with().textContent( columnName ) ) );
   }
 
   public int getGridLineHeight( String grid ) {
-    return selenium.getElementHeight( grid + row() ).intValue();
+    return getGridLineHeight( createXPath( grid ) );
   }
 
-  // ///////
+  public int getGridLineHeight( XPath<AriaElementSelector> grid ) {
+    return selenium.getElementHeight( rowOf( grid ).toString() ).intValue();
+  }
+
+  /////////
   // Helper
 
   private void scrollGridByPage( String grid, int direction ) {
     checkElementCount( grid );
     String scrollbar = grid + vScrollBar();
-    if( selenium.getXpathCount( scrollbar ).intValue() == 0 ) {
+    if( getXPathCount( scrollbar ) == 0 ) {
       return;
     } else {
       String clientarea = getAriaControls( scrollbar );
@@ -656,8 +651,12 @@ public class RapBot {
   }
 
   private String getAriaControls( String xpath ) {
+    return getAriaControls( createXPath( xpath ) ).toString();
+  }
+
+  private XPath<AriaElementSelector> getAriaControls( XPath<?> xpath ) {
     String controls = getAttribute( xpath, "aria-controls" );
-    return byId( controls.split( "\\s" )[ 0 ] );
+    return AriaElementSelector.byId( controls.split( "\\s" )[ 0 ] );
   }
 
   private String xpathToJs( String xpath ) {
@@ -667,7 +666,7 @@ public class RapBot {
   }
 
   private void checkElementCount( String xpath ) {
-    int elementCount = selenium.getXpathCount( xpath ).intValue();
+    int elementCount = getXPathCount( xpath );
     if( elementCount != 1 ) {
       throw new IllegalStateException( elementCount + " Elements for " + xpath );
     }
@@ -678,6 +677,11 @@ public class RapBot {
     // Currently required for emulating key events on internal RAP event handler
     // level:
     selenium.runScript( NAMESPACE_JS + TEST_UTIL_JS_CONTENT );
+  }
+
+  public static XPath<AriaElementSelector> rowOf( XPath<AriaElementSelector> grid ) {
+    // excludes header:
+    return grid.descendants().widget( ROW, with().content( all().widget( "gridcell" )  ) );
   }
 
   private static String readTestUtil() {
@@ -717,4 +721,29 @@ public class RapBot {
     }
     return builder.toString();
   }
+
+  private static String vScrollBar() {
+    return all().widget( "scrollbar", "orientation", "vertical" ).toString();
+  }
+
+  private static XPath<?> rowWithCellText( XPath<AriaElementSelector> grid, String cellContent ) {
+    return all().widget( ROW, with().content( cellWithText( grid, cellContent ) ) );
+  }
+
+  private static XPath<?> rowWithCellText( XPath<AriaElementSelector> grid, String columnId, String cellContent ) {
+    return all().widget( ROW, with().content( cellWithText( grid, columnId, cellContent ) ) );
+  }
+
+  private static XPath<?> cellWithText( XPath<AriaElementSelector> grid, String content ) {
+    return grid.descendants().widget( GRID_CELL, content );
+  }
+
+  private static XPath<?> cellWithText( XPath<?> grid, String columnId, String content ) {
+    return all().widget( GRID_CELL, with().text( content ).attr( "describedby", columnId ) );
+  }
+
+  private static String cellDescribedBy( String columnId ) {
+    return AriaElementSelector.all().widget( GRID_CELL ).toString() + "[@aria-describedby='" + columnId + "']";
+  }
+
 }

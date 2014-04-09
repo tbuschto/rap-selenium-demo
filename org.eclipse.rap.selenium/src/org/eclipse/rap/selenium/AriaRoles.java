@@ -107,12 +107,13 @@ public final class AriaRoles {
   public static final String COLUMN_HEADER = "columnheader";
 
   /**
-   * Matches org.eclipse.swt.widgets.TableItem and org.eclipse.swt.widgets.TreeItem
+   * Matches VISIBLE org.eclipse.swt.widgets.TableItem, org.eclipse.swt.widgets.TreeItem
+   * AND the header of org.eclipse.swt.widgets.Table and org.eclipse.swt.widgets.Tree
    */
   public static final String ROW = "row";
 
   /**
-   * Matches cells of org.eclipse.swt.widgets.TableItem and org.eclipse.swt.widgets.TreeItem
+   * Matches VISIBLE cells of org.eclipse.swt.widgets.TableItem and org.eclipse.swt.widgets.TreeItem
    */
   public static final String GRID_CELL = "gridcell";
 

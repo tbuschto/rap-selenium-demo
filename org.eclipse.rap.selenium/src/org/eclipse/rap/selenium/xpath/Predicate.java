@@ -79,10 +79,11 @@ public class Predicate {
   }
 
   public Predicate position( int position ) {
-    if( position <= 0 ) {
-      throw new IllegalArgumentException( "position must be > 0" );
+    if( position == 0 ) {
+      throw new IllegalArgumentException( "position must be != 0" );
     }
-    return andAdd( "position()=" + position );
+    String positionStr = position > 0 ? String.valueOf( position ) : "last()" + position;
+    return andAdd( "position()=" + positionStr );
   }
 
   @Override

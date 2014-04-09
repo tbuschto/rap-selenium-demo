@@ -21,7 +21,7 @@ public abstract class AbstractElementSelector<T extends XPath<?>> {
     return element( null, null );
   }
 
-  public T element( Predicate predicate ) {
+  public T element( Predicate predicate ) { // TODO : plural? rename/rework firstMatch? Should never END in plural
     return element( null, predicate );
   }
 
@@ -30,22 +30,24 @@ public abstract class AbstractElementSelector<T extends XPath<?>> {
   }
 
   public T element( String name, Predicate predicate ) {
-    appendElement( name, predicate );
+    appendElement( name );
+    appendPredicate( predicate );
     return xpath;
   }
 
   abstract T cloneXPath();
 
-  private void appendElement( String name, Predicate predicate ) {
-    xpath.stringBuilder.append( name != null ? name : "*" );
+  private void appendElement( String name) {
+    xpath.append( name != null ? name : "*" );
+  }
+
+  void appendPredicate( Predicate predicate ) {
     if( predicate != null ) {
       String predicateString = predicate.toString();
       if( predicateString.isEmpty() ) {
         throw new IllegalArgumentException( "Predicate is empty" );
       }
-      xpath.stringBuilder.append( "[" );
-      xpath.stringBuilder.append( predicate.toString() );
-      xpath.stringBuilder.append( "]" );
+      xpath.append( "[", predicate.toString(), "]" );
     }
   }
 

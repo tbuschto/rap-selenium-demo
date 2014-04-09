@@ -111,6 +111,11 @@ public class Predicate_Test {
   }
 
   @Test
+  public void testWithPositionMinusOne() {
+    assertEquals( "position()=last()-1", with().position( -1 ).toString() );
+  }
+
+  @Test
   public void testWithPositionZero() {
     try {
       with().position( 0 );

@@ -1,8 +1,8 @@
 package org.selenium.tests;
 
+import static org.eclipse.rap.selenium.xpath.Predicate.with;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.all;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byTestId;
-import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byText;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.rap.selenium.RapBot;
@@ -64,7 +64,7 @@ public class PatchedControlsDemo_Test {
     rap.click( byTestId( "defaultButton" ) );
     String label = "The text You entered:";
     rap.waitForAppear( all().textElementContaining( label ) );//label actually ends with &nbsp;
-    rap.click( byText( "OK" ).lastMatch() );
+    rap.click( all().element( with().text( "OK" ) ).lastMatch() );
     rap.waitForDisappear( all().textElementContaining( label ) );
     rap.click( byTestId( "pushButton" ) );
   }

@@ -6,6 +6,7 @@ import static org.eclipse.rap.selenium.xpath.Predicate.with;
 
 public class XPathElementSelector extends AbstractElementSelector<XPath<XPathElementSelector>> {
 
+  // TODO : merge again with AriaElementSelector
   public static XPath<XPathElementSelector> root() {
     return createXPath( "/*" );
   }
@@ -16,10 +17,6 @@ public class XPathElementSelector extends AbstractElementSelector<XPath<XPathEle
 
   public static XPath<XPathElementSelector> byTestId( String id ) {
     return all().element( with().attr( "test-id", id ) );
-  }
-
-  public static XPath<XPathElementSelector> byText( String text ) {
-    return all().element( with().text( text ) );
   }
 
   public static XPathElementSelector all() {

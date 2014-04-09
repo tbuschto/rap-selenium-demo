@@ -5,6 +5,8 @@ import static org.eclipse.rap.selenium.xpath.XPathElementSelector.byId;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.createXPath;
 import static org.eclipse.rap.selenium.xpath.XPathElementSelector.root;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -17,13 +19,20 @@ public class XPath_Test {
   }
 
   @Test
-  public void testAsXPath() {
+  public void testCrateXPath() {
     assertEquals( "foobar", createXPath( "foobar" ).toString() );
   }
 
   @Test
   public void testAllElements() {
     assertEquals( "//*", all().any().toString() );
+  }
+
+  @Test
+  public void testReturnClone() {
+    XPath<XPathElementSelector> xpath1 = all().any();
+    xpath1.child( 1 );
+    assertEquals( "//*", xpath1.toString() );
   }
 
   @Test
@@ -72,8 +81,8 @@ public class XPath_Test {
   }
 
   @Test
-  public void testAllRootDescendant() {
-    assertEquals( "/*/descendant::*/a", root().descendants().element( "a" ).toString() );
+  public void testAllRootDescendantElementA() {
+    assertEquals( "/*/descendant::a", root().descendants().element( "a" ).toString() );
   }
 
   @Test
@@ -82,13 +91,28 @@ public class XPath_Test {
   }
 
   @Test
-  public void testElementWithPredicate() {
-    assertEquals( "//*[id='foo']", all().element( new Predicate( "id='foo'" ) ).toString() );
+  public void testFollowingSiblings() {
+    assertEquals( "/*/following-sibling::a", root().followingSiblings().element( "a" ).toString() );
   }
 
   @Test
-  public void testTextElement() {
-    assertEquals( "//*[text()='foo']", all().textElement( "foo" ).toString() );
+  public void testPrecedingSiblings() {
+    assertEquals( "/*/preceding-sibling::a", root().precedingSiblings().element( "a" ).toString() );
+  }
+
+  @Test
+  public void testElementWithPredicate() {
+    assertEquals( "//*[bar='foo']", all().element( new Predicate( "bar='foo'" ) ).toString() );
+  }
+
+  @Test
+  public void testElementSelfWithPredicate() {
+    assertEquals( "//a[bar='foo']", all().element( "a" ).self( new Predicate( "bar='foo'" ) ).toString() );
+  }
+
+  @Test
+  public void testFirstMatch() {
+    assertEquals( "(//a)[1]", all().element( "a" ).firstMatch().toString() );
   }
 
   @Test
@@ -106,10 +130,6 @@ public class XPath_Test {
     }
   }
 
-  @Test
-  public void testFirstMatch() {
-    assertEquals( "(//a)[1]", all().element( "a" ).firstMatch().toString() );
-  }
 
   @Test
   public void testLastMatch() {
@@ -135,6 +155,24 @@ public class XPath_Test {
 
     assertEquals( "//a", elementA.toString() );
     assertEquals( "//a/b", clone.toString() );
+  }
+
+  @Test
+  public void testEquals() {
+    XPath<XPathElementSelector> element1 = all().element( "a" ).children().element( "b" );
+    XPath<XPathElementSelector> element2 = all().element( "a" ).children().element( "b" );
+    assertTrue( element1.equals( element2 ) );
+    assertTrue( element2.equals( element1 ) );
+    assertFalse( element1.equals( null ) );
+    assertFalse( element2.equals( null ) );
+  }
+
+  @Test
+  public void testToHash() {
+    XPath<XPathElementSelector> element1 = all().element( "a" ).children().element( "b" );
+    XPath<XPathElementSelector> element2 = all().element( "a" ).children().element( "b" );
+    assertEquals( element1.hashCode(), element2.hashCode() );
+    assertEquals( element2.hashCode(), element1.hashCode() );
   }
 
 }
