@@ -75,7 +75,7 @@ public class UnmodifiedControlsDemo_Test {
     XPath navigation = byId( rap.getId( someNavItem.parent().parent().parent() ) );
     XPath navItemText =  navigation.descendants().textElement( "Text" );
     while( !rap.isElementAvailable( navItemText ) ) {
-      //rap.press( navigation.firstChild(), PAGE_DOWN ); // <- would also work
+      //rap.press( navigation.firstChild(), PAGE_DOWN ); // <- would also work, but cause navigation
       rap.scrollWheel( navigation.firstChild(), -1 ); // firstChild is the container of rows
     }
     rap.click( navItemText );
@@ -85,6 +85,5 @@ public class UnmodifiedControlsDemo_Test {
     rap.click( any().textElement( "getText" ) );
     rap.waitForAppear( any().textElement( "123" ) ); // non-numbers rejected be verify listener
   }
-
 
 }

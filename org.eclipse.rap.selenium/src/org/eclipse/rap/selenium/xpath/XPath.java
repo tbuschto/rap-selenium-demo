@@ -3,12 +3,7 @@ package org.eclipse.rap.selenium.xpath;
 import static java.lang.String.valueOf;
 import static org.eclipse.rap.selenium.xpath.Predicate.with;
 
-
-// TODO: Make everything singular again, introduce append(concat?) or give xpath to self?,
-// or use +? (then rename createXPath to just xpath?)
-//make ElementSelector replaceable again (somehow? create generic abstractPath, but no XPath alternative?)
-
-public class XPath {
+public class XPath extends AbstractPath<ElementSelector> {
 
   public static XPath root() {
     return createXPath( "/*" );
@@ -34,29 +29,6 @@ public class XPath {
 
   private XPath( String path ) {
     this.path = path;
-  }
-
-  /////////////////
-  // Axis selection
-
-  public ElementSelector children() {
-    return createSelector( "/" );
-  }
-
-  public ElementSelector descendants() {
-    return createSelector( "/descendant::" );
-  }
-
-  public ElementSelector followingSiblings() {
-    return createSelector( "/following-sibling::" );
-  }
-
-  public ElementSelector precedingSiblings() {
-    return createSelector( "/preceding-sibling::" );
-  }
-
-  public ElementSelector selfAndDescendants() {
-    return createSelector( "//" );
   }
 
   /////////////////////
@@ -152,6 +124,7 @@ public class XPath {
     return new XPath( stringBuilder.toString() );
   }
 
+  @Override
   ElementSelector createSelector( String axis ) {
     return new ElementSelector( this, axis );
   }
