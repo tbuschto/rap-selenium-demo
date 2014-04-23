@@ -4,7 +4,9 @@ import static java.lang.String.valueOf;
 import static org.eclipse.rap.selenium.xpath.Predicate.with;
 
 
-
+// TODO: Make everything singular again, introduce append(concat?) or give xpath to self?,
+// or use +? (then rename createXPath to just xpath?)
+//make ElementSelector replaceable again (somehow? create generic abstractPath, but no XPath alternative?)
 
 public class XPath {
 
@@ -21,80 +23,71 @@ public class XPath {
   }
 
   public static ElementSelector any() {
-    XPath xpath = createXPath( "//" );
-    return xpath.selector;
+    return createXPath( "/" ).children();
   }
 
   public static XPath createXPath( String initial ) {
-    XPath result = new XPath( initial );
-    result.selector = new ElementSelector( result );
-    return result;
+    return new XPath( initial );
   }
 
-  private final StringBuilder stringBuilder;
-  ElementSelector selector;
+  private final String path;
 
-  public XPath( String initial) {
-    stringBuilder = new StringBuilder( initial );
+  private XPath( String path ) {
+    this.path = path;
   }
 
   /////////////////
   // Axis selection
 
   public ElementSelector children() {
-    append( "/" );
-    return selector;
+    return createSelector( "/" );
   }
 
   public ElementSelector descendants() {
-    append( "/descendant::" );
-    return selector;
+    return createSelector( "/descendant::" );
   }
 
   public ElementSelector followingSiblings() {
-    append( "/following-sibling::" );
-    return selector;
+    return createSelector( "/following-sibling::" );
   }
 
   public ElementSelector precedingSiblings() {
-    append( "/preceding-sibling::" );
-    return selector;
+    return createSelector( "/preceding-sibling::" );
   }
 
   public ElementSelector selfAndDescendants() {
-    append( "//" );
-    return selector;
+    return createSelector( "//" );
   }
 
   /////////////////////
   // relative selection
 
   public XPath parent() {
-    return clone().append( "/.." );
+    return append( "/.." );
   }
 
   public XPath child( int position ) {
     if( position <= 0 ) {
       throw new IllegalArgumentException( "position must be > 0" );
     }
-    return clone().append( "/*[", valueOf( position ), "]" );
+    return append( "/*[", valueOf( position ), "]" );
   }
 
   public XPath firstChild() {
-    return clone().append( "/*[1]" );
+    return append( "/*[1]" );
   }
 
   public XPath lastChild() {
-    return clone().append( "/*[last()]" );
+    return append( "/*[last()]" );
   }
 
   ///////////////////
   // reduce selection
 
   public XPath self( Predicate predicate ) {
-    XPath clone = clone();
-    clone.selector.appendPredicate( predicate );
-    return clone;
+    StringBuilder stringBuilder = new StringBuilder( toString() );
+    ElementSelector.appendPredicate( stringBuilder, predicate );
+    return new XPath( stringBuilder.toString() );
   }
 
   public XPath firstMatch() {
@@ -102,14 +95,14 @@ public class XPath {
   }
 
   public XPath lastMatch() {
-    return clone().insert( 0, "(" ).append( ")[last()]" );
+    return insert( 0, "(" ).append( ")[last()]" );
   }
 
   public XPath match( int offset ) {
     if( offset <= 0 ) {
       throw new IllegalArgumentException( "Offset has to be > 0" );
     }
-    return clone().insert( 0, "(" ).append( ")[", valueOf( offset ), "]" );
+    return insert( 0, "(" ).append( ")[", valueOf( offset ), "]" );
   }
 
   //////////////
@@ -122,7 +115,7 @@ public class XPath {
 
   @Override
   public String toString() {
-    return stringBuilder.toString();
+    return path;
   }
 
   @Override
@@ -138,19 +131,29 @@ public class XPath {
     return false;
   }
 
+  public XPath append( XPath xpath ) {
+    return new XPath( toString() + xpath.toString() );
+  }
+
   ////////////
   // Internals
 
   XPath append( String... strings ) {
+    StringBuilder stringBuilder = new StringBuilder( path );
     for( int i = 0; i < strings.length; i++ ) {
       stringBuilder.append( strings[ i ] );
     }
-    return this;
+    return new XPath( stringBuilder.toString() );
   }
 
   XPath insert( int offset, String string ) {
+    StringBuilder stringBuilder = new StringBuilder( path );
     stringBuilder.insert( offset, string );
-    return this;
+    return new XPath( stringBuilder.toString() );
+  }
+
+  ElementSelector createSelector( String axis ) {
+    return new ElementSelector( this, axis );
   }
 
 }

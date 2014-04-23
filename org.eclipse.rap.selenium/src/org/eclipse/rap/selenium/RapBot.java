@@ -231,10 +231,15 @@ public class RapBot {
       return;
     }
     int startOffset = getGridLineOffset( grid );
+    int currentOffset = getGridLineOffset( grid );
     int max = getMaxGridLineOffset( grid );
-    while( !isElementAvailable( needle ) && getGridLineOffset( grid ) < max ) {
+    while( !isElementAvailable( needle ) && currentOffset < max ) {
       scrollGridPageDown( grid );
+      currentOffset = getGridLineOffset( grid );
       waitForItems( grid );
+      if( currentOffset == startOffset ) {
+        break;
+      }
     }
     if( isElementAvailable( needle ) ) {
       return;
@@ -470,7 +475,7 @@ public class RapBot {
   }
 
   public int getVisibleGridLines( XPath grid ) {
-    return getXPathCount( getClientArea( grid ) );
+    return getXPathCount( getClientArea( grid ).children().widget( ROW ) );
   }
 
   public int getVisibleGridLines( String grid ) {
@@ -485,9 +490,9 @@ public class RapBot {
    * @return
    */
   public XPath getClientArea( XPath grid ) {
-    // include invisible scrollbar (as opposed to vScrollBar())
+    // don't use "widget" to include invisible scrollbar (as opposed to vScrollBar())
     XPath scrollbar = grid.descendants().element(
-      with().attr( "role", SCROLL_BAR ).attr( "orientation", "vertical" )
+      with().attr( "role", SCROLL_BAR ).aria( "orientation", "vertical" )
     );
     return getAriaControls( scrollbar );
   }
@@ -618,7 +623,7 @@ public class RapBot {
   }
 
   public String getColumnId( XPath grid, String columnName ) {
-    return getId( grid.clone().any().widget( COLUMN_HEADER, with().textContent( columnName ) ) );
+    return getId( grid.descendants().widget( COLUMN_HEADER, with().textContent( columnName ) ) );
   }
 
   public int getGridLineHeight( String grid ) {
@@ -724,18 +729,18 @@ public class RapBot {
   }
 
   private static XPath rowWithCellText( XPath grid, String cellContent ) {
-    return any().widget( ROW, with().content( cellWithText( grid, cellContent ) ) );
+    return grid.append( any().widget( ROW, with().content( cellWithText( cellContent ) ) ) );
   }
 
   private static XPath rowWithCellText( XPath grid, String columnId, String cellContent ) {
-    return any().widget( ROW, with().content( cellWithText( grid, columnId, cellContent ) ) );
+    return grid.append( any().widget( ROW, with().content( cellWithText( columnId, cellContent ) ) ) );
   }
 
-  private static XPath cellWithText( XPath grid, String content ) {
-    return grid.descendants().widget( GRID_CELL, content );
+  private static XPath cellWithText( String content ) {
+    return any().widget( GRID_CELL, content );
   }
 
-  private static XPath cellWithText( XPath grid, String columnId, String content ) {
+  private static XPath cellWithText( String columnId, String content ) {
     return any().widget( GRID_CELL, with().text( content ).attr( "describedby", columnId ) );
   }
 

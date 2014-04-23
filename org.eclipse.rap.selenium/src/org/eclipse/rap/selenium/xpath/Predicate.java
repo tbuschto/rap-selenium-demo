@@ -73,9 +73,19 @@ public class Predicate {
     return andAdd( "@", attribute, "='", value, "'" );
   }
 
+  public Predicate aria( String attribute, String value ) {
+    checkAttrParameter( attribute, value );
+    return andAdd( "@aria-", attribute, "='", value, "'" );
+  }
+
   public Predicate notAttr( String attribute, String value ) {
     checkAttrParameter( attribute, value );
-    return andAdd( "@", attribute, "!='", value, "'" );
+    return andAdd( "not(@", attribute, "='", value, "')" );
+  }
+
+  public Predicate notAria( String attribute, String value ) {
+    checkAttrParameter( attribute, value );
+    return andAdd( "not(@aria-", attribute, "='", value, "')" );
   }
 
   public Predicate position( int position ) {
@@ -118,7 +128,6 @@ public class Predicate {
     }
     return this;
   }
-
 
   private void checkAttrParameter( String attribute, String value ) {
     if( attribute == null || value == null ) {

@@ -1,23 +1,27 @@
 package org.selenium.tests;
 
 
-import static org.eclipse.rap.selenium.AriaRoles.TREE_GRID;
-import static org.eclipse.rap.selenium.xpath.Predicate.with;
+import static org.eclipse.rap.selenium.AriaRoles.*;
 import static org.eclipse.rap.selenium.xpath.XPath.any;
 import static org.eclipse.rap.selenium.xpath.XPath.byId;
-import static org.junit.Assert.assertEquals;
 
 import org.eclipse.rap.selenium.RapBot;
 import org.eclipse.rap.selenium.xpath.XPath;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.thoughtworks.selenium.Selenium;
 
+
+/**
+ * This test required RAP to be started with the RAP ARIA Add-On.
+ * In the entryPoint (i.e. ControlsDemo.java), add "Aria.activate();"
+ */
 public class AriaControls_Demo_Test {
 
   private final static String baseUrl = "http://127.0.0.1:8383";
@@ -40,8 +44,8 @@ public class AriaControls_Demo_Test {
     driver = new ChromeDriver();
     //driver = new InternetExplorerDriver(); // Not yet tested due to missing IE11 support
     selenium = new WebDriverBackedSelenium( driver, baseUrl );
-    //driver.manage().window().setSize( new Dimension( 1000, 1000 ) );
-    driver.manage().window().maximize();
+    driver.manage().window().setSize( new Dimension( 1024, 768 ) );
+    //driver.manage().window().maximize();
     rap = new RapBot( driver, selenium );
     rap.loadApplication( baseUrl + "/", false );
   }
@@ -51,56 +55,35 @@ public class AriaControls_Demo_Test {
     selenium.stop();
   }
 
-//  @Test
-//  public void testClickButtons_byTestId() throws Exception {
-//    rap.click( byTestId( "pushButton" ) );
-//    rap.click( byTestId( "toggleButton" ) );
-//    rap.click( byTestId( "checkButton1" ) );
-//    rap.click( byTestId( "checkButton2" ) );
-//    rap.click( byTestId( "checkButton1" ) );
-//    rap.click( byTestId( "toggleButton" ) );
-//  }
-
-  @Test
-  public void testClickElements_byContent() throws Exception {
-    rap.click( any().element( with().text( "Push\n Button" ) ).toString() );
-    rap.click( any().element( with().text( "Toggle" ) ).toString() );
-    rap.click( any().element( with().text( "Check" ) ).toString() );
-    rap.click( any().element( with().text( "Check with image" ) ).toString() );
-    rap.click( any().element( with().text( "Check" ) ).toString() );
-    rap.click( any().element( with().text( "Toggle" ) ).toString() );
-  }
-
   @Test
   public void testClickButtons_byContent() throws Exception {
-    rap.click( any().widget( "button" ).toString() + any().element( with().text( "Push\n Button" ) ).toString() );
-    rap.click( any().widget( "button" ).toString() + any().element( with().text( "Toggle" ) ).toString() );
-    rap.click( any().widget( "checkbox" ).toString() + any().element( with().text( "Check" ) ).toString() );
-    rap.click( any().widget( "checkbox" ).toString() + any().element( with().text( "Check with image" ) ).toString() );
-    rap.click( any().widget( "checkbox" ).toString() + any().element( with().text( "Check" ) ).toString() );
-    rap.click( any().widget( "button" ).toString() + any().element( with().text( "Toggle" ) ).toString() );
+    rap.click( any().widget( BUTTON, "Push\n Button" ) );
+    rap.click( any().widget( BUTTON, "Toggle" ) );
+    rap.click( any().widget( CHECK_BOX, "Check" ) );
+    rap.click( any().widget( CHECK_BOX, "Check with image" ) );
+    rap.click( any().widget( CHECK_BOX, "Check" ) );
+    rap.click( any().widget( BUTTON, "Toggle" ) );
   }
 
-//  @Test
-//  public void testOpenCloseDialog() throws Exception {
-//    rap.click( byTestId( "defaultButton" ) );
-//    String okButtonPath = byAria( "dialog", "label", "Information" ) + byText( "OK" );
-//    rap.waitForAppear( okButtonPath );
-//    rap.click( okButtonPath );
-//    rap.waitForDisappear( okButtonPath );
-//    rap.click( byTestId( "pushButton" ) );
-//  }
+  @Test
+  public void testOpenCloseDialog() throws Exception {
+    rap.click( any().widget( BUTTON, "Default Button" ) );
+    XPath OK = any().widget( DIALOG, "label", "Information" ).descendants().widget( BUTTON, "OK" );
+    rap.waitForAppear( OK );
+    rap.click( OK );
+    rap.waitForDisappear( OK );
+    rap.click( any().widget( BUTTON, "Push\n Button" ) );
+  }
 
   @Test
   public void testInsertText() throws Exception {
     XPath navGrid = byId( rap.getId( any().widget( TREE_GRID ).firstMatch() ) );
     rap.click( rap.scrollGridItemIntoView( navGrid, "Text" ) );
-    rap.waitForAppear( any().element( with().text( "Text:" ) ).toString() );
-    rap.click( any().widget( "checkbox" ).toString() + any().element( with().text( "VerifyListener (numbers only)" ) ).toString() );
-    rap.input( any().widget( "textbox" ).firstMatch().toString(), "hello123world" );
-    rap.click( any().widget( "button" ).toString() + any().element( with().text( "getText" ) ).toString() );
-    rap.waitForAppear( any().element( with().text( "123" ) ).toString() );
-    assertEquals( 1, selenium.getXpathCount( any().element( with().text( "123" ) ).toString() ).intValue() );
+    rap.waitForAppear( any().textElement( "Text:" ) );
+    rap.click( any().widget( CHECK_BOX, "VerifyListener (numbers only)" ) );
+    rap.input( any().widget( TEXT_BOX ).firstMatch(), "hello123world" );
+    rap.click( any().widget( BUTTON, "getText" ) );
+    rap.waitForAppear( any().textElement( "123" ) );
   }
 
 }

@@ -30,9 +30,27 @@ public class XPath_Test {
 
   @Test
   public void testReturnClone() {
-    XPath xpath1 = any().any();
+    XPath xpath1 = any().element();
     xpath1.child( 1 );
     assertEquals( "//*", xpath1.toString() );
+  }
+
+  @Test
+  public void testDoNotChangeWhenSelectorReturns() {
+    XPath xpath1 = any().element();
+    xpath1.children();
+    assertEquals( "//*", xpath1.toString() );
+  }
+
+  @Test
+  public void testSameSelectorReturnsMultipleClones() {
+    ElementSelector children = any().element().children();
+
+    XPath xpath1 = children.element( "foo" );
+    XPath xpath2 = children.element( "bar" );
+
+    assertEquals( "//*/foo", xpath1.toString() );
+    assertEquals( "//*/bar", xpath2.toString() );
   }
 
   @Test
@@ -47,7 +65,7 @@ public class XPath_Test {
 
   @Test
   public void testAllRootChildren() {
-    assertEquals( "/*/*", root().children().any().toString() );
+    assertEquals( "/*/*", root().children().element().toString() );
   }
 
   @Test
@@ -130,7 +148,6 @@ public class XPath_Test {
     }
   }
 
-
   @Test
   public void testLastMatch() {
     assertEquals( "(//a)[last()]", any().element( "a" ).lastMatch().toString() );
@@ -144,17 +161,6 @@ public class XPath_Test {
     } catch( IllegalArgumentException e ) {
       // expected
     }
-  }
-
-  @Test
-  public void testClone() {
-    XPath elementA = any().element( "a" );
-
-    XPath clone = elementA.clone();
-    clone.children().element( "b" );
-
-    assertEquals( "//a", elementA.toString() );
-    assertEquals( "//a/b", clone.toString() );
   }
 
   @Test

@@ -41,6 +41,11 @@ public class Predicate_Test {
   }
 
   @Test
+  public void testWithSingleAriaAttribute() {
+    assertEquals( "@aria-foo='bar'", Predicate.with().aria( "foo", "bar" ).toString() );
+  }
+
+  @Test
   public void testWithSingleAttribute_nullKeyThrowsException() {
     try {
       with().attr( null, "bar" ).toString();
@@ -81,10 +86,15 @@ public class Predicate_Test {
   }
 
   @Test
+  public void testNotWithAriaAttribute() {
+    assertEquals( "not(@aria-foo='bar')", Predicate.with().notAria( "foo", "bar" ).toString() );
+  }
+
+  @Test
   public void testWithAttributesAndNotWithAttribute() {
     Predicate pred = Predicate.with().attr( "foo", "bar" ).notAttr( "foo2", "bar2" );
 
-    String expected = "@foo='bar' and @foo2!='bar2'";
+    String expected = "@foo='bar' and not(@foo2='bar2')";
     assertEquals( expected, pred.toString() );
   }
 
