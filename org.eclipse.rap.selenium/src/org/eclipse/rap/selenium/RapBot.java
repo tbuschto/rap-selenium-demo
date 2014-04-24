@@ -49,7 +49,7 @@ public class RapBot {
   // Controlling the UI
 
   public void loadApplication( String url ) {
-    loadApplication( url, true );
+    loadApplication( url, false );
   }
 
   public void loadApplication( String url, boolean ariaEnabled ) {
@@ -57,7 +57,7 @@ public class RapBot {
     selenium.waitForPageToLoad( "10000" );
     patchRAP();
     if( ariaEnabled ) {
-      waitForAppear( any().widget( "application" ) );
+      waitForAppear( any().widget( APPLICATION ) );
     } else {
       waitForServer();
     }
@@ -190,9 +190,8 @@ public class RapBot {
         return getGridRowAtLine( grid, lineIndex );
       }
       // we target the previous line because scrollWheel is not precise
-      // (scrolling 2 lines for a
-      // grid) AND because the pixel offset has to be exactly 0 for line 0 to
-      // show
+      // (scrolling 2 lines for a grid) AND because the pixel offset has to be
+      // exactly 0 for line 0 to show
       int desiredOffset = Math.min( lineIndex - 1, maxOffset );
       int lineDelta = desiredOffset - offset;
       String clientarea = getAriaControls( scrollbar );
@@ -525,7 +524,7 @@ public class RapBot {
    * @return
    */
   public XPath getGridRowAtPosition( AbstractPath<?> grid, int position ) {
-    return getGridRowAtPosition( grid, position );
+    return asXPath( getGridRowAtPosition( grid.toString(), position ) );
   }
 
   public String getGridRowAtPosition( String grid, int position ) {
@@ -738,19 +737,19 @@ public class RapBot {
   }
 
   private static XPath cellWithText( String columnId, String content ) {
-    return any().widget( GRID_CELL, with().text( content ).attr( "describedby", columnId ) );
+    return any().widget( GRID_CELL, with().text( content ).aria( "describedby", columnId ) );
   }
 
   private static String cellDescribedBy( String columnId ) {
-    return any().widget( GRID_CELL ).toString() + "[@aria-describedby='" + columnId + "']";
+    return any().widget( GRID_CELL, with().aria( "describedby", columnId ) ).toString();
   }
 
   private static XPath asXPath( AbstractPath<?> path ) {
-    return XPath.createXPath( path.toString() );
+    return path != null ? XPath.createXPath( path.toString() ) : null;
   }
 
   private static XPath asXPath( String string ) {
-    return XPath.createXPath( string );
+    return string != null ? XPath.createXPath( string ) : null;
   }
 
 }

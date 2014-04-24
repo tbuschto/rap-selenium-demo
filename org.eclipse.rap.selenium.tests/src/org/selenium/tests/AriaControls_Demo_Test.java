@@ -47,7 +47,7 @@ public class AriaControls_Demo_Test {
     driver.manage().window().setSize( new Dimension( 1024, 768 ) );
     //driver.manage().window().maximize();
     rap = new RapBot( driver, selenium );
-    rap.loadApplication( baseUrl + "/", false );
+    rap.loadApplication( baseUrl + "/", true );
   }
 
   @After

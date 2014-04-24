@@ -1,17 +1,10 @@
 package org.selenium.tests;
 
-import static org.eclipse.rap.selenium.AriaRoles.BUTTON;
-import static org.eclipse.rap.selenium.AriaRoles.CHECK_BOX;
-import static org.eclipse.rap.selenium.AriaRoles.GRID;
-import static org.eclipse.rap.selenium.AriaRoles.GRID_CELL;
-import static org.eclipse.rap.selenium.AriaRoles.TREE_GRID;
+import static org.eclipse.rap.selenium.AriaRoles.*;
 import static org.eclipse.rap.selenium.xpath.Predicate.with;
 import static org.eclipse.rap.selenium.xpath.XPath.any;
 import static org.eclipse.rap.selenium.xpath.XPath.byId;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.eclipse.rap.selenium.RapBot;
 import org.eclipse.rap.selenium.xpath.XPath;
@@ -48,7 +41,6 @@ public class AriaGrid_Test {
     //driver = new InternetExplorerDriver(); // Not yet tested due to missing IE11 support
     selenium = new WebDriverBackedSelenium( driver, URL );
     driver.manage().window().setSize( new Dimension( 1000, 1000 ) );
-    //driver.manage().window().maximize();
     rap = new RapBot( driver, selenium );
     rap.loadApplication( URL );
   }
@@ -87,7 +79,7 @@ public class AriaGrid_Test {
     rap.click( any().widget( BUTTON, "Add 100 Items" ) );
     rap.waitForServer();
     assertEquals( 0, rap.getGridLineOffset( grid ) );
-    rap.click( RapBot.rowOf( grid ).self( with().position( -2 ) ) ); // clicking the very last row can be bad
+    rap.click( RapBot.rowOf( grid ).self( with().position( -1 ) ) ); // TODO: -2 may be needed in some cases
     rap.press( grid, "Down" );
     rap.press( grid, "Down" );
     rap.press( grid, "Down" );
@@ -99,7 +91,7 @@ public class AriaGrid_Test {
     goToSplitTable();
     XPath grid = gridWithText( "Item0-0" );
     assertEquals( 0, rap.getGridLineOffset( grid ) );
-    rap.click( RapBot.rowOf( grid ).self( with().position( -2 ) ) ); // clicking the very last row can be bad
+    rap.click( RapBot.rowOf( grid ).self( with().position( -1 ) ) );
     rap.press( grid, "Down" );
     rap.press( grid, "Down" );
     rap.press( grid, "Down" );
@@ -160,7 +152,7 @@ public class AriaGrid_Test {
   @Test
   public void testScrollLineIntoView() throws Exception {
     goToVirtualTable();
-    XPath grid = gridWithText( "Item0-0" );
+    XPath grid = gridWithText( "First Name" );
     rap.waitForAppear( grid );
     assertEquals( 0, rap.getGridLineOffset( grid ) );
     assertEquals( rowId( grid, "von Neumann" ), rap.scrollGridLineIntoView( grid, 1 ) );
@@ -277,7 +269,7 @@ public class AriaGrid_Test {
     try {
       rap.getGridCellContent( grid, rap.getGridRowByCell( grid, "foo" ), "Born" );
       fail();
-    } catch( IllegalStateException e ) {
+    } catch( NullPointerException e ) {
       // expected
     }
     try {

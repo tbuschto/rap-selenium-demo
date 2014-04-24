@@ -77,7 +77,7 @@ public class PatchedControlsDemo_Test {
     rap.click( textEl );
     rap.waitForAppear( byTestId( "textWidget" ) );
     rap.click( byTestId( "btnNumbersOnlyVerifyListener" ) );
-    rap.input( byTestId( "textWidget" ).children().element( "input" ), "hello123world" );
+    rap.input( byTestId( "textWidget" ), "hello123world" );
     rap.click( byTestId( "btnGetText" ) );
     rap.waitForServer();
     assertEquals( "123", rap.getText( byTestId( "textLabel" ) ) );
