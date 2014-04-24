@@ -88,12 +88,16 @@ public class Predicate {
     return andAdd( "not(@aria-", attribute, "='", value, "')" );
   }
 
-  public Predicate position( int position ) {
-    if( position == 0 ) {
+  public Predicate offset( int n ) {
+    if( n == 0 ) {
       throw new IllegalArgumentException( "position must be != 0" );
     }
-    String positionStr = position > 0 ? String.valueOf( position ) : "last()" + position;
-    return andAdd( "position()=" + positionStr );
+    // NOTE: [<position>] or [position()=<position>] would ONLY work correctly the match consists
+    //       exactly of all children of the parent in the right order (not always the case)
+    String ownPosition =   n > 0
+                         ? "(count(preceding-sibling::*)+1)"
+                         : "(count(following-sibling::*)+1)";
+    return andAdd( ownPosition + "=" + Math.abs( n ) );
   }
 
   @Override

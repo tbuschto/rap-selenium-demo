@@ -3,8 +3,8 @@ package org.selenium.tests;
 
 import static org.eclipse.rap.selenium.AriaRoles.*;
 import static org.eclipse.rap.selenium.xpath.XPath.any;
-import static org.eclipse.rap.selenium.xpath.XPath.byId;
 
+import org.eclipse.rap.selenium.AriaGridBot;
 import org.eclipse.rap.selenium.RapBot;
 import org.eclipse.rap.selenium.xpath.XPath;
 import org.junit.After;
@@ -77,8 +77,8 @@ public class AriaControls_Demo_Test {
 
   @Test
   public void testInsertText() throws Exception {
-    XPath navGrid = byId( rap.getId( any().widget( TREE_GRID ).firstMatch() ) );
-    rap.click( rap.scrollGridItemIntoView( navGrid, "Text" ) );
+    AriaGridBot grid = new AriaGridBot( rap, any().widget( TREE_GRID ).firstMatch() );
+    rap.click( grid.scrollCellIntoView( "Text" ) );
     rap.waitForAppear( any().textElement( "Text:" ) );
     rap.click( any().widget( CHECK_BOX, "VerifyListener (numbers only)" ) );
     rap.input( any().widget( TEXT_BOX ).firstMatch(), "hello123world" );

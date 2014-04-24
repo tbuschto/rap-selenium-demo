@@ -74,6 +74,7 @@ public class XPath extends AbstractPath<ElementSelector> {
     if( offset <= 0 ) {
       throw new IllegalArgumentException( "Offset has to be > 0" );
     }
+    // TODO [tb] : Selenium does seem to have issues with syntax (but not JS) - alternatives?
     return insert( 0, "(" ).append( ")[", valueOf( offset ), "]" );
   }
 

@@ -3,9 +3,9 @@ package org.selenium.tests;
 import static org.eclipse.rap.selenium.AriaRoles.*;
 import static org.eclipse.rap.selenium.xpath.Predicate.with;
 import static org.eclipse.rap.selenium.xpath.XPath.any;
-import static org.eclipse.rap.selenium.xpath.XPath.byId;
 import static org.junit.Assert.*;
 
+import org.eclipse.rap.selenium.AriaGridBot;
 import org.eclipse.rap.selenium.RapBot;
 import org.eclipse.rap.selenium.xpath.XPath;
 import org.junit.After;
@@ -40,7 +40,7 @@ public class AriaGrid_Test {
     driver = new ChromeDriver();
     //driver = new InternetExplorerDriver(); // Not yet tested due to missing IE11 support
     selenium = new WebDriverBackedSelenium( driver, URL );
-    driver.manage().window().setSize( new Dimension( 1000, 1000 ) );
+    driver.manage().window().setSize( new Dimension( 1024, 768 ) );
     rap = new RapBot( driver, selenium );
     rap.loadApplication( URL );
   }
@@ -51,19 +51,19 @@ public class AriaGrid_Test {
   }
 
   private void goToVirtualTable() {
-    XPath navGrid = byId( rap.getId( any().widget( TREE_GRID ).firstMatch() ) );
-    rap.click( rap.scrollGridItemIntoView( navGrid, "TableViewer" ) );
+    AriaGridBot navGrid = new AriaGridBot( rap, any().widget( TREE_GRID ).firstMatch() );
+    rap.click( navGrid.scrollCellIntoView( "TableViewer" ) );
     rap.waitForAppear( any().widget( CHECK_BOX, "VIRTUAL" ) );
     rap.click( any().widget( CHECK_BOX, "VIRTUAL" ) );
-    rap.waitForServer(); // best method since there is obvious UI change
+    rap.waitForServer(); // best method since there is no obvious UI change
   }
 
-  private void goToSplitTable() { // the controls demo must be modified to render fixed columns
-    XPath navGrid = byId( rap.getId( any().widget( TREE_GRID ).firstMatch() ) );
-    rap.click( rap.scrollGridItemIntoView( navGrid, "Table" ) );
+  private void goToSplitTable() { // the controls demo must have been modified to use fixed columns
+    AriaGridBot navGrid = new AriaGridBot( rap, any().widget( TREE_GRID ).firstMatch() );
+    rap.click( navGrid.scrollCellIntoView( "Table" ) );
     rap.waitForAppear( any().widget( CHECK_BOX, "VIRTUAL" ) );
-    XPath composite = any().element( with().text( "Add" ) ).parent().parent();
-    XPath input = composite.descendants().widget( "textbox" );
+    XPath composite = any().textElement( "Add" ).parent().parent();
+    XPath input = composite.descendants().widget( TEXT_BOX );
     XPath button = composite.descendants().widget( BUTTON );
     rap.clearInput( input );
     rap.input( input, "100" );
@@ -74,138 +74,133 @@ public class AriaGrid_Test {
   @Test
   public void testGetLineOffset() throws Exception {
     goToVirtualTable();
-    XPath grid = gridWithText( "First Name" );
-    rap.waitForAppear( grid );
+    AriaGridBot grid = gridWithText( "First Name" );
     rap.click( any().widget( BUTTON, "Add 100 Items" ) );
     rap.waitForServer();
-    assertEquals( 0, rap.getGridLineOffset( grid ) );
-    rap.click( RapBot.rowOf( grid ).self( with().position( -1 ) ) ); // TODO: -2 may be needed in some cases
-    rap.press( grid, "Down" );
-    rap.press( grid, "Down" );
-    rap.press( grid, "Down" );
-    assertEquals( 3, rap.getGridLineOffset( grid ) );
+    assertEquals( 0, grid.getLineOffset() );
+    rap.click( grid.row( with().offset( -1 ) ) ); // TODO: has to be -2 sometimes, why?
+    rap.press( grid.byId(), "Down" );
+    rap.press( grid.byId(), "Down" );
+    rap.press( grid.byId(), "Down" );
+    assertEquals( 3, grid.getLineOffset() );
   }
 
   @Test
   public void testGetLineOffset_FixedColumns() throws Exception {
     goToSplitTable();
-    XPath grid = gridWithText( "Item0-0" );
-    assertEquals( 0, rap.getGridLineOffset( grid ) );
-    rap.click( RapBot.rowOf( grid ).self( with().position( -1 ) ) );
-    rap.press( grid, "Down" );
-    rap.press( grid, "Down" );
-    rap.press( grid, "Down" );
-    assertEquals( 3, rap.getGridLineOffset( grid ) );
+    AriaGridBot grid = gridWithText( "Item0-0" );
+    assertEquals( 0, grid.getLineOffset() );
+    rap.click( grid.row( with().offset( -1 ) ) );
+    rap.press( grid.byId(), "Down" );
+    rap.press( grid.byId(), "Down" );
+    rap.press( grid.byId(), "Down" );
+    assertEquals( 3, grid.getLineOffset() );
   }
 
   @Test
   public void testGetLineCount() throws Exception {
     goToVirtualTable();
-    XPath grid = gridWithText( "First Name" );
-    rap.waitForAppear( grid );
-    assertEquals( 12, rap.getGridLineCount( grid ) );
+    AriaGridBot grid = gridWithText( "First Name" );
+    assertEquals( 12, grid.getLineCount() );
     rap.click( any().widget( BUTTON, "Add 100 Items" ) );
     rap.waitForServer();
-    assertEquals( 112, rap.getGridLineCount( grid ) );
+    assertEquals( 112, grid.getLineCount() );
   }
 
   @Test
   public void testGetLineCount_FixedColumns() throws Exception {
     goToSplitTable();
-    XPath grid = gridWithText( "Item0-0" );
-    assertEquals( 115, rap.getGridLineCount( grid ) );
+    AriaGridBot grid = gridWithText( "Item0-0" );
+    assertEquals( 115, grid.getLineCount() );
   }
 
   @Test
   public void testScrollGridByPage() throws Exception {
     goToVirtualTable();
-    XPath grid = gridWithText( "First Name" );
-    rap.waitForAppear( grid );
+    AriaGridBot grid = gridWithText( "First Name" );
     rap.click( any().widget( BUTTON, "Add 100 Items" ) );
     rap.waitForServer();
-    int rowcount = rap.getVisibleGridLines( grid );
-    rap.scrollGridPageDown( grid );
-    int offset = rap.getGridLineOffset( grid );
+    int rowcount = grid.getVisibleLineCount();
+    grid.getLineCount();
+    int offset = grid.getLineOffset();
     assertTrue( offset == rowcount || offset == rowcount -1  );
-    rap.scrollGridPageDown( grid );
-    rap.scrollGridPageDown( grid );
-    rap.scrollGridPageUp( grid );
-    offset = rap.getGridLineOffset( grid );
+    grid.getLineCount();
+    grid.getLineCount();
+    grid.getLineCount();
+    offset = grid.getLineOffset();
     assertTrue( offset <= rowcount * 2 && offset >= ( rowcount - 1 ) * 2 );
   }
 
   @Test
   public void testScrollGridByPage_FixedColumns() throws Exception {
     goToSplitTable();
-    XPath grid = gridWithText( "Item0-0" );
-    int rowcount = rap.getVisibleGridLines( grid );
-    rap.scrollGridPageDown( grid );
-    int offset = rap.getGridLineOffset( grid );
+    AriaGridBot grid = gridWithText( "Item0-0" );
+    int rowcount = grid.getVisibleLineCount();
+    grid.getLineCount();
+    int offset = grid.getLineOffset();
     assertTrue( offset == rowcount || offset == rowcount -1  );
-    rap.scrollGridPageDown( grid );
-    rap.scrollGridPageDown( grid );
-    rap.scrollGridPageUp( grid );
-    offset = rap.getGridLineOffset( grid );
+    grid.getLineCount();
+    grid.getLineCount();
+    grid.getLineCount();
+    offset = grid.getLineOffset();
     assertTrue( offset <= rowcount * 2 && offset >= ( rowcount - 1 ) * 2 );
   }
 
   @Test
   public void testScrollLineIntoView() throws Exception {
     goToVirtualTable();
-    XPath grid = gridWithText( "First Name" );
-    rap.waitForAppear( grid );
-    assertEquals( 0, rap.getGridLineOffset( grid ) );
-    assertEquals( rowId( grid, "von Neumann" ), rap.scrollGridLineIntoView( grid, 1 ) );
-    assertEquals( 0, rap.getGridLineOffset( grid ) ); // did nothing
+    AriaGridBot grid = gridWithText( "First Name" );
+    assertEquals( 0, grid.getLineOffset() );
+    assertEquals( grid.getRowByCell( "von Neumann" ), grid.scrollLineIntoView( 1 ) );
+    assertEquals( 0, grid.getLineOffset() ); // did nothing
     rap.click( any().widget( BUTTON, "Add 100 Items" ) );
     rap.waitForServer();
-    assertNull( rap.scrollGridLineIntoView( grid, 9000 ) );
-    assertTrue( rap.isElementAvailable( grid.descendants().widget( GRID_CELL, "person 110" ) ) );
-    rap.scrollGridPageDown( grid ); // one more (empty) line that can be scrolled, can be trouble
-    XPath ada = rap.scrollGridLineIntoView( grid, 0 );
-    assertEquals( rowId( grid, "Ada" ), ada );
-    assertEquals( 0, rap.getGridLineOffset( grid ) );
-    XPath person76 = rap.scrollGridLineIntoView( grid, 77 );
-    assertEquals( rowId( grid, "person 76" ), person76 );
-    XPath person50 = rap.scrollGridLineIntoView( grid, 50 );
-    assertEquals( rowId( grid, "person 49" ), person50 );
+    assertNull( grid.scrollLineIntoView( 9000 ) );
+    assertTrue( rap.isElementAvailable( grid.byId().descendants().widget( GRID_CELL, "person 110" ) ) );
+    grid.getLineCount(); // one more (empty) line that can be scrolled, can be trouble
+    XPath ada = grid.scrollLineIntoView( 0 );
+    assertEquals( grid.getRowByCell( "Ada" ), ada );
+    assertEquals( 0, grid.getLineOffset() );
+    XPath person76 = grid.scrollLineIntoView( 77 );
+    assertEquals( grid.getRowByCell( "person 76" ), person76 );
+    XPath person50 = grid.scrollLineIntoView( 50 );
+    assertEquals( grid.getRowByCell( "person 49" ), person50 );
   }
 
   @Test
   public void testScrollLineIntoView_FixedColumns() throws Exception {
     goToSplitTable();
-    XPath grid = gridWithText( "Item0-0" );
-    assertEquals( 0, rap.getGridLineOffset( grid ) );
-    assertEquals( rowId( grid, "Item1-0" ), rap.scrollGridLineIntoView( grid, 1 ) );
-    assertEquals( 0, rap.getGridLineOffset( grid ) ); // did nothing
-    assertNull( rap.scrollGridLineIntoView( grid, 9000 ) );
-    assertTrue( rap.isElementAvailable( grid.descendants().widget( GRID_CELL, "Item114-0" ) ) );
-    rap.scrollGridPageDown( grid ); // one more (empty) line that can be scrolled, can be trouble
-    XPath ada = rap.scrollGridLineIntoView( grid, 0 );
-    assertEquals( rowId( grid, "Item0-0" ), ada );
-    assertEquals( 0, rap.getGridLineOffset( grid ) );
-    XPath item77 = rap.scrollGridLineIntoView( grid, 77 );
-    assertEquals( rowId( grid, "Item77-0" ), item77 );
-    XPath item50 = rap.scrollGridLineIntoView( grid, 50 );
-    assertEquals( rowId( grid, "Item50-0" ), item50 );
+    AriaGridBot grid = gridWithText( "Item0-0" );
+    assertEquals( 0, grid.getLineOffset() );
+    assertEquals( grid.getRowByCell( "Item1-0" ), grid.scrollLineIntoView( 1 ) );
+    assertEquals( 0, grid.getLineOffset() ); // did nothing
+    assertNull( grid.scrollLineIntoView( 9000 ) );
+    assertTrue( rap.isElementAvailable( grid.byId().descendants().widget( GRID_CELL, "Item114-0" ) ) );
+    grid.getLineCount(); // one more (empty) line that can be scrolled, can be trouble
+    XPath ada = grid.scrollLineIntoView( 0 );
+    assertEquals( grid.getRowByCell( "Item0-0" ), ada );
+    assertEquals( 0, grid.getLineOffset() );
+    XPath item77 = grid.scrollLineIntoView( 77 );
+    assertEquals( grid.getRowByCell( "Item77-0" ), item77 );
+    XPath item50 = grid.scrollLineIntoView( 50 );
+    assertEquals( grid.getRowByCell( "Item50-0" ), item50 );
   }
 
   @Test
   public void testScrollItemIntoView() throws Exception {
     goToVirtualTable();
-    XPath grid = gridWithText( "First Name" );
-    rap.waitForAppear( grid );
+    AriaGridBot grid = gridWithText( "First Name" );
     rap.click( any().widget( BUTTON, "Add 100 Items" ) );
     rap.waitForServer();
-    assertEquals( 0, rap.getGridLineOffset( grid ) );
-    rap.scrollGridItemIntoView( grid, "Ada" );
-    assertEquals( 0, rap.getGridLineOffset( grid ) ); // did nothing
-    rap.click( rap.scrollGridItemIntoView( grid, "person 110" ) );
-    rap.click( rap.scrollGridItemIntoView( grid, "Ada" ) );
-    rap.click( rap.scrollGridItemIntoView( grid, "person 76" ) );
-    rap.click( rap.scrollGridItemIntoView( grid, "person 49" ) );
+    assertEquals( 0, grid.getLineOffset() );
+    grid.scrollCellIntoView( "Ada" );
+    assertEquals( 0, grid.getLineOffset() ); // did nothing
+    rap.click( grid.scrollCellIntoView( "person 110" ) );
+    rap.click( grid.scrollCellIntoView( "Ada" ) );
+    rap.click( grid.scrollCellIntoView( "person 76" ) );
+    rap.click( grid.scrollCellIntoView( "person 49" ) );
     try {
-      rap.scrollGridItemIntoView( grid, "person foo" );
+      grid.scrollCellIntoView( "person foo" );
       fail();
     } catch( IllegalStateException e ) {
       // expected
@@ -215,16 +210,16 @@ public class AriaGrid_Test {
   @Test
   public void testScrollItemIntoView_FixedColumns() throws Exception {
     goToSplitTable();
-    XPath grid = gridWithText( "Item0-0" );
-    assertEquals( 0, rap.getGridLineOffset( grid ) );
-    rap.scrollGridItemIntoView( grid, "Item0-0" );
-    assertEquals( 0, rap.getGridLineOffset( grid ) ); // did nothing
-    rap.click( rap.scrollGridItemIntoView( grid, "Item114-0" ) );
-    rap.click( rap.scrollGridItemIntoView( grid, "Item0-2" ) );
-    rap.click( rap.scrollGridItemIntoView( grid, "Item77-3" ) );
-    rap.click( rap.scrollGridItemIntoView( grid, "Item49-1" ) );
+    AriaGridBot grid = gridWithText( "Item0-0" );
+    assertEquals( 0, grid.getLineOffset() );
+    grid.scrollCellIntoView( "Item0-0" );
+    assertEquals( 0, grid.getLineOffset() ); // did nothing
+    rap.click( grid.scrollCellIntoView( "Item114-0" ) );
+    rap.click( grid.scrollCellIntoView( "Item0-2" ) );
+    rap.click( grid.scrollCellIntoView( "Item77-3" ) );
+    rap.click( grid.scrollCellIntoView( "Item49-1" ) );
     try {
-      rap.scrollGridItemIntoView( grid, "Item49-100" );
+      grid.scrollCellIntoView( "Item49-100" );
       fail();
     } catch( IllegalStateException e ) {
       // expected
@@ -234,19 +229,18 @@ public class AriaGrid_Test {
   @Test
   public void testGetRowByCell() throws Exception {
     goToVirtualTable();
-    XPath grid = gridWithText( "First Name" );
-    rap.waitForAppear( grid );
-    assertEquals( rowId( grid, "Ada" ), rap.getGridRowByCell( grid, "Last Name", "Lovelace" ) );
-    assertEquals( rowId( grid, "Turing" ), rap.getGridRowByCell( grid, "Married", "no" ) );
-    assertNull( rap.getGridRowByCell( grid, "First Name", "Lovelace" ) ); // does not exist
+    AriaGridBot grid = gridWithText( "First Name" );
+    assertEquals( grid.getRowByCell( "Ada" ), grid.getRowByCell( "Last Name", "Lovelace" ) );
+    assertEquals( grid.getRowByCell( "Turing" ), grid.getRowByCell( "Married", "no" ) );
+    assertNull( grid.getRowByCell( "First Name", "Lovelace" ) ); // does not exist
     try {
-      rap.getGridRowByCell( grid, "First", "Lovelace" ); // invalid column
+      grid.getRowByCell( "First", "Lovelace" ); // invalid column
       fail();
     } catch( IllegalStateException e ) {
       // expected
     }
     try {
-      rap.getGridRowByCell( grid, "First Name", "John" ); // multiple results
+      grid.getRowByCell( "First Name", "John" ); // multiple results
       fail();
     } catch( IllegalStateException e ) {
       // expected
@@ -256,24 +250,23 @@ public class AriaGrid_Test {
   @Test
   public void testGetCellContent() throws Exception {
     goToVirtualTable();
-    XPath grid = gridWithText( "First Name" );
-    rap.waitForAppear( grid );
-    assertEquals( "Ada", rap.getGridCellContent( grid, rap.getGridRowByCell( grid, "Lovelace" ), "First Name" ) );
-    assertEquals( "1903", rap.getGridCellContent( grid, rap.getGridRowAtLine( grid, 1 ), "Born" ) );
+    AriaGridBot grid = gridWithText( "First Name" );
+    assertEquals( "Ada", grid.getCellContent( grid.getRowByCell( "Lovelace" ), "First Name" ) );
+    assertEquals( "1903", grid.getCellContent( grid.getRowAtLine( 1 ), "Born" ) );
     try {
-      rap.getGridCellContent( grid, rap.getGridRowAtLine( grid, 1 ), "Bornx" );
+      grid.getCellContent( grid.getRowAtLine( 1 ), "Bornx" );
       fail();
     } catch( IllegalStateException e ) {
       // expected
     }
     try {
-      rap.getGridCellContent( grid, rap.getGridRowByCell( grid, "foo" ), "Born" );
+      grid.getCellContent( grid.getRowByCell( "foo" ), "Born" );
       fail();
     } catch( NullPointerException e ) {
       // expected
     }
     try {
-      rap.getGridCellContent( grid, rap.getGridRowByCell( grid, "John" ), "Born" );
+      grid.getCellContent( grid.getRowByCell( "John" ), "Born" );
       fail();
     } catch( IllegalStateException e ) {
       // expected
@@ -283,11 +276,11 @@ public class AriaGrid_Test {
   @Test
   public void testGetCellContent_FixedColumns() throws Exception {
     goToSplitTable();
-    XPath grid = gridWithText( "Item0-0" );
-    XPath row0 = rap.getGridRowByCell( grid, "Item0-0" );
-    XPath row1 = rap.getGridRowByCell( grid, "Item1-0" );
-    assertEquals( "Item0-0", rap.getGridCellContent( grid, row0, "Col 0" ) );
-    assertEquals( "Item1-4", rap.getGridCellContent( grid, row1, "Col 4" ) );
+    AriaGridBot grid = gridWithText( "Item0-0" );
+    XPath row0 = grid.getRowByCell( "Item0-0" );
+    XPath row1 = grid.getRowByCell( "Item1-0" );
+    assertEquals( "Item0-0", grid.getCellContent( row0, "Col 0" ) );
+    assertEquals( "Item1-4", grid.getCellContent( row1, "Col 4" ) );
   }
 
   @Test
@@ -295,19 +288,16 @@ public class AriaGrid_Test {
     goToVirtualTable();
     rap.click( any().widget( BUTTON, "Add 100 Items" ) );
     rap.waitForServer();
-    XPath grid = gridWithText( "First Name" );
-    int gridLineCount = rap.getGridLineCount( grid );
-    XPath lastItem = rap.scrollGridLineIntoView( grid, gridLineCount - 1 );
-    assertEquals( "new 110", rap.getGridCellContent( grid, lastItem, "First Name" ) );
+    AriaGridBot grid = gridWithText( "First Name" );
+    int gridLineCount = grid.getLineCount();
+    XPath lastItem = grid.scrollLineIntoView( gridLineCount - 1 );
+    assertEquals( "new 110", grid.getCellContent( lastItem, "First Name" ) );
   }
 
-  private XPath rowId( XPath grid, String text ) {
-    return byId( rap.getId( rap.getGridRowByCell( grid, text ) ) );
-  }
-
-  private XPath gridWithText( String elementText ) {
-    // Use the id since the content can change
-    return byId( rap.getId( any().widget( GRID, with().textContent( elementText ) ) ) );
+  private AriaGridBot gridWithText( String elementText ) {
+    XPath path = any().widget( GRID, with().textContent( elementText ) );
+    rap.waitForAppear( path );
+    return new AriaGridBot( rap, path );
   }
 
 

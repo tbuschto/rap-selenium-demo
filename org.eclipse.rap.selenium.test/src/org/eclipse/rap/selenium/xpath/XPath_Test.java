@@ -1,13 +1,7 @@
 package org.eclipse.rap.selenium.xpath;
 
-import static org.eclipse.rap.selenium.xpath.XPath.any;
-import static org.eclipse.rap.selenium.xpath.XPath.byId;
-import static org.eclipse.rap.selenium.xpath.XPath.createXPath;
-import static org.eclipse.rap.selenium.xpath.XPath.root;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.eclipse.rap.selenium.xpath.XPath.*;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -130,12 +124,12 @@ public class XPath_Test {
 
   @Test
   public void testFirstMatch() {
-    assertEquals( "(//a)[1]", any().element( "a" ).firstMatch().toString() );
+    assertEquals( "//a[1]", any().element( "a" ).firstMatch().toString() );
   }
 
   @Test
   public void testMatchNo() {
-    assertEquals( "(//a)[2]", any().element( "a" ).match( 2 ).toString() );
+    assertEquals( "//a[2]", any().element( "a" ).match( 2 ).toString() );
   }
 
   @Test
@@ -150,7 +144,7 @@ public class XPath_Test {
 
   @Test
   public void testLastMatch() {
-    assertEquals( "(//a)[last()]", any().element( "a" ).lastMatch().toString() );
+    assertEquals( "//a[last()]", any().element( "a" ).lastMatch().toString() );
   }
 
   @Test

@@ -118,18 +118,18 @@ public class Predicate_Test {
 
   @Test
   public void testWithPosition() {
-    assertEquals( "position()=3", with().position( 3 ).toString() );
+    assertEquals( "(count(preceding-sibling::*)+1)=3", with().offset( 3 ).toString() );
   }
 
   @Test
   public void testWithPositionMinusOne() {
-    assertEquals( "position()=last()-1", with().position( -1 ).toString() );
+    assertEquals( "(count(following-sibling::*)+1)=1", with().offset( -1 ).toString() );
   }
 
   @Test
   public void testWithPositionZero() {
     try {
-      with().position( 0 );
+      with().offset( 0 );
       fail();
     } catch( IllegalArgumentException e) {
 
