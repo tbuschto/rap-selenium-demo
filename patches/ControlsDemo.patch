@@ -1,179 +1,177 @@
-diff --git a/examples/org.eclipse.rap.demo.controls/META-INF/MANIFEST.MF b/examples/org.eclipse.rap.demo.controls/META-INF/MANIFEST.MF
-index a7e7df2..e5b9c8b 100644
---- a/examples/org.eclipse.rap.demo.controls/META-INF/MANIFEST.MF
-+++ b/examples/org.eclipse.rap.demo.controls/META-INF/MANIFEST.MF
-@@ -6,7 +6,8 @@
- Bundle-Version: 2.1.1.qualifier
- Bundle-Localization: plugin
- Bundle-RequiredExecutionEnvironment: J2SE-1.5
--Import-Package: javax.servlet.http;version="[2.3.0,4.0.0)"
-+Import-Package: com.eclipsesource.rap.aria,
-+ javax.servlet.http;version="[2.3.0,4.0.0)"
- Export-Package: org.eclipse.rap.demo.controls;version="2.1.1",
-  org.eclipse.rap.demo.controls.internal;version="2.1.1";x-internal:=true
- Require-Bundle: org.eclipse.rap.rwt;bundle-version="[2.1.0,3.0.0)",
-diff --git a/examples/org.eclipse.rap.demo.controls/launch/RAP Controls Demo.launch b/examples/org.eclipse.rap.demo.controls/launch/RAP Controls Demo.launch
-index 913e6d6..efc0b97 100644
---- a/examples/org.eclipse.rap.demo.controls/launch/RAP Controls Demo.launch
-+++ b/examples/org.eclipse.rap.demo.controls/launch/RAP Controls Demo.launch
-@@ -1,44 +1,44 @@
--<?xml version="1.0" encoding="UTF-8" standalone="no"?>
--<launchConfiguration type="org.eclipse.rap.ui.launch.RAPLauncher">
--<booleanAttribute key="append.args" value="true"/>
--<booleanAttribute key="askclear" value="false"/>
--<booleanAttribute key="automaticAdd" value="false"/>
--<booleanAttribute key="automaticValidate" value="true"/>
--<stringAttribute key="bootstrap" value=""/>
--<stringAttribute key="checked" value="[NONE]"/>
--<booleanAttribute key="clearConfig" value="true"/>
--<booleanAttribute key="clearws" value="true"/>
--<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/RAP Controls Demo"/>
--<booleanAttribute key="default" value="true"/>
--<booleanAttribute key="default_auto_start" value="true"/>
--<intAttribute key="default_start_level" value="4"/>
--<booleanAttribute key="includeOptional" value="false"/>
--<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
--<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
--<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
--</listAttribute>
--<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
--<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -clean -console -consolelog"/>
--<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
--<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true&#13;&#10;-Dosgi.noShutdown=true&#13;&#10;-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=info"/>
--<stringAttribute key="org.eclipse.rap.launch.browserMode" value="INTERNAL"/>
--<stringAttribute key="org.eclipse.rap.launch.contextpath" value="/controlsdemo"/>
--<stringAttribute key="org.eclipse.rap.launch.dataLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.rap.tools.launch/RAPControlsDemo"/>
--<booleanAttribute key="org.eclipse.rap.launch.developmentMode" value="true"/>
--<booleanAttribute key="org.eclipse.rap.launch.openBrowser" value="true"/>
--<intAttribute key="org.eclipse.rap.launch.port" value="8080"/>
--<stringAttribute key="org.eclipse.rap.launch.servletPath" value="/controls"/>
--<intAttribute key="org.eclipse.rap.launch.sessionTimeout" value="1000"/>
--<booleanAttribute key="org.eclipse.rap.launch.terminatePrevious" value="true"/>
--<booleanAttribute key="org.eclipse.rap.launch.useDefaultDataLocation" value="true"/>
--<booleanAttribute key="org.eclipse.rap.launch.useManualContextPath" value="true"/>
--<booleanAttribute key="org.eclipse.rap.launch.useManualPort" value="false"/>
--<booleanAttribute key="org.eclipse.rap.launch.useSessionTimeout" value="false"/>
--<stringAttribute key="pde.version" value="3.3"/>
--<booleanAttribute key="show_selected_only" value="true"/>
--<stringAttribute key="target_bundles" value="com.ibm.icu.base@default:default,javax.servlet@default:default,javax.xml@default:default,org.apache.commons.fileupload@default:default,org.apache.commons.io@default:default,org.apache.felix.gogo.command@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.eclipse.core.commands@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.databinding.beans@default:default,org.eclipse.core.databinding.observable@default:default,org.eclipse.core.databinding.property@default:default,org.eclipse.core.databinding@default:default,org.eclipse.core.expressions@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.runtime@default:true,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@2:true,org.eclipse.equinox.console@default:default,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.http.jetty@default:default,org.eclipse.equinox.http.servlet@default:default,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.util@default:default,org.eclipse.help@default:default,org.eclipse.jetty.continuation@default:default,org.eclipse.jetty.http@default:default,org.eclipse.jetty.io@default:default,org.eclipse.jetty.security@default:default,org.eclipse.jetty.server@default:default,org.eclipse.jetty.servlet@default:default,org.eclipse.jetty.util@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.eclipse.rap.jface@default:default,org.eclipse.rap.rwt.osgi@default:default,org.eclipse.rap.rwt@default:default"/>
--<booleanAttribute key="tracing" value="false"/>
--<booleanAttribute key="useCustomFeatures" value="false"/>
--<booleanAttribute key="useDefaultConfigArea" value="true"/>
--<stringAttribute key="workspace_bundles" value="org.eclipse.rap.demo.controls@default:default"/>
--</launchConfiguration>
-+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-+<launchConfiguration type="org.eclipse.rap.ui.launch.RAPLauncher">
-+<booleanAttribute key="append.args" value="true"/>
-+<booleanAttribute key="askclear" value="false"/>
-+<booleanAttribute key="automaticAdd" value="false"/>
-+<booleanAttribute key="automaticValidate" value="true"/>
-+<stringAttribute key="bootstrap" value=""/>
-+<stringAttribute key="checked" value="[NONE]"/>
-+<booleanAttribute key="clearConfig" value="true"/>
-+<booleanAttribute key="clearws" value="true"/>
-+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/RAP Controls Demo"/>
-+<booleanAttribute key="default" value="true"/>
-+<booleanAttribute key="default_auto_start" value="true"/>
-+<intAttribute key="default_start_level" value="4"/>
-+<booleanAttribute key="includeOptional" value="false"/>
-+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
-+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
-+</listAttribute>
-+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -clean -console -consolelog"/>
-+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true&#13;&#10;-Dosgi.noShutdown=true&#13;&#10;-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=info"/>
-+<stringAttribute key="org.eclipse.rap.launch.browserMode" value="INTERNAL"/>
-+<stringAttribute key="org.eclipse.rap.launch.contextpath" value="/controlsdemo"/>
-+<stringAttribute key="org.eclipse.rap.launch.dataLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.rap.tools.launch/RAPControlsDemo"/>
-+<booleanAttribute key="org.eclipse.rap.launch.developmentMode" value="true"/>
-+<booleanAttribute key="org.eclipse.rap.launch.openBrowser" value="true"/>
-+<intAttribute key="org.eclipse.rap.launch.port" value="8383"/>
-+<stringAttribute key="org.eclipse.rap.launch.servletPath" value="/controls"/>
-+<intAttribute key="org.eclipse.rap.launch.sessionTimeout" value="1000"/>
-+<booleanAttribute key="org.eclipse.rap.launch.terminatePrevious" value="true"/>
-+<booleanAttribute key="org.eclipse.rap.launch.useDefaultDataLocation" value="true"/>
-+<booleanAttribute key="org.eclipse.rap.launch.useManualContextPath" value="false"/>
-+<booleanAttribute key="org.eclipse.rap.launch.useManualPort" value="true"/>
-+<booleanAttribute key="org.eclipse.rap.launch.useSessionTimeout" value="false"/>
-+<stringAttribute key="pde.version" value="3.3"/>
-+<booleanAttribute key="show_selected_only" value="false"/>
-+<stringAttribute key="target_bundles" value="com.ibm.icu.base@default:default,javax.servlet@default:default,javax.xml@default:default,org.apache.felix.gogo.command@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.eclipse.core.commands@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.databinding.beans@default:default,org.eclipse.core.databinding.observable@default:default,org.eclipse.core.databinding.property@default:default,org.eclipse.core.databinding@default:default,org.eclipse.core.expressions@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.runtime@default:true,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@2:true,org.eclipse.equinox.console@default:default,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.http.jetty@default:default,org.eclipse.equinox.http.servlet@default:default,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.util@default:default,org.eclipse.help@default:default,org.eclipse.jetty.continuation@default:default,org.eclipse.jetty.http@default:default,org.eclipse.jetty.io@default:default,org.eclipse.jetty.security@default:default,org.eclipse.jetty.server@default:default,org.eclipse.jetty.servlet@default:default,org.eclipse.jetty.util@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.eclipse.rap.jface@default:default,org.eclipse.rap.rwt.osgi@default:default,org.eclipse.rap.rwt@default:default"/>
-+<booleanAttribute key="tracing" value="false"/>
-+<booleanAttribute key="useCustomFeatures" value="false"/>
-+<booleanAttribute key="useDefaultConfigArea" value="true"/>
-+<stringAttribute key="workspace_bundles" value="com.eclipsesource.rap.aria@default:default,org.eclipse.rap.demo.controls@default:default"/>
-+</launchConfiguration>
-diff --git a/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/ButtonTab.java b/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/ButtonTab.java
-index c9c434d..62061bb 100644
---- a/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/ButtonTab.java
-+++ b/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/ButtonTab.java
-@@ -162,6 +162,12 @@
-       item.setText( "Item " + ( i + 1 ) );
-     }
-     parent.setMenu( menu );
-+
-+    SeleniumUtil.setTestId( pushButton, "pushButton" );
-+    SeleniumUtil.setTestId( toggleButton, "toggleButton" );
-+    SeleniumUtil.setTestId( checkButton1, "checkButton1" );
-+    SeleniumUtil.setTestId( checkButton2, "checkButton2" );
-+    SeleniumUtil.setTestId( defaultButton, "defaultButton" );
-   }
+### Eclipse Workspace Patch 1.0
+#P org.eclipse.rap.demo.controls
+diff --git src/org/eclipse/rap/demo/controls/ButtonTab.java src/org/eclipse/rap/demo/controls/ButtonTab.java
+index e64306e..c72f37d 100644
+--- src/org/eclipse/rap/demo/controls/ButtonTab.java
++++ src/org/eclipse/rap/demo/controls/ButtonTab.java
+@@ -11,6 +11,8 @@
+  ******************************************************************************/
+ package org.eclipse.rap.demo.controls;
  
-   private void createButtonImage( Display display ) {
-diff --git a/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/ControlsDemo.java b/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/ControlsDemo.java
-index 7a2bdd1..0ecaaa1 100644
---- a/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/ControlsDemo.java
-+++ b/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/ControlsDemo.java
-@@ -43,6 +43,7 @@
++import static org.eclipse.rap.demo.controls.UITestUtil.setTestId;
++
+ import java.util.Iterator;
+ 
+ import org.eclipse.jface.dialogs.MessageDialog;
+@@ -95,13 +97,17 @@
+     int style = getStyle();
+     pushButton = new Button( parent, style | SWT.PUSH );
+     pushButton.setText( "Push\n Button" );
++    setTestId( pushButton, "pushButton" );
+     updateButtonImage( pushButton );
+     toggleButton = new Button( parent, style | SWT.TOGGLE );
+     toggleButton.setText( "Toggle" );
++    setTestId( toggleButton, "toggleButton" );
+     checkButton1 = new Button( parent, style | SWT.CHECK );
+     checkButton1.setText( "Check" );
++    setTestId( checkButton1, "checkButton1" );
+     checkButton2 = new Button( parent, style | SWT.CHECK );
+     checkButton2.setText( "Check with image" );
++    setTestId( checkButton2, "checkButton2" );
+     createButtonImage( parent.getDisplay() );
+     checkButton2.setImage( buttonImage );
+     radioButton1 = new Button( parent, style | SWT.RADIO );
+@@ -146,6 +152,7 @@
+     final Text text = new Text( group, SWT.BORDER | SWT.SINGLE );
+     text.setLayoutData( new RowData( 100, SWT.DEFAULT ) );
+     defaultButton = new Button( group, style | SWT.PUSH );
++    setTestId( defaultButton, "defaultButton" );
+     defaultButton.setText( "Default Button" );
+     defaultButton.getShell().setDefaultButton( defaultButton );
+     defaultButton.addSelectionListener( new SelectionAdapter() {
+diff --git src/org/eclipse/rap/demo/controls/ControlsDemo.java src/org/eclipse/rap/demo/controls/ControlsDemo.java
+index 34cf6bb..b63be9d 100644
+--- src/org/eclipse/rap/demo/controls/ControlsDemo.java
++++ src/org/eclipse/rap/demo/controls/ControlsDemo.java
+@@ -11,6 +11,8 @@
+  ******************************************************************************/
+ package org.eclipse.rap.demo.controls;
+ 
++import static org.eclipse.rap.demo.controls.UITestUtil.setTestId;
++
+ import java.io.Serializable;
+ import java.util.HashMap;
+ 
+@@ -33,6 +35,8 @@
+ import org.eclipse.swt.widgets.Tree;
+ import org.eclipse.swt.widgets.TreeItem;
+ 
++//import com.eclipsesource.rap.aria.Aria;
++
+ 
+ public class ControlsDemo extends AbstractEntryPoint implements Serializable {
+ 
+@@ -43,6 +47,7 @@
  
    @Override
    protected void createContents( Composite parent ) {
-+    SeleniumUtil.enableUITests();
++    //Aria.activate();
      parent.setLayout( new FormLayout() );
      backgroundColor = new Color( parent.getDisplay(), 0x31, 0x61, 0x9C );
      header = new Composite( parent, SWT.NONE );
-@@ -71,6 +72,7 @@
-       tab.setData( item );
-       exampleMap.put( tab.getId(), tab );
-     }
-+    SeleniumUtil.setTestId( tree, "navtree" );
-     tree.addListener( SWT.Selection, new Listener() {
-       public void handleEvent( Event event ) {
-         ExampleTab tab = ( ExampleTab )event.item.getData();
-diff --git a/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/SeleniumUtil.java b/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/SeleniumUtil.java
+@@ -55,6 +60,7 @@
+     label.setBounds( 40, 30, 250, 30 );
+     tree = new Tree( parent, SWT.FULL_SELECTION );
+     tree.setLayoutData( createLayoutDataForTree() );
++    setTestId( tree, "demoNavigation" );
+     exampleParent = new Composite( parent, SWT.NONE );
+     exampleParent.setLayout( new FillLayout() );
+     exampleParent.setLayoutData( createLayoutDataForExampleParent() );
+diff --git src/org/eclipse/rap/demo/controls/TextTab.java src/org/eclipse/rap/demo/controls/TextTab.java
+index 4e8d699..ce1a57e 100644
+--- src/org/eclipse/rap/demo/controls/TextTab.java
++++ src/org/eclipse/rap/demo/controls/TextTab.java
+@@ -12,6 +12,8 @@
+ 
+ package org.eclipse.rap.demo.controls;
+ 
++import static org.eclipse.rap.demo.controls.UITestUtil.setTestId;
++
+ import org.eclipse.jface.dialogs.MessageDialog;
+ import org.eclipse.swt.SWT;
+ import org.eclipse.swt.events.KeyAdapter;
+@@ -142,6 +144,7 @@
+     textComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+     textComposite.setLayout( new GridLayout( 1, false ) );
+     text = new Text( textComposite, getStyle() );
++    setTestId( text, "textWidget" );
+     text.setText( "Lorem ipsum dolor sit amet" );
+     text.setSelection( 0, 5 );
+     text.setMessage( "Please enter something" );
+@@ -152,6 +155,7 @@
+     buttonBar.setLayout( new RowLayout( SWT.HORIZONTAL ) );
+     final Button btnGetText = new Button( buttonBar, SWT.PUSH );
+     btnGetText.setText( "getText" );
++    setTestId( btnGetText, "btnGetText" );
+     btnGetText.addSelectionListener( new SelectionAdapter() {
+ 
+       @Override
+@@ -185,6 +189,7 @@
+     outputForm.setLayout( new GridLayout( 2, false ) );
+     new Label( outputForm, SWT.NONE ).setText( "Text:" );
+     textLabel = new Label( outputForm, SWT.BORDER );
++    setTestId( textLabel, "textLabel" );
+     textLabel.setText( "\n\n\n\n\n" );
+     textLabel.setLayoutData( new GridData( SWT.FILL, SWT.DEFAULT, true, false ) );
+     new Label( outputForm, SWT.NONE ).setText( "Selection:" );
+@@ -254,6 +259,7 @@
+   private void createNumbersOnlyVerifyListenerButton() {
+     btnNumbersOnlyVerifyListener
+       = createPropertyButton( "VerifyListener (numbers only)" );
++    setTestId( btnNumbersOnlyVerifyListener, "btnNumbersOnlyVerifyListener" );
+     btnNumbersOnlyVerifyListener.addSelectionListener( new SelectionAdapter() {
+ 
+       @Override
+diff --git src/org/eclipse/rap/demo/controls/UITestUtil.java src/org/eclipse/rap/demo/controls/UITestUtil.java
 new file mode 100644
-index 0000000..dbaa3fa
+index 0000000..4c1d4a1
 --- /dev/null
-+++ b/examples/org.eclipse.rap.demo.controls/src/org/eclipse/rap/demo/controls/SeleniumUtil.java
-@@ -0,0 +1,29 @@
++++ src/org/eclipse/rap/demo/controls/UITestUtil.java
+@@ -0,0 +1,46 @@
++/*******************************************************************************
++ * Copyright (c) 2014 EclipseSource and others.
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ *
++ * Contributors:
++ *    EclipseSource - initial API and implementation
++ ******************************************************************************/
++
 +package org.eclipse.rap.demo.controls;
++
++import static org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId;
 +
 +import org.eclipse.rap.rwt.RWT;
 +import org.eclipse.rap.rwt.client.service.JavaScriptExecutor;
-+import org.eclipse.rap.rwt.lifecycle.WidgetUtil;
++import org.eclipse.swt.widgets.Text;
 +import org.eclipse.swt.widgets.Widget;
 +
-+import com.eclipsesource.rap.aria.Aria;
 +
++public class UITestUtil {
 +
-+public class SeleniumUtil {
-+
-+  public static void enableUITests() {
-+    Aria.activate();
++  private UITestUtil() {
 +  }
 +
-+  public static void setTestId( Widget widget, String testId ) {
-+    JavaScriptExecutor executor = RWT.getClient().getService( JavaScriptExecutor.class );
++  static void setTestId( Widget widget, String value ) {
++    if( !widget.isDisposed() ) {
++      String $el = widget instanceof Text ? "$input" : "$el";
++      String id = getId( widget );
++      exec( "rap.getObject( '", id, "' ).", $el, ".attr( 'test-id', '", value + "' );" );
++    }
++  }
++
++  private static void exec( String... strings ) {
 +    StringBuilder builder = new StringBuilder();
-+    builder.append( "rwt.remote.HandlerUtil.callWithTarget( \"" );
-+    builder.append( WidgetUtil.getId( widget ) );
-+    builder.append( "\", function( widget ) { widget.setHtmlAttribute( \"testId\", \"" );
-+    builder.append( testId );
-+    builder.append( "\" ); } );" );
++    builder.append( "try{" );
++    for( String str : strings ) {
++      builder.append( str );
++    }
++    builder.append( "}catch(e){}" );
++    JavaScriptExecutor executor = RWT.getClient().getService( JavaScriptExecutor.class );
 +    executor.execute( builder.toString() );
 +  }
 +
 +}
-+
+\ No newline at end of file
