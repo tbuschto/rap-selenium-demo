@@ -58,6 +58,7 @@ public class ElementSelector {
   }
 
   private static Predicate widgetWith( String role ) {
+    // TODO: use for text also, include in ARIA addon
     return with().notAria( "hidden", "true" ).attr( "role", role );
   }
 

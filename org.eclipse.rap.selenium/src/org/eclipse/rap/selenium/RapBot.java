@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.eclipse.rap.rwt.jstest.TestContribution;
 import org.eclipse.rap.selenium.xpath.AbstractPath;
 import org.eclipse.rap.selenium.xpath.XPath;
 import org.openqa.selenium.By;
@@ -24,21 +23,15 @@ import com.thoughtworks.selenium.Selenium;
 
 public class RapBot {
 
-  private static final String TEST_UTIL_JS = "/org/eclipse/rwt/test/fixture/TestUtil.js";
   private static final String RAP_BOT_JS = "/org/eclipse/rap/selenium/RapBot.js";
   final WebDriver driver;
   final Selenium selenium;
-  private final String TEST_UTIL_JS_CONTENT;
   private final String RAP_BOT_JS_CONTENT;
-  private final String NAMESPACE_JS = "var namespace = function( value ) {"
-                                      + "rwt.qx.Class.createNamespace( value, {} );"
-                                      + "};\n";
   private static final String CHARSET = "UTF-8";
 
   public RapBot( WebDriver driver, Selenium selenium ) {
     this.driver = driver;
     this.selenium = selenium;
-    TEST_UTIL_JS_CONTENT = readTestUtil();
     RAP_BOT_JS_CONTENT = readRapBotJs();
   }
 
@@ -67,7 +60,7 @@ public class RapBot {
     click( xpath.toString() );
   }
 
-  public void click( String xpath ) {
+  private void click( String xpath ) {
     checkElementCount( xpath );
     // selenium.click is unreliable
 //    try {
@@ -110,8 +103,8 @@ public class RapBot {
    * @param xpath
    * @param key a single character, or any value from {@link KeyIdentifier}
    */
-  public void press( AbstractPath<?> xpath, String key ) {
-    press( xpath.toString(), key );
+  public void pressKey( AbstractPath<?> xpath, String key ) {
+    pressKey( xpath.toString(), key );
   }
 
   // seleniums keyPress method somehow messes up the keycode, therefore this
@@ -129,13 +122,12 @@ public class RapBot {
   // // ignored
   // }
   // }
-  // Requires TestUtil.js to be loaded, either by application or by selenium
-  public void press( String xpath, String key ) {
+  private void pressKey( String xpath, String key ) {
     checkElementCount( xpath );
     String script = "(function(){var el =  "
                     + xpathToJs( xpath )
                     + ";var widget = rwt.event.EventHandlerUtil.getOriginalTargetObject( el );"
-                    + "org.eclipse.rwt.test.fixture.TestUtil.press( widget,\""
+                    + "RapBot.TestUtil.press( widget,\""
                     + key
                     + "\" );"
                     + "}());";
@@ -330,13 +322,6 @@ public class RapBot {
 
   private void patchRAP() {
     selenium.runScript( RAP_BOT_JS_CONTENT );
-    // Currently required for emulating key events on internal RAP event handler
-    // level:
-    selenium.runScript( NAMESPACE_JS + TEST_UTIL_JS_CONTENT );
-  }
-
-  private static String readTestUtil() {
-    return readFile( TEST_UTIL_JS );
   }
 
   private static String readRapBotJs() {
@@ -346,7 +331,7 @@ public class RapBot {
   private static String readFile( String url ) {
     String result;
     try {
-      InputStream stream = TestContribution.class.getResourceAsStream( url );
+      InputStream stream = RapBot.class.getResourceAsStream( url );
       if( stream == null ) {
         throw new IllegalArgumentException( "Resource not found: " + url );
       }
@@ -373,7 +358,7 @@ public class RapBot {
     return builder.toString();
   }
 
-    static XPath asXPath( AbstractPath<?> path ) {
+  static XPath asXPath( AbstractPath<?> path ) {
     return path != null ? XPath.createXPath( path.toString() ) : null;
   }
 

@@ -37,8 +37,8 @@ public class AriaGrid_Test {
   @Before
   public void setUp() throws Exception {
     //driver = new FirefoxDriver();
-    driver = new ChromeDriver();
     //driver = new InternetExplorerDriver(); // Not yet tested due to missing IE11 support
+    driver = new ChromeDriver();
     selenium = new WebDriverBackedSelenium( driver, URL );
     driver.manage().window().setSize( new Dimension( 1024, 768 ) );
     rap = new RapBot( driver, selenium );
@@ -78,10 +78,10 @@ public class AriaGrid_Test {
     rap.click( any().widget( BUTTON, "Add 100 Items" ) );
     rap.waitForServer();
     assertEquals( 0, grid.getLineOffset() );
-    rap.click( grid.row( with().offset( -1 ) ) ); // TODO: has to be -2 sometimes, why?
-    rap.press( grid.byId(), "Down" );
-    rap.press( grid.byId(), "Down" );
-    rap.press( grid.byId(), "Down" );
+    rap.click( grid.row( with().offset( -2 ) ) ); // TODO: has to be -1 if last row is not off?
+    rap.pressKey( grid.byId(), "Down" );
+    rap.pressKey( grid.byId(), "Down" );
+    rap.pressKey( grid.byId(), "Down" );
     assertEquals( 3, grid.getLineOffset() );
   }
 
@@ -90,10 +90,10 @@ public class AriaGrid_Test {
     goToSplitTable();
     AriaGridBot grid = gridWithText( "Item0-0" );
     assertEquals( 0, grid.getLineOffset() );
-    rap.click( grid.row( with().offset( -1 ) ) );
-    rap.press( grid.byId(), "Down" );
-    rap.press( grid.byId(), "Down" );
-    rap.press( grid.byId(), "Down" );
+    rap.click( grid.row( with().offset( -2 ) ) );
+    rap.pressKey( grid.byId(), "Down" );
+    rap.pressKey( grid.byId(), "Down" );
+    rap.pressKey( grid.byId(), "Down" );
     assertEquals( 3, grid.getLineOffset() );
   }
 

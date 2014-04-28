@@ -8,7 +8,6 @@ import org.eclipse.rap.selenium.xpath.XPath;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -37,7 +36,7 @@ public class UnmodifiedControlsDemo_Test {
     driver = new ChromeDriver();
     //driver = new InternetExplorerDriver(); // Not yet tested due to missing IE11 support
     selenium = new WebDriverBackedSelenium( driver, URL );
-    driver.manage().window().setSize( new Dimension( 1024, 768 ) );
+    driver.manage().window().maximize();
     rap = new RapBot( driver, selenium );
     rap.loadApplication( URL, false );
   }

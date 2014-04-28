@@ -77,7 +77,7 @@ public class AriaControls_Demo_Test {
 
   @Test
   public void testInsertText() throws Exception {
-    AriaGridBot grid = new AriaGridBot( rap, any().widget( TREE_GRID ).firstMatch() );
+    AriaGridBot grid = new AriaGridBot( rap, any().widget( TREE_GRID ) );
     rap.click( grid.scrollCellIntoView( "Text" ) );
     rap.waitForAppear( any().textElement( "Text:" ) );
     rap.click( any().widget( CHECK_BOX, "VerifyListener (numbers only)" ) );
