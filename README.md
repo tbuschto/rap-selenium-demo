@@ -4,13 +4,17 @@ rap-selenium-demo
 Demonstrating usage of the Selenium UI Testing tool with Eclipse RAP
 
 Requirements:
-* Eclipse IDE with RAP 2.1 tools installed
-* RAP 2.1.1
-* org.eclipse.rap.demo.controls bundle, patched with ControlsDemo.patch (see ./patches)
+* Eclipse IDE
+* RAP 2.3
 * Selenium-WebDriver for Java ( http://docs.seleniumhq.org/docs/03_webdriver.jsp )
-* com.eclipsesource.rap.aria bundle (commercial add-on)
-* Mozilla Firefox (path of binary may have to be adjusted in Controls_Demo_Test.java)
+* org.eclipse.rap.demo.controls bundle, patched with ControlsDemo.patch (see ./patches)
+* com.eclipsesource.rap.aria bundle (for Aria***_Test.java, commercial add-on)
 
 Start:
-* Start patched controls demo with included launch config from the Eclispe IDE
-* Run Controls_Demo_Test as a JUnit Test
+* Edit launch config for Controls Demo to run on port 8383 and "-Dorg.eclipse.rap.rwt.enableUITests=true" to the arguments.
+* Apply patch
+* Run controls demo
+* Run example tests
+
+Published under Eclipse Public License (EPL) v1.0
+http://wiki.eclipse.org/EPL
