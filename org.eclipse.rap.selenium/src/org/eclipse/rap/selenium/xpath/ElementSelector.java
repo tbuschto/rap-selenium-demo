@@ -25,26 +25,62 @@ public class ElementSelector {
     this.axis = axis;
   }
 
+  /**
+   * Matches all elements with the given text value.
+   *
+   * @param string
+   * @return the new XPath
+   */
   public XPath textElement( String string ) {
     return element( Predicate.with().text( string ) );
   }
 
+  /**
+   * Matches all elements with the given string in their text value.
+   *
+   * @param string
+   * @return the new XPath
+   */
   public XPath textElementContaining( String string ) {
     return element( Predicate.with().string( string ) );
   }
 
+  /**
+   * Matches all elements of the current axis.
+   *
+   * @return the new XPath
+   */
   public XPath element() {
     return element( null, null );
   }
 
+  /**
+   * Matches all elements of the current axis for which which the predicate is true.
+   *
+   * @param predicate
+   * @return the new XPath
+   */
   public XPath element( Predicate predicate ) {
     return element( null, predicate );
   }
 
+  /**
+   * Matches all elements that have this tag name.
+   *
+   * @param name
+   * @return the new XPath
+   */
   public XPath element( String name ) {
     return element( name, null );
   }
 
+  /**
+   * Matches all elements that have this tag name and for which the predicate is true.
+   *
+   * @param name
+   * @param predicate
+   * @return the new XPath
+   */
   public XPath element( String name, Predicate predicate ) {
     StringBuilder selection = new StringBuilder( axis );
     appendElement( selection, name );
@@ -52,18 +88,50 @@ public class ElementSelector {
     return xpath.append( selection.toString() );
   }
 
+  /**
+   * Matches all elements that have the given string as the value of their "role" attribute.
+   * Elements with aria-hidden="true" are excluded.
+   *
+   * @param role
+   * @return the new XPath
+   */
   public XPath widget( String role ) {
     return element( widgetWith( role ) );
   }
 
+  /**
+   * Matches all elements that have the given string as the value of their "role" attribute and
+   * for which the predicate is true. Elements with aria-hidden="true" are excluded.
+   *
+   * @param role
+   * @param predicate
+   * @return the new XPath
+   */
   public XPath widget( String role, Predicate predicate ) {
     return element( widgetWith( role ).and( predicate ) );
   }
 
+  /**
+   * Matches all elements that have the given string as the value of their "role" attribute and
+   * and an "aria-" prefixed attribute of the given value. Elements with aria-hidden="true" are excluded.
+   *
+   * @param role
+   * @param ariaAttribute
+   * @param value
+   * @return the new XPath
+   */
   public XPath widget( String role, String ariaAttribute, String value ) {
     return element( widgetWith( role ).attr( "aria-" + ariaAttribute, value ) );
   }
 
+  /**
+   * Matches all elements that have the given string as the value of their "role" attribute and
+   * and the given string as their text value. Elements with aria-hidden="true" are excluded.
+   *
+   * @param role
+   * @param text
+   * @return the new XPath
+   */
   public XPath widget( String role, String text ) {
     return element( widgetWith( role ).textContent( text ) );
   }

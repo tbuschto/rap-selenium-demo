@@ -20,18 +20,42 @@ public class XPath extends AbstractPath<ElementSelector> {
     return createXPath( "/*" );
   }
 
+  /**
+   * Find an element by it's "id" attribute.
+   *
+   * @param id
+   * @return the new XPath
+   */
   public static XPath byId( String id ) {
     return any().element( with().id( id ) );
   }
 
+  /**
+   * Find an element by it's "test-id" attribute.
+   *
+   * @param id
+   * @return the new XPath
+   */
   public static XPath byTestId( String id ) {
     return any().element( with().attr( "test-id", id ) );
   }
 
+  /**
+   * Matches all elements in the document.
+   *
+   * @param id
+   * @return the new XPath
+   */
   public static ElementSelector any() {
     return createXPath( "/" ).children();
   }
 
+  /**
+   * Creates a new XPath object using the given string. The string is not validated.
+   *
+   * @param id
+   * @return the new XPath
+   */
   public static XPath createXPath( String initial ) {
     return new XPath( initial );
   }
@@ -45,10 +69,18 @@ public class XPath extends AbstractPath<ElementSelector> {
   /////////////////////
   // relative selection
 
+  /**
+   * Matches the parent of the current node.
+   * @return the new XPath
+   */
   public XPath parent() {
     return append( "/.." );
   }
 
+  /**
+   * Matches the n-th child of the current node.
+   * @return the new XPath
+   */
   public XPath child( int position ) {
     if( position <= 0 ) {
       throw new IllegalArgumentException( "position must be > 0" );
@@ -56,10 +88,18 @@ public class XPath extends AbstractPath<ElementSelector> {
     return append( "/*[", valueOf( position ), "]" );
   }
 
+  /**
+   * Matches the first child of the current node.
+   * @return the new XPath
+   */
   public XPath firstChild() {
     return append( "/*[1]" );
   }
 
+  /**
+   * Matches the last child of the current node.
+   * @return the new XPath
+   */
   public XPath lastChild() {
     return append( "/*[last()]" );
   }
@@ -67,20 +107,36 @@ public class XPath extends AbstractPath<ElementSelector> {
   ///////////////////
   // reduce selection
 
+  /**
+   * Matches a node in the current result set if the given predicate is true
+   * @return the new XPath
+   */
   public XPath self( Predicate predicate ) {
     StringBuilder stringBuilder = new StringBuilder( toString() );
     ElementSelector.appendPredicate( stringBuilder, predicate );
     return new XPath( stringBuilder.toString() );
   }
 
+  /**
+   * Matches the first node of the current result set.
+   * @return the new XPath
+   */
   public XPath firstMatch() {
     return match( 1 );
   }
 
+  /**
+   * Matches the last node of the current result set.
+   * @return the new XPath
+   */
   public XPath lastMatch() {
     return insert( 0, "(" ).append( ")[last()]" );
   }
 
+  /**
+   * Matches the n-th node of the current result set.
+   * @return the new XPath
+   */
   public XPath match( int offset ) {
     if( offset <= 0 ) {
       throw new IllegalArgumentException( "Offset has to be > 0" );
