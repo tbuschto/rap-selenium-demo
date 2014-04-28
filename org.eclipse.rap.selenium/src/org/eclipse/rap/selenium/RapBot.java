@@ -32,6 +32,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.thoughtworks.selenium.Selenium;
 
+/**
+ * Provides basic methods for controlling a RAP UI session.
+ */
 public class RapBot {
 
   private static final String RAP_BOT_JS = "/org/eclipse/rap/selenium/RapBot.js";
@@ -50,10 +53,16 @@ public class RapBot {
   /////////////////////
   // Controlling the UI
 
+  /**
+   * Open the given URL and wait for the RAP application to load.
+   */
   public void loadApplication( String url ) {
     loadApplication( url, false );
   }
 
+  /**
+   * Provides basic methods for controlling a RAP UI session.
+   */
   public void loadApplication( String url, boolean ariaEnabled ) {
     selenium.open( url );
     selenium.waitForPageToLoad( "10000" );
@@ -65,8 +74,14 @@ public class RapBot {
     }
   }
 
-  // NOTE: Even if the element is rendered a click may not be registered if it
-  // is not in view
+  /**
+   * Emulates a click on the given element
+   *
+   * NOTE: Even if the element is rendered in the DOM, a click may not be registered if it
+   * is not visible on screen.
+   *
+   * @param xpath
+   */
   public void click( AbstractPath<?> xpath ) {
     click( xpath.toString() );
   }
@@ -93,24 +108,29 @@ public class RapBot {
   }
 
 
-  public void scrollWheel( AbstractPath<?> xpath, int delta ) {
-    scrollWheel( xpath.toString(), delta );
-  }
-
   /**
    * Fires mousewheel events that may be processed by javascript. It does not
    * cause natively scrollable elements to scroll, but effects Tree, Table,
    * Nebula Grid, Scale, Spinner, Slider, DateTime and Combo.
    *
+   * POSITIVE values scroll UP, i.e towards the first line.
+   * NEGATIVE values scroll DOWN, i.e away from the first line.
+   *
    * @param xpath
    * @param delta
    */
+  public void scrollWheel( AbstractPath<?> xpath, int delta ) {
+    scrollWheel( xpath.toString(), delta );
+  }
+
   public void scrollWheel( String xpath, int delta ) {
     checkElementCount( xpath );
     selenium.runScript( "RapBot.scrollWheel( \"" + xpath + "\", " + delta + " );" );
   }
 
   /**
+   * Emulates a key event in JavaScript. Has no effect on text fields or focus.
+   *
    * @param xpath
    * @param key a single character, or any value from {@link KeyIdentifier}
    */
@@ -145,6 +165,12 @@ public class RapBot {
     selenium.runScript( script );
   }
 
+
+  /**
+   * Clears the content a text field.
+   *
+   * @param xpath
+   */
   public void clearInput( AbstractPath<?> xpath ) {
     clearInput( xpath.toString() );
   }
@@ -155,6 +181,12 @@ public class RapBot {
     inputElement.clear();
   }
 
+  /**
+   * Inputs the given text into a text field.
+   *
+   * @param xpath
+   * @param text
+   */
   public void input( AbstractPath<?> xpath, String text ) {
     input( xpath.toString(), text );
   }
@@ -199,6 +231,10 @@ public class RapBot {
     } );
   }
 
+  /**
+   * Waits for the given XPath to have at least one match.
+   * @param xpath
+   */
   public void waitForAppear( final XPath xpath ) {
     waitForAppear( xpath.toString() );
   }
@@ -219,6 +255,10 @@ public class RapBot {
     }
   }
 
+  /**
+   * Waits for the given XPath to have 0 matches.
+   * @param xpath
+   */
   public void waitForDisappear( final XPath xpath ) {
     waitForDisappear( xpath.toString() );
   }
@@ -242,6 +282,9 @@ public class RapBot {
   // ///////////////
   // Reading from UI
 
+  /**
+   * Returns true while the RAP client is waiting for the server to process an event.
+   */
   public boolean isRequestPending() {
     if( driver instanceof JavascriptExecutor ) {
       String script = "return RapBot.busy;";
@@ -252,6 +295,11 @@ public class RapBot {
     }
   }
 
+  /**
+   * Returns true if Selenium can find at least one match for the given XPath.
+   * @param xpath
+   * @return
+   */
   public boolean isElementAvailable( AbstractPath<?> xpath ) {
     return isElementAvailable( xpath.toString() );
   }
@@ -276,10 +324,22 @@ public class RapBot {
     return driver.findElements( By.xpath( xpath ) ).size();
   }
 
+  /**
+   * Returns the number of matches for the given XPath.
+   *
+   * @param xpath
+   * @return
+   */
   public int getXPathCount( AbstractPath<?> xpath ) {
     return getXPathCount( xpath.toString() );
   }
 
+  /**
+   * Returns the HTML ID of the element matching the given XPath.
+   *
+   * @param xpath
+   * @return
+   */
   public String getId( AbstractPath<?> xpath ) {
     return getId( xpath.toString() );
   }
@@ -289,6 +349,12 @@ public class RapBot {
     return getAttribute( xpath, "id" );
   }
 
+  /**
+   * Returns the attributes value of the element matching the given XPath.
+   *
+   * @param xpath
+   * @return
+   */
   public String getAttribute( AbstractPath<?> xpath, String attribute ) {
     return getAttribute( xpath.toString(), attribute );
   }
@@ -298,6 +364,12 @@ public class RapBot {
     return driver.findElement( By.xpath( xpath ) ).getAttribute( attribute );
   }
 
+  /**
+   * Returns the text content of the element matching the given XPath.
+   *
+   * @param xpath
+   * @return
+   */
   public String getText( AbstractPath<?> xpath ) {
     return getText( xpath.toString() );
   }
